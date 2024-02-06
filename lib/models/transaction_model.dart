@@ -27,7 +27,7 @@ class TransactionModel {
       TransactionModel(
           id: value['id'],
           title: value['title'],
-          amount: double.parse(value['amount']),
-          isExpense: value['amount'] == "true" ? true : false,
+          amount: value['amount'].toDouble(),
+          isExpense: value['isExpense'],
           date: DateTime.parse(value['date']));
 }

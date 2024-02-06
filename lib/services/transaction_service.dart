@@ -6,8 +6,11 @@ class TransactionService {
     final responseData =
         await client.from('transactions').select('*').execute();
 
-    print("responseData : $responseData");
-    return transactionsFromJson(responseData as String);
+    // print("responseData.data : ${responseData.data}");
+    // print(
+    //     "responseData.data.type : ${responseData.data.runtimeType.toString()}");
+    return transactionsFromJson(responseData.data);
+    // return responseData.data;
   }
 
   Future<List<TransactionModel>> getExpenses() async {
@@ -16,8 +19,8 @@ class TransactionService {
         .select('*')
         .eq('isExpense', true)
         .execute();
-    print("responseData : $responseData");
-    return transactionsFromJson(responseData as String);
+    // print("responseData : $responseData");
+    return transactionsFromJson(responseData.data);
   }
 
   Future<List<TransactionModel>> getIncomes() async {
@@ -26,8 +29,8 @@ class TransactionService {
         .select('*')
         .eq('isExpense', false)
         .execute();
-    print("responseData : $responseData");
-    return transactionsFromJson(responseData as String);
+    // print("responseData : $responseData");
+    return transactionsFromJson(responseData.data);
   }
 
   Future<List<TransactionModel>> getTransactionsInDateRange(
@@ -38,8 +41,8 @@ class TransactionService {
         .gte('date', startDate.toIso8601String())
         .lte('date', endDate.toIso8601String())
         .execute();
-    print("responseData : $responseData");
-    return transactionsFromJson(responseData as String);
+    // print("responseData : $responseData");
+    return transactionsFromJson(responseData.data);
   }
 
   // Similar implementations for getExpensesInDateRange and getIncomesInDateRange
