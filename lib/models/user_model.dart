@@ -6,15 +6,12 @@ class UserModel {
 
   UserModel({this.id, this.firtname, this.lastname, this.email});
 
-  // 'Expense' to 'Map'
   Map<String, dynamic> toMap() => {
-        'id': id,
         'firtname': firtname,
         'lastname': lastname,
         'email': email,
       };
 
-  // 'Map' to 'Expense'
   factory UserModel.fromJson(Map<String, dynamic> value) => UserModel(
         id: value['id'],
         firtname: value['firtname'],

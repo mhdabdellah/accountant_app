@@ -26,13 +26,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: "AccountantApp",
       theme: ThemeData(primarySwatch: Colors.blue),
-      // initialRoute:
-      //     client.auth.currentSession != null ? '/transactions' : "/login",
       home: client.auth.currentSession != null
           ? const TransactionPage()
           : LoginPage(),
       routes: {
-        // '/': (context) => const HomePage(),
         '/login': (context) => LoginPage(),
         '/register': (context) => RegisterPage(),
         '/transactions': (context) => const TransactionPage(),

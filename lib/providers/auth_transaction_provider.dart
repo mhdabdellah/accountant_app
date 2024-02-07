@@ -17,6 +17,16 @@ class AuthTransactionProvider extends ChangeNotifier {
   double totalExpenses = 0.0;
   double totalIncomes = 0.0;
 
+  void initPage(int pageIndex) {
+    if (pageIndex == 1) {
+      getAllTransactions();
+    } else if (pageIndex == 2) {
+      getExpenses();
+    } else if (pageIndex == 3) {
+      getIncomes();
+    }
+  }
+
   Future<bool> signIn(String email, String password) async {
     bool loginResult = await _authService.signIn(email, password);
     if (loginResult == true && client.auth.currentSession?.user != null) {
@@ -60,8 +70,8 @@ class AuthTransactionProvider extends ChangeNotifier {
   Future<void> getAllTransactions() async {
     isloaded = false;
     transactions = await _transactionService.getAllTransactions();
-    isloaded = true;
     getTotalAmounts(transactions);
+    isloaded = true;
     notifyListeners();
   }
 
@@ -79,21 +89,24 @@ class AuthTransactionProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getTransactionsInDateRange(
-      DateTime startDate, DateTime endDate) async {
+  Future<bool> addTransaction(
+      {required String title,
+      required double amount,
+      required bool isExpense}) async {
     isloaded = false;
-    transactions = await _transactionService.getTransactionsInDateRange(
-        startDate: startDate, endDate: endDate);
-    isloaded = true;
-    notifyListeners();
-  }
-
-  Future<bool> addTransaction(TransactionModel transaction) async {
-    isloaded = false;
+    DateTime date = DateTime.now();
+    String? userId = client.auth.currentSession?.user.id;
+    final transaction = TransactionModel(
+      title: title,
+      amount: amount,
+      isExpense: isExpense,
+      date: date,
+      userId: userId ?? "",
+    );
     bool response =
         await _transactionService.addTransaction(transaction: transaction);
-    getAllTransactions();
     isloaded = true;
+    notifyListeners();
     return response;
   }
 }

@@ -17,9 +17,6 @@ class _TransactionPageState extends State<TransactionPage> {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController amountController = TextEditingController();
   String selectedType = 'Expense';
-  DateTime selectedDate = DateTime.now();
-  DateTime startDate = DateTime.now();
-  DateTime endDate = DateTime.now();
 
   int _currentIndex = 0;
 
@@ -50,16 +47,16 @@ class _TransactionPageState extends State<TransactionPage> {
       body: _buildBody(authTransactionProvider),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
-        onTap: (index) {
+        onTap: (index) async {
           setState(() {
             _currentIndex = index;
           });
-          if (index == 1) {
-            authTransactionProvider.getAllTransactions();
-          } else if (index == 2) {
-            authTransactionProvider.getExpenses();
-          } else if (index == 3) {
-            authTransactionProvider.getIncomes();
+          if (_currentIndex == 1) {
+            await authTransactionProvider.getAllTransactions();
+          } else if (_currentIndex == 2) {
+            await authTransactionProvider.getExpenses();
+          } else if (_currentIndex == 3) {
+            await authTransactionProvider.getIncomes();
           }
         },
         selectedItemColor: Colors.black,
@@ -82,11 +79,7 @@ class _TransactionPageState extends State<TransactionPage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.attach_money, color: Colors.black),
             label: 'Incomes',
-          ),
-          // BottomNavigationBarItem(
-          //   icon: Icon(Icons.date_range, color: Colors.black),
-          //   label: 'Date Range',
-          // ),
+          )
         ],
       ),
     );
@@ -97,17 +90,11 @@ class _TransactionPageState extends State<TransactionPage> {
       case 0:
         return const AddTransactionForm();
       case 1:
-        authTransactionProvider.getAllTransactions();
         return const TransactionList();
       case 2:
-        authTransactionProvider.getExpenses();
         return const TransactionList();
-
       case 3:
-        authTransactionProvider.getIncomes();
         return const TransactionList();
-      // case 4:
-      //   return
       default:
         return Container();
     }

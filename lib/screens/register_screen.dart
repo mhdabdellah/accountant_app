@@ -16,9 +16,6 @@ class RegisterPage extends StatelessWidget {
     final authViewModel = Provider.of<AuthTransactionProvider>(context);
 
     return Scaffold(
-      // appBar: AppBar(
-      //   title: const Text('Register'),
-      // ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.only(top: 40.0, right: 16.0, left: 16.0),
@@ -72,7 +69,6 @@ class RegisterPage extends StatelessWidget {
                   lastnameController.text = "";
                   emailController.text = "";
                   passwordController.text = "";
-                  // Naviguez vers la page suivante ou effectuez une action après l'inscription
                   Navigator.pushReplacementNamed(context, "/login");
                 },
                 child: const Text('Register'),
@@ -80,12 +76,6 @@ class RegisterPage extends StatelessWidget {
               const SizedBox(height: 20),
               TextButton(
                   onPressed: () {
-                    // Navigator.of(context).push(
-                    //   MaterialPageRoute(
-                    //     builder: (context) => LoginPage(),
-                    //   ),
-                    // );
-                    // Navigator.pushNamed(context, "/login");
                     Navigator.pushReplacementNamed(context, "/login");
                   },
                   child: const Text("Click here if you have an account"))

@@ -23,7 +23,3 @@ class SnackBarHelper {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }
-
-// Example of how to use:
-// SnackBarHelper.showSuccessSnackBar(context, "Success message");
-// SnackBarHelper.showErrorSnackBar(context, "Error message");

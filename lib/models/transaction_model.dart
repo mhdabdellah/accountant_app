@@ -1,33 +1,33 @@
 class TransactionModel {
-  final String id;
+  final String? id;
   final String title;
   final double amount;
-  final bool isExpense; // true for expense, false for income
+  final bool isExpense;
   final DateTime date;
+  final String userId;
 
-  TransactionModel({
-    required this.id,
-    required this.title,
-    required this.amount,
-    required this.isExpense,
-    required this.date,
-  });
+  TransactionModel(
+      {this.id,
+      required this.title,
+      required this.amount,
+      required this.isExpense,
+      required this.date,
+      required this.userId});
 
-  // 'Expense' to 'Map'
   Map<String, dynamic> toMap() => {
-        // id will generate automatically
         'title': title,
         'amount': amount,
         'isExpense': isExpense,
         'date': date.toString(),
+        'user_id': userId
       };
 
-  // 'Map' to 'Expense'
   factory TransactionModel.fromJson(Map<String, dynamic> value) =>
       TransactionModel(
           id: value['id'],
           title: value['title'],
           amount: value['amount'].toDouble(),
           isExpense: value['isExpense'],
-          date: DateTime.parse(value['date']));
+          date: DateTime.parse(value['date']),
+          userId: value['user_id']);
 }

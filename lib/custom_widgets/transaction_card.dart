@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 class TransactionHistoryCard extends StatelessWidget {
   final TransactionModel transaction;
 
-  // const TransactionHistoryCard({super.key});
-
   const TransactionHistoryCard({
     super.key,
     required this.transaction,
@@ -19,7 +17,6 @@ class TransactionHistoryCard extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(Radius.circular(6.0)),
-            // color: indigoColor,
             border: Border.all(color: Colors.blue)),
         child: ExpansionTile(
           title: const Text(""),

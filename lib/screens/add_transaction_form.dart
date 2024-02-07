@@ -4,8 +4,6 @@ import 'package:accountant_app/providers/auth_transaction_provider.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
-import '../models/transaction_model.dart';
-
 class AddTransactionForm extends StatefulWidget {
   const AddTransactionForm({
     Key? key,
@@ -19,7 +17,6 @@ class _AddTransactionFormState extends State<AddTransactionForm> {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController amountController = TextEditingController();
   String selectedType = 'Expense';
-  DateTime selectedDate = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -86,16 +83,10 @@ class _AddTransactionFormState extends State<AddTransactionForm> {
                 if (amountController.text != "" && titleController.text != "") {
                   final double amount = double.parse(amountController.text);
                   final bool isExpense = selectedType == 'Expense';
-                  final transaction = TransactionModel(
-                    id: UniqueKey().toString(),
-                    title: titleController.text,
-                    amount: amount,
-                    isExpense: isExpense,
-                    date: selectedDate,
-                  );
+                  final String title = titleController.text;
 
-                  bool response =
-                      await authTransactionProvider.addTransaction(transaction);
+                  bool response = await authTransactionProvider.addTransaction(
+                      title: title, amount: amount, isExpense: isExpense);
                   if (response) {
                     titleController.text = "";
                     amountController.text = "";

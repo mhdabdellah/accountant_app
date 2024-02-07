@@ -10,8 +10,6 @@ class LogoHandler extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         margin: margin,
-        // width: 100,
-        // height: 100,
         child: Column(
           children: [
             SizedBox(

@@ -14,9 +14,6 @@ class LoginPage extends StatelessWidget {
     final authViewModel = Provider.of<AuthTransactionProvider>(context);
 
     return Scaffold(
-      // appBar: AppBar(
-      //   title: const Text('Login'),
-      // ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.only(top: 50.0, right: 16.0, left: 16.0),
@@ -53,7 +50,6 @@ class LoginPage extends StatelessWidget {
                   Navigator.pushReplacementNamed(
                     context,
                     "/transactions",
-                    // (route) => true,
                   );
                 },
                 child: const Text('Login'),
@@ -61,11 +57,6 @@ class LoginPage extends StatelessWidget {
               const SizedBox(height: 20),
               TextButton(
                   onPressed: () {
-                    // Navigator.of(context).push(
-                    //   MaterialPageRoute(
-                    //     builder: (context) => RegisterPage(),
-                    //   ),
-                    // );
                     Navigator.pushReplacementNamed(context, "/register");
                   },
                   child: const Text("Click here if you don't have an account"))
