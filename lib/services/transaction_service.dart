@@ -3,8 +3,12 @@ import 'package:accountant_app/models/transaction_model.dart';
 
 class TransactionService {
   Future<List<TransactionModel>> getAllTransactions() async {
-    final responseData =
-        await client.from('transactions').select('*').execute();
+    String? userId = client.auth.currentSession?.user.id;
+    final responseData = await client
+        .from('transactions')
+        .select('*')
+        // .eq("id", userId)
+        .execute();
 
     // print("responseData.data : ${responseData.data}");
     // print(
@@ -65,10 +69,14 @@ class TransactionService {
   //   return profit;
   // }
 
-  Future<void> addTransaction({required TransactionModel transaction}) async {
+  Future<bool> addTransaction({required TransactionModel transaction}) async {
     final responseData = await client
         .from('transactions')
         .upsert([transaction.toMap()]).execute();
+
+    print("responseData $responseData");
+
+    return true;
   }
 
   Future<void> deleteTransaction({required String id}) async {

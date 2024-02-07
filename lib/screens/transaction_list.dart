@@ -51,11 +51,6 @@ class TransactionList extends StatelessWidget {
                 Text("${authTransactionProvider.totalProfit.toString()} MRU"),
               ],
             ),
-            TextButton(
-                onPressed: () {
-                  print("textbutton");
-                },
-                child: const Text("Textbutton"))
           ],
         ),
       ),
@@ -63,7 +58,7 @@ class TransactionList extends StatelessWidget {
         child: ListView.builder(
           itemCount: authTransactionProvider.transactions.length,
           itemBuilder: (context, index) {
-            final transaction = authTransactionProvider.transactions[index];
+            // final transaction = authTransactionProvider.transactions[index];
             return TransactionHistoryCard(
               transaction: authTransactionProvider.transactions[index],
             );

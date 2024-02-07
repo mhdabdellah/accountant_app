@@ -1,3 +1,4 @@
+import 'package:accountant_app/constants.dart';
 import 'package:accountant_app/models/transaction_model.dart';
 import 'package:accountant_app/models/user_model.dart';
 import 'package:accountant_app/services/auth_service.dart';
@@ -16,14 +17,28 @@ class AuthTransactionProvider extends ChangeNotifier {
   double totalExpenses = 0.0;
   double totalIncomes = 0.0;
 
-  Future<void> signIn(String email, String password) async {
-    currentUser = await _authService.signIn(email, password);
+  Future<bool> signIn(String email, String password) async {
+    bool loginResult = await _authService.signIn(email, password);
+    if (loginResult == true && client.auth.currentSession?.user != null) {
+      currentUser = await _authService
+          .getCurrentUser(client.auth.currentSession?.user.id ?? "");
+    }
     notifyListeners();
+    return loginResult;
   }
 
-  Future<void> signUp(String name, String email, String password) async {
-    currentUser = await _authService.signUp(name, email, password);
+  Future<bool> signUp(String firstnameController, String lastnameController,
+      String email, String password) async {
+    bool registerResult = await _authService.signUp(
+        firstnameController, lastnameController, email, password);
     notifyListeners();
+    return registerResult;
+  }
+
+  Future<bool> logOut() async {
+    bool result = await _authService.signOut();
+    notifyListeners();
+    return result;
   }
 
   getTotalAmounts(List<TransactionModel> transactions) {
@@ -73,10 +88,12 @@ class AuthTransactionProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void addTransaction(TransactionModel transaction) {
+  Future<bool> addTransaction(TransactionModel transaction) async {
     isloaded = false;
-    _transactionService.addTransaction(transaction: transaction);
+    bool response =
+        await _transactionService.addTransaction(transaction: transaction);
     getAllTransactions();
     isloaded = true;
+    return response;
   }
 }

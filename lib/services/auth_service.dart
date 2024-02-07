@@ -3,47 +3,53 @@ import 'package:accountant_app/models/user_model.dart';
 
 class AuthService {
   // s'inscrire
-  Future<UserModel?> signUp(String name, String email, String password) async {
+  Future<bool> signUp(String firstnameController, String lastnameController,
+      String email, String password) async {
     // Name,Email and password sign up
-    final response = await client.auth
-        .signUp(email: email, password: password, data: {"name": name});
+    final response = await client.auth.signUp(email: email, password: password);
     // UserModel? user = UserModel.fromMap(response.user);
-
-    final response2;
     if (response.user != null) {
-      response2 = await client.from('users').insert([
-        {"id": response.user!.id, "first_name": name, "last_name": name},
+      await client.from('users').insert([
+        {
+          "id": response.user!.id,
+          "first_name": firstnameController,
+          "last_name": lastnameController,
+          "email": email
+        },
       ]).select();
 
-      print("response2 : $response2");
+      return true;
     } else {
-      print("error in signUp");
+      return false;
     }
-
-    print("register result response.user : ${response.user}");
-    return null;
   }
 
   // se connecter
-  Future<UserModel?> signIn(String email, String password) async {
+  Future<bool> signIn(String email, String password) async {
     // Email and password login
-    final response = await client.auth.signInWithPassword(
+    var response = await client.auth.signInWithPassword(
       email: email,
       password: password,
     );
-
-    final response2 =
-        await client.from('users').select("*").eq('id', response.user!.id);
-
-    print("response2 : $response2");
-    // response.user;
-    print("login result response.user : ${response.user!.id}");
-    return null;
+    if (response.user != null && response.user!.id != "") {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   // se déconnecter
   Future<bool> signOut() async {
     await client.auth.signOut();
     return true;
+  }
+
+  Future<UserModel?> getCurrentUser(String userId) async {
+    if (userId == "") {
+      return null;
+    }
+    final responseData =
+        await client.from('users').select("*").eq('id', userId);
+    return UserModel.fromJson(responseData[0]);
   }
 }

@@ -1,3 +1,4 @@
+import 'package:accountant_app/constants.dart';
 import 'package:accountant_app/screens/transaction_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -30,6 +31,21 @@ class _TransactionPageState extends State<TransactionPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Transactions'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () async {
+              print(
+                  "client.auth.currentSession : ${client.auth.currentSession}");
+              var user =
+                  client.auth.currentSession?.user.userMetadata?['firstName'];
+              print("userId : $user");
+              if (await authTransactionProvider.logOut() == true) {
+                Navigator.pushReplacementNamed(context, "/login");
+              }
+            },
+          )
+        ],
       ),
       body: _buildBody(authTransactionProvider),
       bottomNavigationBar: BottomNavigationBar(
@@ -79,8 +95,7 @@ class _TransactionPageState extends State<TransactionPage> {
   Widget _buildBody(AuthTransactionProvider authTransactionProvider) {
     switch (_currentIndex) {
       case 0:
-        return AddTransactionForm(
-            authTransactionProvider: authTransactionProvider);
+        return const AddTransactionForm();
       case 1:
         authTransactionProvider.getAllTransactions();
         return const TransactionList();

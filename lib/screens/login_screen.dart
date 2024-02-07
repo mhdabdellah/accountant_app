@@ -1,3 +1,4 @@
+import 'package:accountant_app/custom_widgets/logo_handler.dart';
 import 'package:accountant_app/providers/auth_transaction_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,52 +14,63 @@ class LoginPage extends StatelessWidget {
     final authViewModel = Provider.of<AuthTransactionProvider>(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Login'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextFormField(
-              controller: emailController,
-              decoration: const InputDecoration(
-                icon: Icon(Icons.person),
-                labelText: 'Email',
+      // appBar: AppBar(
+      //   title: const Text('Login'),
+      // ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 50.0, right: 16.0, left: 16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const LogoHandler(
+                margin: EdgeInsets.only(bottom: 40.0),
               ),
-            ),
-            TextFormField(
-              controller: passwordController,
-              obscureText: true,
-              decoration: const InputDecoration(
-                icon: Icon(Icons.lock),
-                labelText: 'Password',
+              const SizedBox(
+                height: 7,
               ),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () async {
-                await authViewModel.signIn(
-                    emailController.text, passwordController.text);
+              TextFormField(
+                controller: emailController,
+                decoration: const InputDecoration(
+                  icon: Icon(Icons.email),
+                  labelText: 'Email',
+                ),
+              ),
+              TextFormField(
+                controller: passwordController,
+                obscureText: true,
+                decoration: const InputDecoration(
+                  icon: Icon(Icons.lock),
+                  labelText: 'Password',
+                ),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () async {
+                  await authViewModel.signIn(
+                      emailController.text, passwordController.text);
 
-                // ignore: use_build_context_synchronously
-                Navigator.pushNamed(context, "/transactions");
-              },
-              child: const Text('Login'),
-            ),
-            const SizedBox(height: 20),
-            TextButton(
-                onPressed: () {
-                  // Navigator.of(context).push(
-                  //   MaterialPageRoute(
-                  //     builder: (context) => RegisterPage(),
-                  //   ),
-                  // );
-                  Navigator.pushReplacementNamed(context, "/register");
+                  Navigator.pushReplacementNamed(
+                    context,
+                    "/transactions",
+                    // (route) => true,
+                  );
                 },
-                child: const Text("Click here if you don't have an account"))
-          ],
+                child: const Text('Login'),
+              ),
+              const SizedBox(height: 20),
+              TextButton(
+                  onPressed: () {
+                    // Navigator.of(context).push(
+                    //   MaterialPageRoute(
+                    //     builder: (context) => RegisterPage(),
+                    //   ),
+                    // );
+                    Navigator.pushReplacementNamed(context, "/register");
+                  },
+                  child: const Text("Click here if you don't have an account"))
+            ],
+          ),
         ),
       ),
     );

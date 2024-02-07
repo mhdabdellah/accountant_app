@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'models/transaction_model.dart';
@@ -9,8 +10,7 @@ const String supabaseApiKey =
 // client for supabase
 final client = Supabase.instance.client;
 
-// List<TransactionModel> transactionsFromJson(var data) =>
-//     List<TransactionModel>.from(data.map((x) => TransactionModel.fromJson(x)));
+const primaryColor = Color(0x00f8fafc);
 
 List<TransactionModel> transactionsFromJson(List<dynamic> jsonData) {
   // String jsonString =
@@ -18,6 +18,6 @@ List<TransactionModel> transactionsFromJson(List<dynamic> jsonData) {
   // List<dynamic> jsonData = jsonDecode(jsonString);
   List<TransactionModel> transactionModels =
       jsonData.map((json) => TransactionModel.fromJson(json)).toList();
-  print(transactionModels);
+  // print(transactionModels);
   return transactionModels;
 }

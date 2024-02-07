@@ -22,10 +22,7 @@ class TransactionHistoryCard extends StatelessWidget {
             // color: indigoColor,
             border: Border.all(color: Colors.blue)),
         child: ExpansionTile(
-          title: Text(
-            transaction.title,
-            style: const TextStyle(fontSize: 25),
-          ),
+          title: const Text(""),
           subtitle: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

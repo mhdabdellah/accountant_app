@@ -1,6 +1,24 @@
 class UserModel {
-  final String name;
-  final String email;
+  final String? id;
+  final String? firtname;
+  final String? lastname;
+  final String? email;
 
-  UserModel({required this.name, required this.email});
+  UserModel({this.id, this.firtname, this.lastname, this.email});
+
+  // 'Expense' to 'Map'
+  Map<String, dynamic> toMap() => {
+        'id': id,
+        'firtname': firtname,
+        'lastname': lastname,
+        'email': email,
+      };
+
+  // 'Map' to 'Expense'
+  factory UserModel.fromJson(Map<String, dynamic> value) => UserModel(
+        id: value['id'],
+        firtname: value['firtname'],
+        lastname: value['lastname'],
+        email: value['email'],
+      );
 }
