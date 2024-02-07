@@ -3,6 +3,8 @@ import 'package:accountant_app/providers/auth_transaction_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../custom_widgets/snack_bar_helper.dart';
+
 class LoginPage extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -14,6 +16,9 @@ class LoginPage extends StatelessWidget {
     final authViewModel = Provider.of<AuthTransactionProvider>(context);
 
     return Scaffold(
+      // appBar: AppBar(
+      //   title: const Text('Login'),
+      // ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.only(top: 50.0, right: 16.0, left: 16.0),
@@ -44,13 +49,25 @@ class LoginPage extends StatelessWidget {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () async {
-                  await authViewModel.signIn(
-                      emailController.text, passwordController.text);
+                  try {
+                    final bool response = await authViewModel.signIn(
+                        emailController.text, passwordController.text);
+                    if (response) {
+                      SnackBarHelper.showSuccessSnackBar(
+                          context, "Login Successfully !");
 
-                  Navigator.pushReplacementNamed(
-                    context,
-                    "/transactions",
-                  );
+                      Navigator.pushReplacementNamed(
+                        context,
+                        "/transactions",
+                      );
+                    } else {
+                      SnackBarHelper.showErrorSnackBar(
+                          context, 'Unexpected error occurred');
+                    }
+                  } catch (error) {
+                    SnackBarHelper.showErrorSnackBar(
+                        context, 'Unexpected error occurred');
+                  }
                 },
                 child: const Text('Login'),
               ),

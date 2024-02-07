@@ -17,16 +17,6 @@ class AuthTransactionProvider extends ChangeNotifier {
   double totalExpenses = 0.0;
   double totalIncomes = 0.0;
 
-  void initPage(int pageIndex) {
-    if (pageIndex == 1) {
-      getAllTransactions();
-    } else if (pageIndex == 2) {
-      getExpenses();
-    } else if (pageIndex == 3) {
-      getIncomes();
-    }
-  }
-
   Future<bool> signIn(String email, String password) async {
     bool loginResult = await _authService.signIn(email, password);
     if (loginResult == true && client.auth.currentSession?.user != null) {

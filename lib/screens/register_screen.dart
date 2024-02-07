@@ -1,4 +1,5 @@
 import 'package:accountant_app/custom_widgets/logo_handler.dart';
+import 'package:accountant_app/custom_widgets/snack_bar_helper.dart';
 import 'package:accountant_app/providers/auth_transaction_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -60,16 +61,29 @@ class RegisterPage extends StatelessWidget {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () async {
-                  await authViewModel.signUp(
-                      firstnameController.text,
-                      lastnameController.text,
-                      emailController.text,
-                      passwordController.text);
-                  firstnameController.text = "";
-                  lastnameController.text = "";
-                  emailController.text = "";
-                  passwordController.text = "";
-                  Navigator.pushReplacementNamed(context, "/login");
+                  try {
+                    final bool response = await authViewModel.signUp(
+                        firstnameController.text,
+                        lastnameController.text,
+                        emailController.text,
+                        passwordController.text);
+                    if (response) {
+                      firstnameController.text = "";
+                      lastnameController.text = "";
+                      emailController.text = "";
+                      passwordController.text = "";
+                      SnackBarHelper.showSuccessSnackBar(
+                          context, "Registred Successfully !");
+
+                      Navigator.pushReplacementNamed(context, "/login");
+                    } else {
+                      SnackBarHelper.showErrorSnackBar(
+                          context, 'Unexpected error occurred');
+                    }
+                  } catch (error) {
+                    SnackBarHelper.showErrorSnackBar(
+                        context, 'Unexpected error occurred');
+                  }
                 },
                 child: const Text('Register'),
               ),
