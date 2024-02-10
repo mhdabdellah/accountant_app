@@ -1,10 +1,10 @@
 import 'package:accountant_app/models/transaction_model.dart';
 import 'package:flutter/material.dart';
 
-class TransactionHistoryCard extends StatelessWidget {
+class TransactionCard extends StatelessWidget {
   final TransactionModel transaction;
 
-  const TransactionHistoryCard({
+  const TransactionCard({
     super.key,
     required this.transaction,
   });

@@ -1,3 +1,15 @@
+List<TransactionModel> transactionsFromListMap(List<dynamic> mapData) {
+  List<TransactionModel> transactionModels =
+      mapData.map((map) => TransactionModel.fromMap(map)).toList();
+  return transactionModels;
+}
+
+Stream<List<TransactionModel>> transactionsStreamFromSupabase(
+    Stream supabaseStream) {
+  return supabaseStream.map((response) =>
+      response.data.map((map) => TransactionModel.fromMap(map)).toList());
+}
+
 class TransactionModel {
   final String? id;
   final String title;
@@ -22,7 +34,7 @@ class TransactionModel {
         'user_id': userId
       };
 
-  factory TransactionModel.fromJson(Map<String, dynamic> value) =>
+  factory TransactionModel.fromMap(Map<String, dynamic> value) =>
       TransactionModel(
           id: value['id'],
           title: value['title'],

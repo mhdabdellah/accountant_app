@@ -1,8 +1,9 @@
-import 'package:accountant_app/constants.dart';
+import 'package:accountant_app/constants/routes_constants.dart';
+import 'package:accountant_app/providers/auth_provider.dart';
+import 'package:accountant_app/providers/transaction_provider.dart';
 import 'package:accountant_app/screens/transaction_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:accountant_app/providers/auth_transaction_provider.dart';
 
 import 'add_transaction_form.dart';
 
@@ -14,16 +15,10 @@ class TransactionPage extends StatefulWidget {
 }
 
 class _TransactionPageState extends State<TransactionPage> {
-  final TextEditingController titleController = TextEditingController();
-  final TextEditingController amountController = TextEditingController();
-  String selectedType = 'Expense';
-
-  int _currentIndex = 0;
-
   @override
   Widget build(BuildContext context) {
-    final authTransactionProvider =
-        Provider.of<AuthTransactionProvider>(context);
+    final transactionProvider = Provider.of<TransactionProvider>(context);
+    final authProvider = Provider.of<AuthProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -32,37 +27,32 @@ class _TransactionPageState extends State<TransactionPage> {
           IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () async {
-              print(
-                  "client.auth.currentSession : ${client.auth.currentSession}");
-              var user =
-                  client.auth.currentSession?.user.userMetadata?['firstName'];
-              print("userId : $user");
-              if (await authTransactionProvider.logOut() == true) {
-                Navigator.pushReplacementNamed(context, "/login");
+              if (await authProvider.logOut() == true) {
+                Navigator.pushReplacementNamed(context, login);
               }
             },
           )
         ],
       ),
-      body: _buildBody(authTransactionProvider),
+      body: _buildBody(transactionProvider),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (index) async {
-          setState(() {
-            _currentIndex = index;
-          });
-          if (_currentIndex == 1) {
-            await authTransactionProvider.getAllTransactions();
-          } else if (_currentIndex == 2) {
-            await authTransactionProvider.getExpenses();
-          } else if (_currentIndex == 3) {
-            await authTransactionProvider.getIncomes();
-          }
+        currentIndex: transactionProvider.currentIndex,
+        onTap: (index) {
+          transactionProvider.updateCurrentIndex(index);
+
+          // setState(() {
+
+          // });
+
+          // transactionProvider.getAllTransactions();
+          // if (_currentIndex == 1) {
+          //   await transactionProvider.getAllTransactions();
+          // } else if (_currentIndex == 2) {
+          //   await transactionProvider.getExpenses();
+          // } else if (_currentIndex == 3) {
+          //   await transactionProvider.getIncomes();
+          // }
         },
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.black,
-        selectedLabelStyle: const TextStyle(color: Colors.black),
-        unselectedLabelStyle: const TextStyle(color: Colors.black),
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.add, color: Colors.black),
@@ -85,16 +75,22 @@ class _TransactionPageState extends State<TransactionPage> {
     );
   }
 
-  Widget _buildBody(AuthTransactionProvider authTransactionProvider) {
-    switch (_currentIndex) {
+  Widget _buildBody(TransactionProvider transactionProvider) {
+    switch (transactionProvider.currentIndex) {
       case 0:
         return const AddTransactionForm();
       case 1:
-        return const TransactionList();
+        return const TransactionList(
+          pageIndex: 1,
+        );
       case 2:
-        return const TransactionList();
+        return const TransactionList(
+          pageIndex: 2,
+        );
       case 3:
-        return const TransactionList();
+        return const TransactionList(
+          pageIndex: 3,
+        );
       default:
         return Container();
     }

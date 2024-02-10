@@ -1,6 +1,7 @@
+import 'package:accountant_app/constants/routes_constants.dart';
 import 'package:accountant_app/custom_widgets/logo_handler.dart';
 import 'package:accountant_app/custom_widgets/snack_bar_helper.dart';
-import 'package:accountant_app/providers/auth_transaction_provider.dart';
+import 'package:accountant_app/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -14,7 +15,7 @@ class RegisterPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authViewModel = Provider.of<AuthTransactionProvider>(context);
+    final authProvider = Provider.of<AuthProvider>(context);
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -62,24 +63,19 @@ class RegisterPage extends StatelessWidget {
               ElevatedButton(
                 onPressed: () async {
                   try {
-                    final bool response = await authViewModel.signUp(
+                    await authProvider.signUp(
                         firstnameController.text,
                         lastnameController.text,
                         emailController.text,
                         passwordController.text);
-                    if (response) {
-                      firstnameController.text = "";
-                      lastnameController.text = "";
-                      emailController.text = "";
-                      passwordController.text = "";
-                      SnackBarHelper.showSuccessSnackBar(
-                          context, "Registred Successfully !");
+                    firstnameController.text = "";
+                    lastnameController.text = "";
+                    emailController.text = "";
+                    passwordController.text = "";
+                    SnackBarHelper.showSuccessSnackBar(
+                        context, "Registred Successfully !");
 
-                      Navigator.pushReplacementNamed(context, "/login");
-                    } else {
-                      SnackBarHelper.showErrorSnackBar(
-                          context, 'Unexpected error occurred');
-                    }
+                    Navigator.pushReplacementNamed(context, login);
                   } catch (error) {
                     SnackBarHelper.showErrorSnackBar(
                         context, 'Unexpected error occurred');
@@ -90,7 +86,7 @@ class RegisterPage extends StatelessWidget {
               const SizedBox(height: 20),
               TextButton(
                   onPressed: () {
-                    Navigator.pushReplacementNamed(context, "/login");
+                    Navigator.pushReplacementNamed(context, login);
                   },
                   child: const Text("Click here if you have an account"))
             ],

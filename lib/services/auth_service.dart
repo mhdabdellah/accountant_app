@@ -1,4 +1,4 @@
-import 'package:accountant_app/constants.dart';
+import 'package:accountant_app/constants/supabase_constants/config.dart';
 import 'package:accountant_app/models/user_model.dart';
 
 class AuthService {
@@ -11,7 +11,6 @@ class AuthService {
           "id": response.user!.id,
           "first_name": firstnameController,
           "last_name": lastnameController,
-          "email": email
         },
       ]).select();
 

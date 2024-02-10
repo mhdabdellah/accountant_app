@@ -1,5 +1,6 @@
+import 'package:accountant_app/constants/routes_constants.dart';
 import 'package:accountant_app/custom_widgets/logo_handler.dart';
-import 'package:accountant_app/providers/auth_transaction_provider.dart';
+import 'package:accountant_app/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,12 +14,9 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authViewModel = Provider.of<AuthTransactionProvider>(context);
+    final authProvider = Provider.of<AuthProvider>(context);
 
     return Scaffold(
-      // appBar: AppBar(
-      //   title: const Text('Login'),
-      // ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.only(top: 50.0, right: 16.0, left: 16.0),
@@ -50,23 +48,21 @@ class LoginPage extends StatelessWidget {
               ElevatedButton(
                 onPressed: () async {
                   try {
-                    final bool response = await authViewModel.signIn(
+                    await authProvider.signIn(
                         emailController.text, passwordController.text);
-                    if (response) {
-                      SnackBarHelper.showSuccessSnackBar(
-                          context, "Login Successfully !");
 
-                      Navigator.pushReplacementNamed(
-                        context,
-                        "/transactions",
-                      );
-                    } else {
-                      SnackBarHelper.showErrorSnackBar(
-                          context, 'Unexpected error occurred');
+                    if (!context.mounted) {
+                      return;
                     }
+                    SnackBarHelper.showSuccessSnackBar(
+                        context, "Login Successfully !");
+
+                    Navigator.pushReplacementNamed(
+                      context,
+                      transactions,
+                    );
                   } catch (error) {
-                    SnackBarHelper.showErrorSnackBar(
-                        context, 'Unexpected error occurred');
+                    SnackBarHelper.showErrorSnackBar(context, 'error : $error');
                   }
                 },
                 child: const Text('Login'),

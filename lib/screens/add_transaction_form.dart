@@ -1,6 +1,6 @@
 import 'package:accountant_app/custom_widgets/snack_bar_helper.dart';
+import 'package:accountant_app/providers/transaction_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:accountant_app/providers/auth_transaction_provider.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
@@ -20,8 +20,7 @@ class _AddTransactionFormState extends State<AddTransactionForm> {
 
   @override
   Widget build(BuildContext context) {
-    final authTransactionProvider =
-        Provider.of<AuthTransactionProvider>(context);
+    final transactionProvider = Provider.of<TransactionProvider>(context);
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.only(top: 0.0, right: 16.0, left: 16.0),
@@ -85,7 +84,7 @@ class _AddTransactionFormState extends State<AddTransactionForm> {
                   final bool isExpense = selectedType == 'Expense';
                   final String title = titleController.text;
 
-                  bool response = await authTransactionProvider.addTransaction(
+                  bool response = await transactionProvider.addTransaction(
                       title: title, amount: amount, isExpense: isExpense);
                   if (response) {
                     titleController.text = "";
