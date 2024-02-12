@@ -2,6 +2,7 @@ import 'package:accountant_app/custom_widgets/transaction_card.dart';
 import 'package:accountant_app/providers/transaction_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TransactionList extends StatelessWidget {
   final int pageIndex;
@@ -19,8 +20,9 @@ class TransactionList extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text("Total Expense"),
-                    Text("${transactionProvider.totalExpenses.toString()} MRU"),
+                    Text(AppLocalizations.of(context)!.totalExpense),
+                    Text(
+                        "${transactionProvider.totalExpenses.toString()} ${AppLocalizations.of(context)!.mru}"),
                   ],
                 ),
                 const SizedBox(
@@ -29,8 +31,9 @@ class TransactionList extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text("Total Income"),
-                    Text("${transactionProvider.totalIncomes.toString()} MRU"),
+                    Text(AppLocalizations.of(context)!.totalIncome),
+                    Text(
+                        "${transactionProvider.totalIncomes.toString()} ${AppLocalizations.of(context)!.mru}"),
                   ],
                 ),
                 const SizedBox(
@@ -39,51 +42,14 @@ class TransactionList extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text("Total Profit"),
-                    Text("${transactionProvider.totalProfit.toString()} MRU"),
+                    Text(AppLocalizations.of(context)!.totalProfit),
+                    Text(
+                        "${transactionProvider.totalProfit.toString()} ${AppLocalizations.of(context)!.mru}"),
                   ],
                 ),
               ],
             ),
           ),
-
-          // Expanded(
-          //   child: pageIndex == 1
-          //       ? StreamBuilder(
-          //           stream: transactionProvider.transactionStreems,
-          //           builder: (context, snapshot) {
-          //             if (snapshot.connectionState == ConnectionState.waiting) {
-          //               return const Center(child: CircularProgressIndicator());
-          //             } else if (snapshot.hasError) {
-          //               return Center(
-          //                   child: Text(
-          //                       'Erreur de chargement : ${snapshot.error.toString()}'));
-          //             } else {
-          //               List<TransactionModel> transactions =
-          //                   transactionsFromListMap(snapshot.data);
-          //               // transactions.sort((a, b) => b.date.compareTo(a.date));
-          //               return ListView.builder(
-          //                 itemCount: transactions.length,
-          //                 itemBuilder: (context, index) {
-          //                   return TransactionCard(
-          //                       transaction: transactions[index]);
-          //                 },
-          //               );
-          //             }
-          //           },
-          //         )
-          //       : ListView.builder(
-          //           itemCount: pageIndex == 2
-          //               ? transactionProvider.expenses.length
-          //               : transactionProvider.incomes.length,
-          //           itemBuilder: (context, index) {
-          //             return TransactionCard(
-          //                 transaction: pageIndex == 2
-          //                     ? transactionProvider.expenses[index]
-          //                     : transactionProvider.incomes[index]);
-          //           },
-          //         ),
-          // )
           Expanded(
             child: transactionProvider.isloaded
                 ? ListView.builder(

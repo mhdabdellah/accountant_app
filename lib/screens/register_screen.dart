@@ -1,9 +1,10 @@
-import 'package:accountant_app/constants/routes_constants.dart';
+import 'package:accountant_app/constants/app_constants/routes_constants.dart';
 import 'package:accountant_app/custom_widgets/logo_handler.dart';
 import 'package:accountant_app/custom_widgets/snack_bar_helper.dart';
 import 'package:accountant_app/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RegisterPage extends StatelessWidget {
   final TextEditingController firstnameController = TextEditingController();
@@ -32,31 +33,31 @@ class RegisterPage extends StatelessWidget {
               ),
               TextFormField(
                 controller: firstnameController,
-                decoration: const InputDecoration(
-                  icon: Icon(Icons.person),
-                  labelText: 'First Name',
+                decoration: InputDecoration(
+                  icon: const Icon(Icons.person),
+                  labelText: AppLocalizations.of(context)!.firstName,
                 ),
               ),
               TextFormField(
                 controller: lastnameController,
-                decoration: const InputDecoration(
-                  icon: Icon(Icons.person),
-                  labelText: 'Last Name',
+                decoration: InputDecoration(
+                  icon: const Icon(Icons.person),
+                  labelText: AppLocalizations.of(context)!.lastName,
                 ),
               ),
               TextFormField(
                 controller: emailController,
-                decoration: const InputDecoration(
-                  icon: Icon(Icons.email),
-                  labelText: 'Email',
+                decoration: InputDecoration(
+                  icon: const Icon(Icons.email),
+                  labelText: AppLocalizations.of(context)!.email,
                 ),
               ),
               TextFormField(
                 controller: passwordController,
                 obscureText: true,
-                decoration: const InputDecoration(
-                  icon: Icon(Icons.lock),
-                  labelText: 'Password',
+                decoration: InputDecoration(
+                  icon: const Icon(Icons.lock),
+                  labelText: AppLocalizations.of(context)!.password,
                 ),
               ),
               const SizedBox(height: 20),
@@ -72,23 +73,24 @@ class RegisterPage extends StatelessWidget {
                     lastnameController.text = "";
                     emailController.text = "";
                     passwordController.text = "";
-                    SnackBarHelper.showSuccessSnackBar(
-                        context, "Registred Successfully !");
+                    SnackBarHelper.showSuccessSnackBar(context,
+                        AppLocalizations.of(context)!.registredSuccessfully);
 
                     Navigator.pushReplacementNamed(context, login);
                   } catch (error) {
-                    SnackBarHelper.showErrorSnackBar(
-                        context, 'Unexpected error occurred');
+                    SnackBarHelper.showErrorSnackBar(context,
+                        AppLocalizations.of(context)!.unexpectedErrorOccurred);
                   }
                 },
-                child: const Text('Register'),
+                child: Text(AppLocalizations.of(context)!.register),
               ),
               const SizedBox(height: 20),
               TextButton(
                   onPressed: () {
                     Navigator.pushReplacementNamed(context, login);
                   },
-                  child: const Text("Click here if you have an account"))
+                  child: Text(AppLocalizations.of(context)!
+                      .clickHereIfYouHaveAnAccount))
             ],
           ),
         ),

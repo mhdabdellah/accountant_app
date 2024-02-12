@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 List<TransactionModel> transactionsFromListMap(List<dynamic> mapData) {
   List<TransactionModel> transactionModels =
       mapData.map((map) => TransactionModel.fromMap(map)).toList();
@@ -8,6 +10,13 @@ Stream<List<TransactionModel>> transactionsStreamFromSupabase(
     Stream supabaseStream) {
   return supabaseStream.map((response) =>
       response.data.map((map) => TransactionModel.fromMap(map)).toList());
+}
+
+String convertDate(DateTime dateTime) {
+  DateFormat formatter = DateFormat('yyyy-MM-dd HH:mm:ss');
+  String formattedDate = formatter.format(dateTime);
+
+  return formattedDate;
 }
 
 class TransactionModel {

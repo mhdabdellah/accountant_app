@@ -3,6 +3,7 @@ import 'package:accountant_app/providers/transaction_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddTransactionForm extends StatefulWidget {
   const AddTransactionForm({
@@ -33,23 +34,23 @@ class _AddTransactionFormState extends State<AddTransactionForm> {
                 child: Lottie.asset("assets/logo.json")),
             TextFormField(
               controller: titleController,
-              decoration: const InputDecoration(
-                icon: Icon(Icons.description, color: Colors.black),
-                labelText: 'Title',
+              decoration: InputDecoration(
+                icon: const Icon(Icons.description, color: Colors.black),
+                labelText: AppLocalizations.of(context)!.title,
               ),
             ),
             TextFormField(
               controller: amountController,
               keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                icon: Icon(Icons.attach_money, color: Colors.black),
-                labelText: 'Amount',
+              decoration: InputDecoration(
+                icon: const Icon(Icons.attach_money, color: Colors.black),
+                labelText: AppLocalizations.of(context)!.amount,
               ),
             ),
             const SizedBox(height: 20),
             Row(
               children: [
-                const Text('Type:'),
+                Text(AppLocalizations.of(context)!.type),
                 Radio<String>(
                   value: 'Expense',
                   groupValue: selectedType,
@@ -61,7 +62,7 @@ class _AddTransactionFormState extends State<AddTransactionForm> {
                     }
                   },
                 ),
-                const Text('Expense'),
+                Text(AppLocalizations.of(context)!.expense),
                 Radio<String>(
                   value: 'Income',
                   groupValue: selectedType,
@@ -73,7 +74,7 @@ class _AddTransactionFormState extends State<AddTransactionForm> {
                     }
                   },
                 ),
-                const Text('Income'),
+                Text(AppLocalizations.of(context)!.income),
               ],
             ),
             const SizedBox(height: 20),
@@ -89,23 +90,29 @@ class _AddTransactionFormState extends State<AddTransactionForm> {
                   if (response) {
                     titleController.text = "";
                     amountController.text = "";
-                    SnackBarHelper.showSuccessSnackBar(context,
-                        "The transaction has been registered successfully.");
+                    SnackBarHelper.showSuccessSnackBar(
+                        context,
+                        AppLocalizations.of(context)!
+                            .theTransactionHasBeenRegisteredSuccessfully);
                   } else {
                     SnackBarHelper.showErrorSnackBar(
-                        context, "Error!! The transaction was not registered.");
+                        context,
+                        AppLocalizations.of(context)!
+                            .errorTheTransactionWasNotRegistered);
                   }
                 } else {
                   SnackBarHelper.showErrorSnackBar(
-                      context, "Error!! The transaction was not registered.");
+                      context,
+                      AppLocalizations.of(context)!
+                          .errorTheTransactionWasNotRegistered);
                 }
               },
               child: Row(
                 mainAxisSize: MainAxisSize.min,
-                children: const [
-                  Icon(Icons.add, color: Colors.black),
-                  SizedBox(width: 8),
-                  Text('Add Transaction'),
+                children: [
+                  const Icon(Icons.add, color: Colors.black),
+                  const SizedBox(width: 8),
+                  Text(AppLocalizations.of(context)!.addTransaction),
                 ],
               ),
             ),

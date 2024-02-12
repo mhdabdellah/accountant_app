@@ -1,11 +1,13 @@
-import 'package:accountant_app/constants/routes_constants.dart';
+import 'package:accountant_app/constants/app_constants/routes_constants.dart';
 import 'package:accountant_app/providers/auth_provider.dart';
 import 'package:accountant_app/providers/transaction_provider.dart';
+import 'package:accountant_app/screens/aboutDevelopper.dart';
 import 'package:accountant_app/screens/transaction_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'add_transaction_form.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TransactionPage extends StatefulWidget {
   const TransactionPage({Key? key}) : super(key: key);
@@ -22,7 +24,10 @@ class _TransactionPageState extends State<TransactionPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Transactions'),
+        // title: const Text('Transactions'),
+        title: transactionProvider.currentIndex == 4
+            ? Text(AppLocalizations.of(context)!.aboutDeveloper)
+            : Text(AppLocalizations.of(context)!.transactions),
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
@@ -39,37 +44,27 @@ class _TransactionPageState extends State<TransactionPage> {
         currentIndex: transactionProvider.currentIndex,
         onTap: (index) {
           transactionProvider.updateCurrentIndex(index);
-
-          // setState(() {
-
-          // });
-
-          // transactionProvider.getAllTransactions();
-          // if (_currentIndex == 1) {
-          //   await transactionProvider.getAllTransactions();
-          // } else if (_currentIndex == 2) {
-          //   await transactionProvider.getExpenses();
-          // } else if (_currentIndex == 3) {
-          //   await transactionProvider.getIncomes();
-          // }
         },
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.add, color: Colors.black),
-            label: 'Add',
+            icon: const Icon(Icons.add, color: Colors.black),
+            label: AppLocalizations.of(context)!.add,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.list, color: Colors.black),
-            label: 'Transactions',
+            icon: const Icon(Icons.list, color: Colors.black),
+            label: AppLocalizations.of(context)!.transactions,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.money_off, color: Colors.black),
-            label: 'Expenses',
+            icon: const Icon(Icons.money_off, color: Colors.black),
+            label: AppLocalizations.of(context)!.expenses,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.attach_money, color: Colors.black),
-            label: 'Incomes',
-          )
+            icon: const Icon(Icons.attach_money, color: Colors.black),
+            label: AppLocalizations.of(context)!.incomes,
+          ),
+          BottomNavigationBarItem(
+              icon: const Icon(Icons.open_in_new),
+              label: AppLocalizations.of(context)!.aboutDeveloper)
         ],
       ),
     );
@@ -91,6 +86,8 @@ class _TransactionPageState extends State<TransactionPage> {
         return const TransactionList(
           pageIndex: 3,
         );
+      case 4:
+        return const AboutDeveloper(); // Button/Link in AboutDeveloperPag
       default:
         return Container();
     }

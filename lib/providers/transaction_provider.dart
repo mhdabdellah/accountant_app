@@ -20,18 +20,11 @@ class TransactionProvider extends ChangeNotifier {
   double totalExpenses = 0.0;
   double totalIncomes = 0.0;
 
-  // late final Stream transactionStreems;
-  // late final Stream expenseStream;
-  // late final Stream incomeStream;
-
   late final StreamSubscription<List<TransactionModel>>
       _transactionSubscription;
 
   TransactionProvider() {
     getAllTransactionsStream();
-    // getAllincomeStream();
-    // getAllexpenseStream();
-    // listenToTransactionsStreems();
   }
 
   updateCurrentIndex(int index) {
@@ -39,32 +32,20 @@ class TransactionProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // selectType() {}
-
   getAllTransactionsStream() {
-    _transactionSubscription =
-        _transactionService.getAllTransactionStream().listen(
+    _transactionSubscription = _transactionService.transactionsStream().listen(
       (onTransactionsReceived) {
+        isloaded = false;
         transactions = onTransactionsReceived;
+        isloaded = true;
         updateData(transactions);
         notifyListeners();
       },
       onError: (err) {
-        // ErrorSnackBar(message: err.toString());
         print("error");
       },
     );
-    // print("transactionStreems : $transactionStreems");
-    // notifyListeners();
   }
-
-  // getAllincomeStream() {
-  //   incomeStream = _transactionService.incomeStream();
-  // }
-
-  // getAllexpenseStream() {
-  //   expenseStream = _transactionService.expenseStream();
-  // }
 
   updateData(List<TransactionModel> transactions) {
     totalExpenses = 0.0;

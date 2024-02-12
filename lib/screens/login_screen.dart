@@ -1,10 +1,11 @@
-import 'package:accountant_app/constants/routes_constants.dart';
+import 'package:accountant_app/constants/app_constants/routes_constants.dart';
 import 'package:accountant_app/custom_widgets/logo_handler.dart';
 import 'package:accountant_app/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../custom_widgets/snack_bar_helper.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginPage extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
@@ -31,17 +32,17 @@ class LoginPage extends StatelessWidget {
               ),
               TextFormField(
                 controller: emailController,
-                decoration: const InputDecoration(
-                  icon: Icon(Icons.email),
-                  labelText: 'Email',
+                decoration: InputDecoration(
+                  icon: const Icon(Icons.email),
+                  labelText: AppLocalizations.of(context)!.email,
                 ),
               ),
               TextFormField(
                 controller: passwordController,
                 obscureText: true,
-                decoration: const InputDecoration(
-                  icon: Icon(Icons.lock),
-                  labelText: 'Password',
+                decoration: InputDecoration(
+                  icon: const Icon(Icons.lock),
+                  labelText: AppLocalizations.of(context)!.password,
                 ),
               ),
               const SizedBox(height: 20),
@@ -54,25 +55,27 @@ class LoginPage extends StatelessWidget {
                     if (!context.mounted) {
                       return;
                     }
-                    SnackBarHelper.showSuccessSnackBar(
-                        context, "Login Successfully !");
+                    SnackBarHelper.showSuccessSnackBar(context,
+                        AppLocalizations.of(context)!.logedSuccessfully);
 
                     Navigator.pushReplacementNamed(
                       context,
                       transactions,
                     );
                   } catch (error) {
-                    SnackBarHelper.showErrorSnackBar(context, 'error : $error');
+                    SnackBarHelper.showErrorSnackBar(context,
+                        '${AppLocalizations.of(context)!.logedSuccessfully} $error');
                   }
                 },
-                child: const Text('Login'),
+                child: Text(AppLocalizations.of(context)!.login),
               ),
               const SizedBox(height: 20),
               TextButton(
                   onPressed: () {
                     Navigator.pushReplacementNamed(context, "/register");
                   },
-                  child: const Text("Click here if you don't have an account"))
+                  child: Text(AppLocalizations.of(context)!
+                      .clickHereIfYouDoNotHaveAnAccount))
             ],
           ),
         ),

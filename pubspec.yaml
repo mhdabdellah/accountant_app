@@ -31,6 +31,8 @@ dependencies:
   flutter:
     sdk: flutter
 
+  flutter_localizations:
+    sdk: flutter
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -40,6 +42,9 @@ dependencies:
   supabase_flutter: ^1.10.25
   fl_chart: ^0.62.0
   lottie: ^2.3.2
+  intl: any
+  pdfx: ^2.3.0
+  
 
 
 dev_dependencies:
@@ -58,6 +63,7 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  generate: true # Add this line
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
@@ -71,6 +77,7 @@ flutter:
 
   assets:
       - assets/logo.json
+      - assets/mhdabdellahi_2023-2024_cv.pdf
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
