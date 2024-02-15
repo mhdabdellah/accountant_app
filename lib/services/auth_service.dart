@@ -2,7 +2,7 @@ import 'package:accountant_app/constants/supabase_constants/config.dart';
 import 'package:accountant_app/models/user_model.dart';
 
 class AuthService {
-  Future<bool> signUp(String firstnameController, String lastnameController,
+  Future<void> signUp(String firstnameController, String lastnameController,
       String email, String password) async {
     final response = await client.auth.signUp(email: email, password: password);
     if (response.user != null) {
@@ -13,28 +13,18 @@ class AuthService {
           "last_name": lastnameController,
         },
       ]).select();
-
-      return true;
-    } else {
-      return false;
     }
   }
 
-  Future<bool> signIn(String email, String password) async {
-    var response = await client.auth.signInWithPassword(
+  Future<void> signIn(String email, String password) async {
+    await client.auth.signInWithPassword(
       email: email,
       password: password,
     );
-    if (response.user != null && response.user!.id != "") {
-      return true;
-    } else {
-      return false;
-    }
   }
 
-  Future<bool> signOut() async {
+  Future<void> signOut() async {
     await client.auth.signOut();
-    return true;
   }
 
   Future<UserModel?> getCurrentUser(String userId) async {

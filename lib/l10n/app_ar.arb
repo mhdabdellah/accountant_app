@@ -28,12 +28,9 @@
     "firstName": "الاسم الأول",
     "lastName": "اسم العائلة",
     "registredSuccessfully": "تم التسجيل بنجاح!",
-    "unexpectedErrorOccurred": "حدث خطأ غير متوقع",
+    "unexpectedErrorOccurred": "حدث خطأ غير متوقع حاول مرة أخرى من فضلك",
     "register": "التسجيل",
     "clickHereIfYouHaveAnAccount": "انقر هنا إذا كان لديك حساب",
     "aboutDeveloper": "معلومات عن المطور",
     "someInformationsAboutTheDevelopper": "بعض المعلومات عن المطور"
-
-
-
 }

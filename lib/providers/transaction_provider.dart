@@ -1,48 +1,121 @@
 import 'dart:async';
 
-import 'package:accountant_app/constants/supabase_constants/config.dart';
+import 'package:accountant_app/constants/app_constants/utils.dart';
 import 'package:accountant_app/models/transaction_model.dart';
 import 'package:accountant_app/services/transaction_service.dart';
 import 'package:flutter/material.dart';
 
 class TransactionProvider extends ChangeNotifier {
   final TransactionService _transactionService = TransactionService();
-
+  final customExceptionHandler = CustomExceptionHandler();
   int currentIndex = 0;
 
-  bool isloaded = true;
+  int loadingData = 0; // 0 isloading , 1 isloaded, -1 errorOrException
+
+  BuildContext context;
 
   List<TransactionModel> transactions = [];
-  List<TransactionModel> expenses = [];
-  List<TransactionModel> incomes = [];
 
   double totalProfit = 0.0;
   double totalExpenses = 0.0;
   double totalIncomes = 0.0;
 
-  late final StreamSubscription<List<TransactionModel>>
-      _transactionSubscription;
+  String userId = "";
 
-  TransactionProvider() {
-    getAllTransactionsStream();
+  final int _pageSize = 6;
+  int _currentPage = 0;
+  bool _hasMore = true;
+  bool get hasMore => _hasMore;
+  int get currentPage => _currentPage;
+
+  late StreamSubscription<List<TransactionModel>> transactionSubscription;
+
+  TransactionProvider({required this.userId, required this.context}) {
+    getAllTransactionsStream(userId: userId);
+  }
+
+  Future<bool> nextTransactionsList(
+      {required int pageIndex, required int start, required int end}) async {
+    final nextStart = (_currentPage + 1) * _pageSize;
+    final nextEnd = nextStart + _pageSize - 1;
+    List<TransactionModel> nextTransactions =
+        await _transactionService.fetchTransactions(
+      pageSize: _pageSize,
+      start: nextStart,
+      end: nextEnd,
+      userId: userId,
+      pageIndex: pageIndex,
+    );
+    return nextTransactions.isNotEmpty;
+  }
+
+  Future<void> fetchData({required int pageIndex}) async {
+    try {
+      loadingData = 0;
+
+      final start = _currentPage * _pageSize;
+      final end = start + _pageSize - 1;
+
+      transactions = await _transactionService.fetchTransactions(
+        pageSize: _pageSize,
+        start: start,
+        end: end,
+        userId: userId,
+        pageIndex: pageIndex,
+      );
+
+      loadingData = 1;
+      bool nextIsNotEmpty = await nextTransactionsList(
+          pageIndex: pageIndex, start: start, end: end);
+      _hasMore = transactions.length == _pageSize && nextIsNotEmpty;
+      loadingData = 1;
+      notifyListeners();
+    } on Exception catch (error) {
+      loadingData = -1;
+      customExceptionHandler.handleException(context, error);
+      notifyListeners();
+    }
+  }
+
+  Future<void> loadNextPage({required int pageIndex}) async {
+    if (loadingData == 0 || !_hasMore) return;
+    _currentPage++;
+    await fetchData(pageIndex: pageIndex);
+  }
+
+  Future<void> loadPreviousPage({required int pageIndex}) async {
+    if (loadingData == 0 || _currentPage == 0) return;
+    _currentPage--;
+    await fetchData(pageIndex: pageIndex);
   }
 
   updateCurrentIndex(int index) {
     currentIndex = index;
+    _currentPage = 0;
     notifyListeners();
   }
 
-  getAllTransactionsStream() {
-    _transactionSubscription = _transactionService.transactionsStream().listen(
+  Future<void> closeAndGetStreams() async {
+    transactionSubscription.cancel();
+    getAllTransactionsStream(userId: userId);
+    await fetchData(pageIndex: currentIndex);
+    notifyListeners();
+  }
+
+  getAllTransactionsStream({required String userId}) {
+    transactionSubscription =
+        _transactionService.transactionsStream(userId: userId).listen(
       (onTransactionsReceived) {
-        isloaded = false;
-        transactions = onTransactionsReceived;
-        isloaded = true;
-        updateData(transactions);
+        loadingData = 0;
+        updateData(onTransactionsReceived);
+        loadingData = 1;
+
         notifyListeners();
       },
-      onError: (err) {
-        print("error");
+      onError: (error) {
+        loadingData = -1;
+        customExceptionHandler.handleException(context, error);
+        notifyListeners();
       },
     );
   }
@@ -50,51 +123,24 @@ class TransactionProvider extends ChangeNotifier {
   updateData(List<TransactionModel> transactions) {
     totalExpenses = 0.0;
     totalIncomes = 0.0;
-    expenses = [];
-    incomes = [];
     for (TransactionModel transaction in transactions) {
       if (transaction.isExpense) {
         totalExpenses += transaction.amount;
-        expenses.add(transaction);
       } else {
         totalIncomes += transaction.amount;
-        incomes.add(transaction);
       }
     }
     totalProfit = totalIncomes - totalExpenses;
-    expenses.sort((a, b) => b.date.compareTo(a.date));
-    incomes.sort((a, b) => b.date.compareTo(a.date));
-
     notifyListeners();
-  }
-
-  Future<bool> addTransaction(
-      {required String title,
-      required double amount,
-      required bool isExpense}) async {
-    isloaded = false;
-    DateTime date = DateTime.now();
-    String? userId = client.auth.currentSession?.user.id;
-    final transaction = TransactionModel(
-      title: title,
-      amount: amount,
-      isExpense: isExpense,
-      date: date,
-      userId: userId ?? "",
-    );
-    bool response =
-        await _transactionService.addTransaction(transaction: transaction);
-    isloaded = true;
-    notifyListeners();
-    return response;
   }
 
   @override
   void dispose() {
-    _transactionSubscription.cancel();
+    transactionSubscription.cancel();
     transactions = [];
-    expenses = [];
-    incomes = [];
+    totalProfit = 0.0;
+    totalExpenses = 0.0;
+    totalIncomes = 0.0;
     super.dispose();
   }
 }

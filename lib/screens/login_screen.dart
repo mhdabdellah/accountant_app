@@ -1,21 +1,18 @@
 import 'package:accountant_app/constants/app_constants/routes_constants.dart';
 import 'package:accountant_app/custom_widgets/logo_handler.dart';
-import 'package:accountant_app/providers/auth_provider.dart';
+import 'package:accountant_app/providers/signIn_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../custom_widgets/snack_bar_helper.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginPage extends StatelessWidget {
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-
-  LoginPage({super.key});
+  final String loginPageRoute = '/login';
+  const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final authProvider = Provider.of<AuthProvider>(context);
+    final signInProvider = Provider.of<SignInProvider>(context);
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -31,14 +28,14 @@ class LoginPage extends StatelessWidget {
                 height: 7,
               ),
               TextFormField(
-                controller: emailController,
+                controller: signInProvider.emailController,
                 decoration: InputDecoration(
                   icon: const Icon(Icons.email),
                   labelText: AppLocalizations.of(context)!.email,
                 ),
               ),
               TextFormField(
-                controller: passwordController,
+                controller: signInProvider.passwordController,
                 obscureText: true,
                 decoration: InputDecoration(
                   icon: const Icon(Icons.lock),
@@ -48,31 +45,15 @@ class LoginPage extends StatelessWidget {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () async {
-                  try {
-                    await authProvider.signIn(
-                        emailController.text, passwordController.text);
-
-                    if (!context.mounted) {
-                      return;
-                    }
-                    SnackBarHelper.showSuccessSnackBar(context,
-                        AppLocalizations.of(context)!.logedSuccessfully);
-
-                    Navigator.pushReplacementNamed(
-                      context,
-                      transactions,
-                    );
-                  } catch (error) {
-                    SnackBarHelper.showErrorSnackBar(context,
-                        '${AppLocalizations.of(context)!.logedSuccessfully} $error');
-                  }
+                  await signInProvider.signIn(context: context);
                 },
                 child: Text(AppLocalizations.of(context)!.login),
               ),
               const SizedBox(height: 20),
               TextButton(
                   onPressed: () {
-                    Navigator.pushReplacementNamed(context, "/register");
+                    Navigator.pushReplacementNamed(
+                        context, PageRoutes().registerPageRoute);
                   },
                   child: Text(AppLocalizations.of(context)!
                       .clickHereIfYouDoNotHaveAnAccount))

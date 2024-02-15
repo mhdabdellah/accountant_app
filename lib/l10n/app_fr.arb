@@ -31,7 +31,7 @@
   "firstName": "Prénom",
   "lastName": "Nom",
   "registredSuccessfully": "Enregistré avec succès !",
-  "unexpectedErrorOccurred": "Une erreur inattendue s'est produite",
+  "unexpectedErrorOccurred": "Une erreur inattendue s'est produite, réessayez s'il vous plaît",
   "register": "S'enregistrer",
   "clickHereIfYouHaveAnAccount": "Cliquez ici si vous avez déjà un compte",
   "aboutDeveloper": "À propos du développeur",

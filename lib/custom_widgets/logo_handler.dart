@@ -3,7 +3,10 @@ import 'package:lottie/lottie.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LogoHandler extends StatelessWidget {
-  const LogoHandler({super.key, required this.margin});
+  const LogoHandler({super.key, required this.margin, this.height, this.width});
+
+  final double? height;
+  final double? width;
 
   final EdgeInsetsGeometry margin;
 
@@ -14,8 +17,8 @@ class LogoHandler extends StatelessWidget {
         child: Column(
           children: [
             SizedBox(
-                height: 250,
-                width: 250,
+                height: height ?? 250,
+                width: width ?? 250,
                 child: Lottie.asset("assets/logo.json")),
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,

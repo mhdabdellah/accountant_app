@@ -1,3 +1,5 @@
-String login = '/login';
-String register = '/register';
-String transactions = '/transactions';
+class PageRoutes {
+  final String loginPageRoute = '/login';
+  final String registerPageRoute = '/register';
+  final String transactionsPageRoute = '/transactions';
+}

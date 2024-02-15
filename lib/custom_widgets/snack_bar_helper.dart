@@ -8,6 +8,12 @@ class SnackBarHelper {
         style: const TextStyle(color: Colors.white),
       ),
       backgroundColor: Colors.green,
+      duration: const Duration(seconds: 5),
+      action: SnackBarAction(
+          label: "Undo",
+          onPressed: () {
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          }),
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
@@ -19,6 +25,12 @@ class SnackBarHelper {
         style: const TextStyle(color: Colors.white),
       ),
       backgroundColor: Colors.red,
+      duration: const Duration(seconds: 5),
+      action: SnackBarAction(
+          label: "Undo",
+          onPressed: () {
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          }),
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }

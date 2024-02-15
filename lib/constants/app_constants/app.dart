@@ -4,6 +4,6 @@ import 'dart:io';
 
 String title = "AccountantApp";
 
-getDefaultLanguage(BuildContext context) {
+getDeviceLanguage(BuildContext context) {
   return Platform.localeName.split('_')[0];
 }
