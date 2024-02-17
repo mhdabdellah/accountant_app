@@ -2,18 +2,6 @@ import 'package:accountant_app/constants/supabase_constants/config.dart';
 import 'package:accountant_app/models/transaction_model.dart';
 
 class TransactionService {
-  Stream<List<TransactionModel>> transactionsStream({required String userId}) {
-    if (userId == "") {
-      return const Stream.empty();
-    }
-    return client
-        .from('transactions')
-        .stream(primaryKey: ['id'])
-        .eq('user_id', userId)
-        .order('created_at')
-        .map((maps) => transactionsFromListMap(maps));
-  }
-
   Future<List<TransactionModel>> tranactionsAmounts({
     required String userId,
   }) async {
@@ -69,8 +57,6 @@ class TransactionService {
         pages = (countResponse['count'] / pageSize).toInt();
       }
     }
-
-    // print('pages : $pages');
 
     return pages;
   }

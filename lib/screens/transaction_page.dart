@@ -42,7 +42,6 @@ class TransactionPage extends StatelessWidget {
         currentIndex: transactionProvider.currentIndex,
         onTap: (index) async {
           await transactionProvider.updateCurrentIndex(index);
-          
         },
         items: [
           BottomNavigationBarItem(
@@ -69,7 +68,6 @@ class TransactionPage extends StatelessWidget {
     );
   }
 
-  // AddTransactionProvider
   Widget _buildBody(TransactionProvider transactionProvider) {
     switch (transactionProvider.currentIndex) {
       case 0:
@@ -77,7 +75,6 @@ class TransactionPage extends StatelessWidget {
             create: (_) => AddTransactionProvider(),
             child: const AddTransactionForm());
       case 1:
-
         return const TransactionList(
           pageIndex: 1,
         );

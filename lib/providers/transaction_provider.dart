@@ -34,9 +34,7 @@ class TransactionProvider extends ChangeNotifier {
 
   late StreamSubscription<List<TransactionModel>> transactionSubscription;
 
-  TransactionProvider({required this.userId, required this.context}) {
-    // getAllTransactionsStream(userId: userId);
-  }
+  TransactionProvider({required this.userId, required this.context});
 
   Future<void> fetchData({required int pageIndex}) async {
     try {
@@ -92,23 +90,6 @@ class TransactionProvider extends ChangeNotifier {
     await fetchData(pageIndex: currentIndex);
     notifyListeners();
   }
-
-  // getAllTransactionsStream({required String userId}) {
-  //   transactionSubscription =
-  //       _transactionService.transactionsStream(userId: userId).listen(
-  //     (onTransactionsReceived) {
-  //       isLoading = true;
-  //       updateData(onTransactionsReceived);
-  //       isLoading = false;
-
-  //       notifyListeners();
-  //     },
-  //     onError: (error) {
-  //       errorMessage = customExceptionHandler.handleException(context, error);
-  //       notifyListeners();
-  //     },
-  //   );
-  // }
 
   tranactionsAmounts() async {
     try {

@@ -26,7 +26,6 @@ class TransactionCard extends StatelessWidget {
             children: [
               Text(
                   "${transaction.amount.toString()} ${AppLocalizations.of(context)!.mru}"),
-              // Text(),
               Text(transaction.isExpense
                   ? AppLocalizations.of(context)!.expense
                   : AppLocalizations.of(context)!.income),
