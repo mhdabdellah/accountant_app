@@ -29,10 +29,6 @@ class TransactionPage extends StatelessWidget {
             icon: const Icon(Icons.logout),
             onPressed: () async {
               await currentUserProvider.logOut(context);
-              if (context.mounted) {
-                Navigator.pushReplacementNamed(
-                    context, const LoginPage().loginPageRoute);
-              }
             },
           )
         ],

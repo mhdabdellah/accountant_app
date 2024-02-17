@@ -12,7 +12,9 @@ class SignInProvider extends ChangeNotifier {
 
   final customExceptionHandler = CustomExceptionHandler();
 
-  Future<void> signIn({required BuildContext context}) async {
+  SignInProvider();
+
+  Future<void> signIn() async {
     try {
       String email = emailController.text;
       String password = passwordController.text;
@@ -24,18 +26,20 @@ class SignInProvider extends ChangeNotifier {
       }
       await _authService.signIn(email, password);
 
-      if (context.mounted) {
+      if (navigatorKey.currentState!.context.mounted) {
         SnackBarHelper.showSuccessSnackBar(
-            context, AppLocalizations.of(context)!.logedSuccessfully);
+            navigatorKey.currentState!.context,
+            AppLocalizations.of(navigatorKey.currentState!.context)!
+                .logedSuccessfully);
 
-        Navigator.pushReplacementNamed(
-          context,
-          const TransactionPage().transactionsPageRoute,
-        );
+        navigatorKey.currentState!.pushReplacementNamed(
+            const TransactionPage().transactionsPageRoute);
       }
     } catch (error) {
       SnackBarHelper.showErrorSnackBar(
-          context, customExceptionHandler.handleException(context, error));
+          navigatorKey.currentState!.context,
+          customExceptionHandler.handleException(
+              navigatorKey.currentState!.context, error));
     }
   }
 

@@ -1,3 +1,4 @@
+import 'package:accountant_app/constants/app_constants/utils.dart';
 import 'package:accountant_app/custom_widgets/logo_handler.dart';
 import 'package:accountant_app/providers/signup_provider.dart';
 import 'package:accountant_app/screens/login_screen.dart';
@@ -58,15 +59,15 @@ class RegisterPage extends StatelessWidget {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () async {
-                  await authProvider.signUp(context: context);
+                  await authProvider.signUp();
                 },
                 child: Text(AppLocalizations.of(context)!.register),
               ),
               const SizedBox(height: 20),
               TextButton(
                   onPressed: () {
-                    Navigator.pushReplacementNamed(
-                        context, const LoginPage().loginPageRoute);
+                    navigatorKey.currentState!
+                        .pushReplacementNamed(const LoginPage().loginPageRoute);
                   },
                   child: Text(AppLocalizations.of(context)!
                       .clickHereIfYouHaveAnAccount))

@@ -15,7 +15,9 @@ class SignUpProvider extends ChangeNotifier {
 
   final customExceptionHandler = CustomExceptionHandler();
 
-  Future<void> signUp({required BuildContext context}) async {
+  SignUpProvider();
+
+  Future<void> signUp() async {
     try {
       String firstname = firstnameController.text;
       String lastname = lastnameController.text;
@@ -36,15 +38,20 @@ class SignUpProvider extends ChangeNotifier {
       }
 
       await _authService.signUp(firstname, lastname, email, password);
-      if (context.mounted) {
+      if (navigatorKey.currentState!.context.mounted) {
         SnackBarHelper.showSuccessSnackBar(
-            context, AppLocalizations.of(context)!.registredSuccessfully);
+            navigatorKey.currentState!.context,
+            AppLocalizations.of(navigatorKey.currentState!.context)!
+                .registredSuccessfully);
 
-        Navigator.pushReplacementNamed(
-            context, const LoginPage().loginPageRoute);
+        navigatorKey.currentState!
+            .pushReplacementNamed(const LoginPage().loginPageRoute);
       }
     } catch (error) {
-      SnackBarHelper.showErrorSnackBar(context, customExceptionHandler.handleException(context, error));
+      SnackBarHelper.showErrorSnackBar(
+          navigatorKey.currentState!.context,
+          customExceptionHandler.handleException(
+              navigatorKey.currentState!.context, error));
     }
   }
 

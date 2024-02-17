@@ -29,7 +29,7 @@ class TransactionList extends StatelessWidget {
                     const SizedBox(
                       height: 8.0,
                     ),
-                    Text(AppLocalizations.of(context)!.unexpectedErrorOccurred),
+                    Text(transactionProvider.errorMessage ?? ""),
                   ],
                 ),
               )

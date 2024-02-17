@@ -29,6 +29,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final currentUserProvider = Provider.of<CurrentUserProvider>(context);
+    final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -46,10 +47,16 @@ class MyApp extends StatelessWidget {
         Locale('ar'),
       ],
       theme: principalTheme,
-      initialRoute: const SplashScreen().splashScreenPageRoute,
+      navigatorKey: navigatorKey,
+      initialRoute: SplashScreen(
+        navigatorKey_: navigatorKey,
+      ).splashScreenPageRoute,
       routes: {
-        const SplashScreen().splashScreenPageRoute: (context) =>
-            const SplashScreen(),
+        SplashScreen(
+          navigatorKey_: navigatorKey,
+        ).splashScreenPageRoute: (context) => SplashScreen(
+              navigatorKey_: navigatorKey,
+            ),
         const LoginPage().loginPageRoute: (context) => ChangeNotifierProvider(
             create: (_) => SignInProvider(), child: const LoginPage()),
         const RegisterPage().registerPageRoute: (context) =>
@@ -58,8 +65,7 @@ class MyApp extends StatelessWidget {
         const TransactionPage().transactionsPageRoute: (context) =>
             ChangeNotifierProvider(
                 create: (_) => TransactionProvider(
-                    userId: currentUserProvider.currentUserId,
-                    context: context),
+                    userId: currentUserProvider.currentUserId),
                 child: const TransactionPage())
       },
     );

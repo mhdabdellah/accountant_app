@@ -19,12 +19,14 @@ class AddTransactionProvider extends ChangeNotifier {
 
   bool isloaded = true;
 
+  AddTransactionProvider();
+
   setTypeValue(String value) {
     selectedType = value;
     notifyListeners();
   }
 
-  Future<void> addTransaction(BuildContext context) async {
+  Future<void> addTransaction() async {
     try {
       DateTime date = DateTime.now();
       String? userId = client.auth.currentSession?.user.id;
@@ -43,17 +45,20 @@ class AddTransactionProvider extends ChangeNotifier {
       await _transactionService.addTransaction(transaction: transaction);
       titleController.text = "";
       amountController.text = "";
-      if (context.mounted) {
+      if (navigatorKey.currentState!.context.mounted) {
         SnackBarHelper.showSuccessSnackBar(
-            context,
-            AppLocalizations.of(context)!
+            navigatorKey.currentState!.context,
+            AppLocalizations.of(navigatorKey.currentState!.context)!
                 .theTransactionHasBeenRegisteredSuccessfully);
       }
       notifyListeners();
     } catch (error) {
-      customExceptionHandler.handleException(context, error);
+      customExceptionHandler.handleException(
+          navigatorKey.currentState!.context, error);
       SnackBarHelper.showErrorSnackBar(
-          context, customExceptionHandler.handleException(context, error));
+          navigatorKey.currentState!.context,
+          customExceptionHandler.handleException(
+              navigatorKey.currentState!.context, error));
     }
   }
 

@@ -9,11 +9,6 @@ class SnackBarHelper {
       ),
       backgroundColor: Colors.green,
       duration: const Duration(seconds: 5),
-      action: SnackBarAction(
-          label: "Undo",
-          onPressed: () {
-            ScaffoldMessenger.of(context).hideCurrentSnackBar();
-          }),
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
@@ -26,11 +21,6 @@ class SnackBarHelper {
       ),
       backgroundColor: Colors.red,
       duration: const Duration(seconds: 5),
-      action: SnackBarAction(
-          label: "Undo",
-          onPressed: () {
-            ScaffoldMessenger.of(context).hideCurrentSnackBar();
-          }),
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }

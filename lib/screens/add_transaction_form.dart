@@ -11,7 +11,6 @@ class AddTransactionForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final addTransactionProvider = context.watch<AddTransactionProvider>();
     final addTransactionProvider = Provider.of<AddTransactionProvider>(context);
     return SingleChildScrollView(
       child: Padding(
@@ -67,7 +66,7 @@ class AddTransactionForm extends StatelessWidget {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
-                await addTransactionProvider.addTransaction(context);
+                await addTransactionProvider.addTransaction();
               },
               child: Row(
                 mainAxisSize: MainAxisSize.min,

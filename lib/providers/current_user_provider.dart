@@ -2,6 +2,7 @@ import 'package:accountant_app/constants/app_constants/utils.dart';
 import 'package:accountant_app/constants/supabase_constants/config.dart';
 import 'package:accountant_app/custom_widgets/snack_bar_helper.dart';
 import 'package:accountant_app/models/user_model.dart';
+import 'package:accountant_app/screens/login_screen.dart';
 import 'package:accountant_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
@@ -32,6 +33,10 @@ class CurrentUserProvider extends ChangeNotifier {
   Future<void> logOut(BuildContext context) async {
     try {
       await _authService.signOut();
+      if (context.mounted) {
+        Navigator.pushReplacementNamed(
+            context, const LoginPage().loginPageRoute);
+      }
     } catch (error) {
       SnackBarHelper.showErrorSnackBar(
           context, customExceptionHandler.handleException(context, error));
