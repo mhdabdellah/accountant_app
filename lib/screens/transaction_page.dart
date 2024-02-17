@@ -1,9 +1,9 @@
-import 'package:accountant_app/constants/app_constants/routes_constants.dart';
 import 'package:accountant_app/providers/add_transaction_provider.dart';
 import 'package:accountant_app/providers/current_user_provider.dart';
 import 'package:accountant_app/providers/transaction_provider.dart';
 import 'package:accountant_app/screens/aboutDevelopper.dart';
 import 'package:accountant_app/screens/add_transaction_form.dart';
+import 'package:accountant_app/screens/login_screen.dart';
 import 'package:accountant_app/screens/transaction_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -31,7 +31,7 @@ class TransactionPage extends StatelessWidget {
               await currentUserProvider.logOut(context);
               if (context.mounted) {
                 Navigator.pushReplacementNamed(
-                    context, PageRoutes().loginPageRoute);
+                    context, const LoginPage().loginPageRoute);
               }
             },
           )
@@ -42,8 +42,7 @@ class TransactionPage extends StatelessWidget {
         currentIndex: transactionProvider.currentIndex,
         onTap: (index) async {
           await transactionProvider.updateCurrentIndex(index);
-          await transactionProvider.fetchData(
-              pageIndex: transactionProvider.currentIndex);
+          
         },
         items: [
           BottomNavigationBarItem(
@@ -78,6 +77,7 @@ class TransactionPage extends StatelessWidget {
             create: (_) => AddTransactionProvider(),
             child: const AddTransactionForm());
       case 1:
+
         return const TransactionList(
           pageIndex: 1,
         );

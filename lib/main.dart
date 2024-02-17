@@ -11,11 +11,8 @@ import 'package:accountant_app/screens/transaction_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
-
-// import 'providers/auth_provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 import 'screens/splash_screen.dart';
 
 void main() async {

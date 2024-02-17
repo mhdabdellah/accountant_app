@@ -1,3 +1,4 @@
+import 'package:accountant_app/constants/app_constants/theme_constant.dart';
 import 'package:accountant_app/custom_widgets/transaction_card.dart';
 import 'package:accountant_app/providers/transaction_provider.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,7 @@ class TransactionList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<TransactionProvider>(
       builder: (context, transactionProvider, child) {
-        return transactionProvider.loadingData == -1
+        return transactionProvider.errorMessage != null
             ? Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -32,20 +33,7 @@ class TransactionList extends StatelessWidget {
                   ],
                 ),
               )
-
-            // Center(
-            //     child: IconButton(
-            //       icon: const Icon(
-            //         Icons.autorenew_sharp,
-            //         size: 50,
-            //         color: primaryColor,
-            //       ),
-            //       onPressed: () {
-            //         transactionProvider.closeAndGetStreams();
-            //       },
-            //     ),
-            //   )
-            : transactionProvider.loadingData == 0
+            : transactionProvider.isLoading
                 ? const Center(child: CircularProgressIndicator())
                 : Column(children: [
                     Padding(
@@ -82,6 +70,9 @@ class TransactionList extends StatelessWidget {
                                   "${transactionProvider.totalProfit.toString()} ${AppLocalizations.of(context)!.mru}"),
                             ],
                           ),
+                          const SizedBox(
+                            height: 30,
+                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
@@ -94,6 +85,59 @@ class TransactionList extends StatelessWidget {
                                     : null,
                                 child: const Icon(Icons.arrow_back),
                               ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 5.0),
+                                child: ElevatedButton(
+                                  onPressed: () {},
+                                  style: ElevatedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    minimumSize: const Size(44.0, 44.0),
+                                  ),
+                                  child: Text(
+                                    transactionProvider.currentPage.toString(),
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const CircleAvatar(
+                                backgroundColor: primaryColor,
+                                radius: 5,
+                              ),
+                              const CircleAvatar(
+                                backgroundColor: primaryColor,
+                                radius: 5,
+                              ),
+                              const CircleAvatar(
+                                backgroundColor: primaryColor,
+                                radius: 5,
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 5.0),
+                                child: ElevatedButton(
+                                  onPressed: () {},
+                                  style: ElevatedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    minimumSize: const Size(44.0, 44.0),
+                                  ),
+                                  child: Text(
+                                    transactionProvider.numberOfPages
+                                        .toString(),
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
                               ElevatedButton(
                                 onPressed: transactionProvider.hasMore
                                     ? () => transactionProvider.loadNextPage(
@@ -104,8 +148,6 @@ class TransactionList extends StatelessWidget {
                               ),
                             ],
                           )
-
-                          // const PaginationControls(),
                         ],
                       ),
                     ),
@@ -120,106 +162,6 @@ class TransactionList extends StatelessWidget {
                       ),
                     ),
                   ]);
-
-        // transactionProvider.loadingData == 0
-        //     ? const Center(child: CircularProgressIndicator())
-        //     : transactionProvider.loadingData == -1
-        //         // ? Center(
-        //         //     child: IconButton(
-        //         //       icon: const Icon(
-        //         //         Icons.autorenew_sharp,
-        //         //         size: 50,
-        //         //         color: primaryColor,
-        //         //       ),
-        //         //       onPressed: () {
-        //         //         transactionProvider.closeAndGetStreams();
-        //         //       },
-        //         //     ),
-        //         //   )
-        //         ? Expanded(
-        //             child: Column(
-        //             mainAxisAlignment: MainAxisAlignment.center,
-        //             children: [
-        //               IconButton(
-        //                   onPressed: () {
-        //                     transactionProvider.closeAndGetStreams();
-        //                   },
-        //                   icon: const Icon(
-        //                     Icons.refresh,
-        //                     size: 70,
-        //                   )),
-        //               const SizedBox(
-        //                 height: 8.0,
-        //               ),
-        //               Text(AppLocalizations.of(context)!
-        //                   .unexpectedErrorOccurred),
-        //             ],
-        //           ))
-        //         : Column(children: [
-        //             Padding(
-        //               padding: const EdgeInsets.all(20.0),
-        //               child: Column(
-        //                 children: [
-        //                   Row(
-        //                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //                     children: [
-        //                       Text(AppLocalizations.of(context)!.totalExpense),
-        //                       Text(
-        //                           "${transactionProvider.totalExpenses.toString()} ${AppLocalizations.of(context)!.mru}"),
-        //                     ],
-        //                   ),
-        //                   const SizedBox(
-        //                     height: 20,
-        //                   ),
-        //                   Row(
-        //                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //                     children: [
-        //                       Text(AppLocalizations.of(context)!.totalIncome),
-        //                       Text(
-        //                           "${transactionProvider.totalIncomes.toString()} ${AppLocalizations.of(context)!.mru}"),
-        //                     ],
-        //                   ),
-        //                   const SizedBox(
-        //                     height: 20,
-        //                   ),
-        //                   Row(
-        //                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //                     children: [
-        //                       Text(AppLocalizations.of(context)!.totalProfit),
-        //                       Text(
-        //                           "${transactionProvider.totalProfit.toString()} ${AppLocalizations.of(context)!.mru}"),
-        //                     ],
-        //                   ),
-        //                 ],
-        //               ),
-        //             ),
-        //             Column(
-        //               children: [
-        //                 const PaginationControls(),
-        //                 Expanded(
-        //                   child: ListView.builder(
-        //                     itemCount: transactionProvider.transactions.length,
-        //                     // pageIndex == 2
-        //                     //     ? transactionProvider.expenses.length
-        //                     //     : pageIndex == 3
-        //                     //         ? transactionProvider.incomes.length
-        //                     //         : transactionProvider.transactions.length,
-        //                     itemBuilder: (context, index) {
-        //                       return TransactionCard(
-        //                           transaction:
-        //                               transactionProvider.transactions[index]);
-        //                       // transaction: pageIndex == 2
-        //                       //     ? transactionProvider.expenses[index]
-        //                       //     : pageIndex == 3
-        //                       //         ? transactionProvider.incomes[index]
-        //                       //         : transactionProvider
-        //                       //             .transactions[index]);
-        //                     },
-        //                   ),
-        //                 ),
-        //               ],
-        //             ),
-        //           ]);
       },
     );
   }

@@ -1,5 +1,5 @@
-import 'package:accountant_app/constants/app_constants/routes_constants.dart';
 import 'package:accountant_app/constants/app_constants/utils.dart';
+import 'package:accountant_app/screens/transaction_page.dart';
 import 'package:accountant_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import '../custom_widgets/snack_bar_helper.dart';
@@ -30,11 +30,12 @@ class SignInProvider extends ChangeNotifier {
 
         Navigator.pushReplacementNamed(
           context,
-          PageRoutes().transactionsPageRoute,
+          const TransactionPage().transactionsPageRoute,
         );
       }
-    } on Exception catch (error) {
-      customExceptionHandler.handleException(context, error);
+    } catch (error) {
+      SnackBarHelper.showErrorSnackBar(
+          context, customExceptionHandler.handleException(context, error));
     }
   }
 

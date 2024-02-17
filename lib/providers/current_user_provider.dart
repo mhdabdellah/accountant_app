@@ -1,5 +1,6 @@
 import 'package:accountant_app/constants/app_constants/utils.dart';
 import 'package:accountant_app/constants/supabase_constants/config.dart';
+import 'package:accountant_app/custom_widgets/snack_bar_helper.dart';
 import 'package:accountant_app/models/user_model.dart';
 import 'package:accountant_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
@@ -21,8 +22,9 @@ class CurrentUserProvider extends ChangeNotifier {
       currentUser = await _authService.getCurrentUser(currentUserId);
       notifyListeners();
       return currentUser;
-    } on Exception catch (error) {
-      CustomExceptionHandler().handleException(context, error);
+    } catch (error) {
+      SnackBarHelper.showErrorSnackBar(
+          context, customExceptionHandler.handleException(context, error));
       return null;
     }
   }
@@ -30,8 +32,9 @@ class CurrentUserProvider extends ChangeNotifier {
   Future<void> logOut(BuildContext context) async {
     try {
       await _authService.signOut();
-    } on Exception catch (error) {
-      customExceptionHandler.handleException(context, error);
+    } catch (error) {
+      SnackBarHelper.showErrorSnackBar(
+          context, customExceptionHandler.handleException(context, error));
     }
   }
 

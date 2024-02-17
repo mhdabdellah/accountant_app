@@ -8,9 +8,11 @@ import 'package:flutter/material.dart';
 class TransactionProvider extends ChangeNotifier {
   final TransactionService _transactionService = TransactionService();
   final customExceptionHandler = CustomExceptionHandler();
+
   int currentIndex = 0;
 
-  int loadingData = 0; // 0 isloading , 1 isloaded, -1 errorOrException
+  bool isLoading = true;
+  String? errorMessage;
 
   BuildContext context;
 
@@ -22,36 +24,27 @@ class TransactionProvider extends ChangeNotifier {
 
   String userId = "";
 
-  final int _pageSize = 6;
+  final int _pageSize = 5;
   int _currentPage = 0;
+  int _numberOfPages = 0;
   bool _hasMore = true;
   bool get hasMore => _hasMore;
   int get currentPage => _currentPage;
+  int get numberOfPages => _numberOfPages;
 
   late StreamSubscription<List<TransactionModel>> transactionSubscription;
 
   TransactionProvider({required this.userId, required this.context}) {
-    getAllTransactionsStream(userId: userId);
-  }
-
-  Future<bool> nextTransactionsList(
-      {required int pageIndex, required int start, required int end}) async {
-    final nextStart = (_currentPage + 1) * _pageSize;
-    final nextEnd = nextStart + _pageSize - 1;
-    List<TransactionModel> nextTransactions =
-        await _transactionService.fetchTransactions(
-      pageSize: _pageSize,
-      start: nextStart,
-      end: nextEnd,
-      userId: userId,
-      pageIndex: pageIndex,
-    );
-    return nextTransactions.isNotEmpty;
+    // getAllTransactionsStream(userId: userId);
   }
 
   Future<void> fetchData({required int pageIndex}) async {
     try {
-      loadingData = 0;
+      isLoading = true;
+      errorMessage = null;
+      final pages = await _transactionService.getNumberOfTransactions(
+          pageSize: _pageSize, pageIndex: pageIndex, userId: userId);
+      _numberOfPages = pages;
 
       final start = _currentPage * _pageSize;
       final end = start + _pageSize - 1;
@@ -64,60 +57,70 @@ class TransactionProvider extends ChangeNotifier {
         pageIndex: pageIndex,
       );
 
-      loadingData = 1;
-      bool nextIsNotEmpty = await nextTransactionsList(
-          pageIndex: pageIndex, start: start, end: end);
-      _hasMore = transactions.length == _pageSize && nextIsNotEmpty;
-      loadingData = 1;
+      _hasMore = _currentPage < pages;
+      isLoading = false;
       notifyListeners();
-    } on Exception catch (error) {
-      loadingData = -1;
-      customExceptionHandler.handleException(context, error);
+    } catch (error) {
+      errorMessage = customExceptionHandler.handleException(context, error);
       notifyListeners();
     }
   }
 
   Future<void> loadNextPage({required int pageIndex}) async {
-    if (loadingData == 0 || !_hasMore) return;
+    if (isLoading || !_hasMore) return;
     _currentPage++;
     await fetchData(pageIndex: pageIndex);
   }
 
   Future<void> loadPreviousPage({required int pageIndex}) async {
-    if (loadingData == 0 || _currentPage == 0) return;
+    if (isLoading || _currentPage == 0) return;
     _currentPage--;
     await fetchData(pageIndex: pageIndex);
   }
 
-  updateCurrentIndex(int index) {
+  updateCurrentIndex(int index) async {
     currentIndex = index;
     _currentPage = 0;
+    await tranactionsAmounts();
+    await fetchData(pageIndex: currentIndex);
     notifyListeners();
   }
 
   Future<void> closeAndGetStreams() async {
     transactionSubscription.cancel();
-    getAllTransactionsStream(userId: userId);
+    await tranactionsAmounts();
     await fetchData(pageIndex: currentIndex);
     notifyListeners();
   }
 
-  getAllTransactionsStream({required String userId}) {
-    transactionSubscription =
-        _transactionService.transactionsStream(userId: userId).listen(
-      (onTransactionsReceived) {
-        loadingData = 0;
-        updateData(onTransactionsReceived);
-        loadingData = 1;
+  // getAllTransactionsStream({required String userId}) {
+  //   transactionSubscription =
+  //       _transactionService.transactionsStream(userId: userId).listen(
+  //     (onTransactionsReceived) {
+  //       isLoading = true;
+  //       updateData(onTransactionsReceived);
+  //       isLoading = false;
 
-        notifyListeners();
-      },
-      onError: (error) {
-        loadingData = -1;
-        customExceptionHandler.handleException(context, error);
-        notifyListeners();
-      },
-    );
+  //       notifyListeners();
+  //     },
+  //     onError: (error) {
+  //       errorMessage = customExceptionHandler.handleException(context, error);
+  //       notifyListeners();
+  //     },
+  //   );
+  // }
+
+  tranactionsAmounts() async {
+    try {
+      isLoading = true;
+      updateData(await _transactionService.tranactionsAmounts(userId: userId));
+      isLoading = false;
+
+      notifyListeners();
+    } catch (error) {
+      errorMessage = customExceptionHandler.handleException(context, error);
+      notifyListeners();
+    }
   }
 
   updateData(List<TransactionModel> transactions) {

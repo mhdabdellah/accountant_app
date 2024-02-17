@@ -5,7 +5,6 @@ import 'package:accountant_app/custom_widgets/logo_handler.dart';
 import 'package:accountant_app/screens/login_screen.dart';
 import 'package:accountant_app/screens/transaction_page.dart';
 import 'package:flutter/material.dart';
-// import 'package:minister_exterieure_mobile_app/views/userinfo_in_setps.dart';
 
 class SplashScreen extends StatefulWidget {
   final String splashScreenPageRoute = '/';

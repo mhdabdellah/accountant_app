@@ -1,6 +1,6 @@
-import 'package:accountant_app/constants/app_constants/routes_constants.dart';
 import 'package:accountant_app/custom_widgets/logo_handler.dart';
 import 'package:accountant_app/providers/signup_provider.dart';
+import 'package:accountant_app/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -66,7 +66,7 @@ class RegisterPage extends StatelessWidget {
               TextButton(
                   onPressed: () {
                     Navigator.pushReplacementNamed(
-                        context, PageRoutes().loginPageRoute);
+                        context, const LoginPage().loginPageRoute);
                   },
                   child: Text(AppLocalizations.of(context)!
                       .clickHereIfYouHaveAnAccount))

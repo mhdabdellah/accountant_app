@@ -25,7 +25,6 @@ class AddTransactionProvider extends ChangeNotifier {
   }
 
   Future<void> addTransaction(BuildContext context) async {
-    isloaded = false;
     try {
       DateTime date = DateTime.now();
       String? userId = client.auth.currentSession?.user.id;
@@ -44,7 +43,6 @@ class AddTransactionProvider extends ChangeNotifier {
       await _transactionService.addTransaction(transaction: transaction);
       titleController.text = "";
       amountController.text = "";
-      isloaded = true;
       if (context.mounted) {
         SnackBarHelper.showSuccessSnackBar(
             context,
@@ -52,9 +50,10 @@ class AddTransactionProvider extends ChangeNotifier {
                 .theTransactionHasBeenRegisteredSuccessfully);
       }
       notifyListeners();
-    } on Exception catch (error) {
-      isloaded = false;
+    } catch (error) {
       customExceptionHandler.handleException(context, error);
+      SnackBarHelper.showErrorSnackBar(
+          context, customExceptionHandler.handleException(context, error));
     }
   }
 
