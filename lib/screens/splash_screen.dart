@@ -27,7 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     navigatorKey = widget.navigatorKey_;
     Timer(const Duration(seconds: 2), () async {
-      AppNavigator.pushReplacement(client.auth.currentSession != null
+      AppNavigator.pushReplacement(SupabaseConfig().currentSession != null
           ? TransactionPage.transactionsPageRoute
           : LoginPage.loginPageRoute);
     });

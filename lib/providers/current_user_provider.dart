@@ -19,8 +19,8 @@ class CurrentUserProvider extends ChangeNotifier {
 
   UserModel? currentUser;
 
-  String get currentUserId {
-    String userId = client.auth.currentSession?.user.id ?? "";
+  String? get currentUserId {
+    String? userId = SupabaseConfig().currentUserId;
     return userId;
   }
 
@@ -30,7 +30,7 @@ class CurrentUserProvider extends ChangeNotifier {
 
   Future<UserModel?> getCurrentUser() async {
     try {
-      currentUser = await _authService.getCurrentUser(currentUserId);
+      currentUser = await _authService.getCurrentUser(currentUserId!);
       notifyListeners();
       return currentUser;
     } catch (error) {

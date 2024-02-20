@@ -29,7 +29,7 @@ class AddTransactionProvider extends ChangeNotifier {
   Future<void> addTransaction() async {
     try {
       DateTime date = DateTime.now();
-      String? userId = client.auth.currentSession?.user.id;
+      String? userId = SupabaseConfig().currentUserId;
 
       final double amount = double.parse(amountController.text);
       final bool isExpense = selectedType == 'Expense';

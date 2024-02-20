@@ -1,4 +1,4 @@
-import 'package:accountant_app/helpers/navigation.dart';
+import 'package:accountant_app/constants/supabase_constants/config.dart';
 import 'package:accountant_app/helpers/utils.dart';
 import 'package:accountant_app/providers/current_user_provider.dart';
 import 'package:accountant_app/providers/transaction_provider.dart';
@@ -15,8 +15,8 @@ class TransactionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => TransactionProvider(
-            userId: AppNavigator.currentUserProvider.currentUserId),
+        create: (_) =>
+            TransactionProvider(userId: SupabaseConfig().currentUserId ?? ''),
         child: const _TransactionPage());
   }
 }

@@ -1,7 +1,41 @@
+import 'dart:convert';
+
+import 'package:accountant_app/constants/app_constants/utils.dart';
+import 'package:flutter/services.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-const String supabaseProjectURL = "https://mcbnbrbjykfcrpyvhxpz.supabase.co";
-const String supabaseApiKey =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1jYm5icmJqeWtmY3JweXZoeHB6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDcxMzY4NDAsImV4cCI6MjAyMjcxMjg0MH0.BGUSiAdytpeRnb9rG7r3JY3phF4LzD_1G7hKTuK3eKQ";
+class SupabaseConfig {
+  SupabaseConfig._internal();
+  static final SupabaseConfig _instance = SupabaseConfig._internal();
 
-final client = Supabase.instance.client;
+  late final Map<String, dynamic> supabaseDataConfig;
+
+  factory SupabaseConfig() => _instance;
+
+  Session? get currentSession {
+    Session? currentSession = client!.auth.currentSession;
+    return currentSession;
+  }
+
+  String? get currentUserId {
+    String? userId = client!.auth.currentSession?.user.id;
+    return userId;
+  }
+
+  SupabaseClient? get client {
+    SupabaseClient? client = Supabase.instance.client;
+    return client;
+  }
+
+  Future<void> initSupabaseDataConfig() async {
+    try {
+      final String response =
+          await rootBundle.loadString('assets/supabaseConfig.json');
+      supabaseDataConfig = await jsonDecode(response) as Map<String, dynamic>;
+    } catch (error) {
+      // SnackBarHelper.showErrorSnackBar(
+      //     CustomExceptionHandler().handleException(error));
+      throw Exception(CustomExceptionHandler().handleException(error));
+    }
+  }
+}

@@ -11,8 +11,11 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'screens/splash_screen.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await SupabaseConfig().initSupabaseDataConfig();
   await supabase.Supabase.initialize(
-      url: supabaseProjectURL, anonKey: supabaseApiKey);
+      url: SupabaseConfig().supabaseDataConfig['supabaseProjectURL'],
+      anonKey: SupabaseConfig().supabaseDataConfig['supabaseApiKey']);
 
   runApp(ChangeNotifierProvider(
       create: (_) => CurrentUserProvider(), child: const MyApp()));

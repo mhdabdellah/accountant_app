@@ -1,10 +1,10 @@
 import 'package:accountant_app/constants/app_constants/utils.dart';
 import 'package:accountant_app/helpers/navigation.dart';
+import 'package:accountant_app/helpers/utils.dart';
 import 'package:accountant_app/screens/login_screen.dart';
 import 'package:accountant_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import '../custom_widgets/snack_bar_helper.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SignUpProvider extends ChangeNotifier {
   final AuthService _authService = AuthService();
@@ -28,8 +28,7 @@ class SignUpProvider extends ChangeNotifier {
       await _authService.signUp(firstname, lastname, email, password);
       if (navigatorKey.currentState!.context.mounted) {
         SnackBarHelper.showSuccessSnackBar(
-            AppLocalizations.of(navigatorKey.currentState!.context)!
-                .registredSuccessfully);
+            Utils.translator!.registredSuccessfully);
 
         AppNavigator.pushReplacement(LoginPage.loginPageRoute);
       }
