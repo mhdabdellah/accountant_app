@@ -71,8 +71,7 @@ class TransactionProvider extends ChangeNotifier {
       isLoading = false;
       notifyListeners();
     } catch (error) {
-      errorMessage = customExceptionHandler.handleException(
-          navigatorKey.currentState!.context, error);
+      errorMessage = customExceptionHandler.handleException(error);
       notifyListeners();
     }
   }
@@ -111,8 +110,7 @@ class TransactionProvider extends ChangeNotifier {
 
       notifyListeners();
     } catch (error) {
-      errorMessage = customExceptionHandler.handleException(
-          navigatorKey.currentState!.context, error);
+      errorMessage = customExceptionHandler.handleException(error);
       notifyListeners();
     }
   }

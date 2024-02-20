@@ -1,4 +1,5 @@
 import 'package:accountant_app/constants/app_constants/utils.dart';
+import 'package:accountant_app/helpers/navigation.dart';
 import 'package:accountant_app/screens/transaction_page.dart';
 import 'package:accountant_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
@@ -24,22 +25,19 @@ class SignInProvider extends ChangeNotifier {
       if (!isPasswordValid(password)) {
         throw const FormatException('Password must meet strength requirements');
       }
+
       await _authService.signIn(email, password);
 
       if (navigatorKey.currentState!.context.mounted) {
         SnackBarHelper.showSuccessSnackBar(
-            navigatorKey.currentState!.context,
             AppLocalizations.of(navigatorKey.currentState!.context)!
                 .logedSuccessfully);
 
-        navigatorKey.currentState!.pushReplacementNamed(
-            const TransactionPage().transactionsPageRoute);
+        AppNavigator.pushReplacement(TransactionPage.transactionsPageRoute);
       }
     } catch (error) {
       SnackBarHelper.showErrorSnackBar(
-          navigatorKey.currentState!.context,
-          customExceptionHandler.handleException(
-              navigatorKey.currentState!.context, error));
+          customExceptionHandler.handleException(error));
     }
   }
 

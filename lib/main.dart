@@ -1,13 +1,8 @@
 import 'package:accountant_app/constants/app_constants/app.dart';
 import 'package:accountant_app/constants/app_constants/theme_constant.dart';
 import 'package:accountant_app/constants/supabase_constants/config.dart';
+import 'package:accountant_app/helpers/navigation.dart';
 import 'package:accountant_app/providers/current_user_provider.dart';
-import 'package:accountant_app/providers/signIn_provider.dart';
-import 'package:accountant_app/providers/signup_provider.dart';
-import 'package:accountant_app/providers/transaction_provider.dart';
-import 'package:accountant_app/screens/login_screen.dart';
-import 'package:accountant_app/screens/register_screen.dart';
-import 'package:accountant_app/screens/transaction_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
@@ -28,9 +23,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentUserProvider = Provider.of<CurrentUserProvider>(context);
-    final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: title,
@@ -47,27 +39,9 @@ class MyApp extends StatelessWidget {
         Locale('ar'),
       ],
       theme: principalTheme,
-      navigatorKey: navigatorKey,
-      initialRoute: SplashScreen(
-        navigatorKey_: navigatorKey,
-      ).splashScreenPageRoute,
-      routes: {
-        SplashScreen(
-          navigatorKey_: navigatorKey,
-        ).splashScreenPageRoute: (context) => SplashScreen(
-              navigatorKey_: navigatorKey,
-            ),
-        const LoginPage().loginPageRoute: (context) => ChangeNotifierProvider(
-            create: (_) => SignInProvider(), child: const LoginPage()),
-        const RegisterPage().registerPageRoute: (context) =>
-            ChangeNotifierProvider(
-                create: (_) => SignUpProvider(), child: const RegisterPage()),
-        const TransactionPage().transactionsPageRoute: (context) =>
-            ChangeNotifierProvider(
-                create: (_) => TransactionProvider(
-                    userId: currentUserProvider.currentUserId),
-                child: const TransactionPage())
-      },
+      navigatorKey: AppNavigator.key,
+      initialRoute: SplashScreen.splashScreenPageRoute,
+      onGenerateRoute: AppNavigator.onGeneratedRoute,
     );
   }
 }

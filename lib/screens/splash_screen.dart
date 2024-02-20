@@ -3,12 +3,13 @@ import 'dart:async';
 import 'package:accountant_app/constants/app_constants/utils.dart';
 import 'package:accountant_app/constants/supabase_constants/config.dart';
 import 'package:accountant_app/custom_widgets/logo_handler.dart';
+import 'package:accountant_app/helpers/navigation.dart';
 import 'package:accountant_app/screens/login_screen.dart';
 import 'package:accountant_app/screens/transaction_page.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
-  final String splashScreenPageRoute = '/';
+  static const String splashScreenPageRoute = '/';
   final GlobalKey<NavigatorState> navigatorKey_;
 
   const SplashScreen({
@@ -26,10 +27,9 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     navigatorKey = widget.navigatorKey_;
     Timer(const Duration(seconds: 2), () async {
-      navigatorKey.currentState!.pushReplacementNamed(
-          client.auth.currentSession != null
-              ? const TransactionPage().transactionsPageRoute
-              : const LoginPage().loginPageRoute);
+      AppNavigator.pushReplacement(client.auth.currentSession != null
+          ? TransactionPage.transactionsPageRoute
+          : LoginPage.loginPageRoute);
     });
   }
 

@@ -62,7 +62,6 @@ class TransactionService {
   }
 
   Future<List<TransactionModel>> fetchAllTransactions({
-    
     required int start,
     required int end,
     required String userId,
@@ -77,7 +76,6 @@ class TransactionService {
   }
 
   Future<List<TransactionModel>> fetchExpenses({
-    
     required int start,
     required int end,
     required String userId,
@@ -93,7 +91,6 @@ class TransactionService {
   }
 
   Future<List<TransactionModel>> fetchIncoms({
-    
     required int start,
     required int end,
     required String userId,

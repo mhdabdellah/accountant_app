@@ -1,20 +1,30 @@
-import 'package:accountant_app/constants/app_constants/utils.dart';
 import 'package:accountant_app/custom_widgets/logo_handler.dart';
+import 'package:accountant_app/helpers/navigation.dart';
+import 'package:accountant_app/helpers/utils.dart';
 import 'package:accountant_app/providers/signIn_provider.dart';
 import 'package:accountant_app/screens/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 class LoginPage extends StatelessWidget {
-  final String loginPageRoute = '/login';
+  static const String loginPageRoute = '/login';
   const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final signInProvider = Provider.of<SignInProvider>(context);
+    return ChangeNotifierProvider(
+      create: (_) => SignInProvider(),
+      child: const _LoginPageBody(),
+    );
+  }
+}
 
+class _LoginPageBody extends StatelessWidget {
+  const _LoginPageBody();
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = context.watch<SignInProvider>();
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -29,35 +39,34 @@ class LoginPage extends StatelessWidget {
                 height: 7,
               ),
               TextFormField(
-                controller: signInProvider.emailController,
-                decoration: InputDecoration(
-                  icon: const Icon(Icons.email),
-                  labelText: AppLocalizations.of(context)!.email,
-                ),
-              ),
+                  controller: controller.emailController,
+                  decoration: InputDecoration(
+                    icon: const Icon(Icons.email),
+                    labelText: Utils.translator!.email,
+                  ),
+                  validator: (value) => Utils.isEmailValid(value)),
               TextFormField(
-                controller: signInProvider.passwordController,
+                controller: controller.passwordController,
                 obscureText: true,
+                validator: (value) => Utils.isPasswordValid(value),
                 decoration: InputDecoration(
                   icon: const Icon(Icons.lock),
-                  labelText: AppLocalizations.of(context)!.password,
+                  labelText: Utils.translator!.password,
                 ),
               ),
               const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: () async {
-                  await signInProvider.signIn();
-                },
-                child: Text(AppLocalizations.of(context)!.login),
+                onPressed: controller.signIn,
+                child: Text(Utils.translator!.login),
               ),
               const SizedBox(height: 20),
               TextButton(
                   onPressed: () {
-                    navigatorKey.currentState!.pushReplacementNamed(
-                        const RegisterPage().registerPageRoute);
+                    AppNavigator.pushReplacement(
+                        RegisterPage.registerPageRoute);
                   },
-                  child: Text(AppLocalizations.of(context)!
-                      .clickHereIfYouDoNotHaveAnAccount))
+                  child:
+                      Text(Utils.translator!.clickHereIfYouDoNotHaveAnAccount))
             ],
           ),
         ),

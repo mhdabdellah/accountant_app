@@ -1,7 +1,8 @@
+import 'package:accountant_app/helpers/navigation.dart';
 import 'package:flutter/material.dart';
 
 class SnackBarHelper {
-  static void showSuccessSnackBar(BuildContext context, String message) {
+  static void showSuccessSnackBar(String message) {
     final snackBar = SnackBar(
       content: Text(
         message,
@@ -10,10 +11,10 @@ class SnackBarHelper {
       backgroundColor: Colors.green,
       duration: const Duration(seconds: 5),
     );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    ScaffoldMessenger.of(AppNavigator.context).showSnackBar(snackBar);
   }
 
-  static void showErrorSnackBar(BuildContext context, String message) {
+  static void showErrorSnackBar(String message) {
     final snackBar = SnackBar(
       content: Text(
         message,
@@ -22,6 +23,6 @@ class SnackBarHelper {
       backgroundColor: Colors.red,
       duration: const Duration(seconds: 5),
     );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    ScaffoldMessenger.of(AppNavigator.context).showSnackBar(snackBar);
   }
 }

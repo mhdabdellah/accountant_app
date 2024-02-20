@@ -1,19 +1,29 @@
-import 'package:accountant_app/constants/app_constants/utils.dart';
 import 'package:accountant_app/custom_widgets/logo_handler.dart';
+import 'package:accountant_app/helpers/navigation.dart';
+import 'package:accountant_app/helpers/utils.dart';
 import 'package:accountant_app/providers/signup_provider.dart';
 import 'package:accountant_app/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+// import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RegisterPage extends StatelessWidget {
-  final String registerPageRoute = '/register';
+  static const String registerPageRoute = '/register';
   const RegisterPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final authProvider = Provider.of<SignUpProvider>(context);
+    return ChangeNotifierProvider(
+        create: (_) => SignUpProvider(), child: const _RegisterPage());
+  }
+}
 
+class _RegisterPage extends StatelessWidget {
+  const _RegisterPage();
+
+  @override
+  Widget build(BuildContext context) {
+    final signUpProvider = context.watch<SignUpProvider>();
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -28,49 +38,47 @@ class RegisterPage extends StatelessWidget {
                 height: 7,
               ),
               TextFormField(
-                controller: authProvider.firstnameController,
-                decoration: InputDecoration(
-                  icon: const Icon(Icons.person),
-                  labelText: AppLocalizations.of(context)!.firstName,
-                ),
-              ),
+                  controller: signUpProvider.firstnameController,
+                  decoration: InputDecoration(
+                    icon: const Icon(Icons.person),
+                    labelText: Utils.translator!.firstName,
+                  ),
+                  validator: (value) => Utils.isEmpty(value!)),
               TextFormField(
-                controller: authProvider.lastnameController,
-                decoration: InputDecoration(
-                  icon: const Icon(Icons.person),
-                  labelText: AppLocalizations.of(context)!.lastName,
-                ),
-              ),
+                  controller: signUpProvider.lastnameController,
+                  decoration: InputDecoration(
+                    icon: const Icon(Icons.person),
+                    labelText: Utils.translator!.lastName,
+                  ),
+                  validator: (value) => Utils.isEmpty(value!)),
               TextFormField(
-                controller: authProvider.emailController,
-                decoration: InputDecoration(
-                  icon: const Icon(Icons.email),
-                  labelText: AppLocalizations.of(context)!.email,
-                ),
-              ),
+                  controller: signUpProvider.emailController,
+                  decoration: InputDecoration(
+                    icon: const Icon(Icons.email),
+                    labelText: Utils.translator!.email,
+                  ),
+                  validator: (value) => Utils.isEmailValid(value)),
               TextFormField(
-                controller: authProvider.passwordController,
-                obscureText: true,
-                decoration: InputDecoration(
-                  icon: const Icon(Icons.lock),
-                  labelText: AppLocalizations.of(context)!.password,
-                ),
-              ),
+                  controller: signUpProvider.passwordController,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    icon: const Icon(Icons.lock),
+                    labelText: Utils.translator!.password,
+                  ),
+                  validator: (value) => Utils.isPasswordValid(value)),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () async {
-                  await authProvider.signUp();
+                  await context.read<SignUpProvider>().signUp();
                 },
-                child: Text(AppLocalizations.of(context)!.register),
+                child: Text(Utils.translator!.register),
               ),
               const SizedBox(height: 20),
               TextButton(
                   onPressed: () {
-                    navigatorKey.currentState!
-                        .pushReplacementNamed(const LoginPage().loginPageRoute);
+                    AppNavigator.pushReplacement(LoginPage.loginPageRoute);
                   },
-                  child: Text(AppLocalizations.of(context)!
-                      .clickHereIfYouHaveAnAccount))
+                  child: Text(Utils.translator!.clickHereIfYouHaveAnAccount))
             ],
           ),
         ),

@@ -1,8 +1,8 @@
+import 'package:accountant_app/helpers/utils.dart';
 import 'package:accountant_app/providers/add_transaction_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddTransactionForm extends StatelessWidget {
   const AddTransactionForm({
@@ -11,7 +11,16 @@ class AddTransactionForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final addTransactionProvider = Provider.of<AddTransactionProvider>(context);
+    return ChangeNotifierProvider(
+        create: (_) => AddTransactionProvider(), child: _AddTransactionForm());
+  }
+}
+
+class _AddTransactionForm extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final addTransactionProvider = context.watch<AddTransactionProvider>();
+
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.only(top: 0.0, right: 16.0, left: 16.0),
@@ -26,7 +35,7 @@ class AddTransactionForm extends StatelessWidget {
               controller: addTransactionProvider.titleController,
               decoration: InputDecoration(
                 icon: const Icon(Icons.description, color: Colors.black),
-                labelText: AppLocalizations.of(context)!.title,
+                labelText: Utils.translator!.title,
               ),
             ),
             TextFormField(
@@ -34,13 +43,13 @@ class AddTransactionForm extends StatelessWidget {
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 icon: const Icon(Icons.attach_money, color: Colors.black),
-                labelText: AppLocalizations.of(context)!.amount,
+                labelText: Utils.translator!.amount,
               ),
             ),
             const SizedBox(height: 20),
             Row(
               children: [
-                Text(AppLocalizations.of(context)!.type),
+                Text(Utils.translator!.type),
                 Radio<String>(
                   value: 'Expense',
                   groupValue: addTransactionProvider.selectedType,
@@ -50,7 +59,7 @@ class AddTransactionForm extends StatelessWidget {
                     }
                   },
                 ),
-                Text(AppLocalizations.of(context)!.expense),
+                Text(Utils.translator!.expense),
                 Radio<String>(
                   value: 'Income',
                   groupValue: addTransactionProvider.selectedType,
@@ -60,20 +69,20 @@ class AddTransactionForm extends StatelessWidget {
                     }
                   },
                 ),
-                Text(AppLocalizations.of(context)!.income),
+                Text(Utils.translator!.income),
               ],
             ),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
-                await addTransactionProvider.addTransaction();
+                await context.read<AddTransactionProvider>().addTransaction();
               },
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const Icon(Icons.add, color: Colors.black),
                   const SizedBox(width: 8),
-                  Text(AppLocalizations.of(context)!.addTransaction),
+                  Text(Utils.translator!.addTransaction),
                 ],
               ),
             ),

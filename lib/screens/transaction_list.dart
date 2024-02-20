@@ -1,9 +1,9 @@
 import 'package:accountant_app/constants/app_constants/theme_constant.dart';
 import 'package:accountant_app/custom_widgets/transaction_card.dart';
+import 'package:accountant_app/helpers/utils.dart';
 import 'package:accountant_app/providers/transaction_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TransactionList extends StatelessWidget {
   final int pageIndex;
@@ -43,9 +43,9 @@ class TransactionList extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(AppLocalizations.of(context)!.totalExpense),
+                              Text(Utils.translator!.totalExpense),
                               Text(
-                                  "${transactionProvider.totalExpenses.toString()} ${AppLocalizations.of(context)!.mru}"),
+                                  "${transactionProvider.totalExpenses.toString()} ${Utils.translator!.mru}"),
                             ],
                           ),
                           const SizedBox(
@@ -54,9 +54,9 @@ class TransactionList extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(AppLocalizations.of(context)!.totalIncome),
+                              Text(Utils.translator!.totalIncome),
                               Text(
-                                  "${transactionProvider.totalIncomes.toString()} ${AppLocalizations.of(context)!.mru}"),
+                                  "${transactionProvider.totalIncomes.toString()} ${Utils.translator!.mru}"),
                             ],
                           ),
                           const SizedBox(
@@ -65,9 +65,9 @@ class TransactionList extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(AppLocalizations.of(context)!.totalProfit),
+                              Text(Utils.translator!.totalProfit),
                               Text(
-                                  "${transactionProvider.totalProfit.toString()} ${AppLocalizations.of(context)!.mru}"),
+                                  "${transactionProvider.totalProfit.toString()} ${Utils.translator!.mru}"),
                             ],
                           ),
                           const SizedBox(

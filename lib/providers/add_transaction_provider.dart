@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:accountant_app/constants/app_constants/utils.dart';
 import 'package:accountant_app/constants/supabase_constants/config.dart';
 import 'package:accountant_app/custom_widgets/snack_bar_helper.dart';
+import 'package:accountant_app/helpers/utils.dart';
 import 'package:accountant_app/models/transaction_model.dart';
 import 'package:accountant_app/services/transaction_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddTransactionProvider extends ChangeNotifier {
   final TransactionService _transactionService = TransactionService();
@@ -47,18 +47,13 @@ class AddTransactionProvider extends ChangeNotifier {
       amountController.text = "";
       if (navigatorKey.currentState!.context.mounted) {
         SnackBarHelper.showSuccessSnackBar(
-            navigatorKey.currentState!.context,
-            AppLocalizations.of(navigatorKey.currentState!.context)!
-                .theTransactionHasBeenRegisteredSuccessfully);
+            Utils.translator!.theTransactionHasBeenRegisteredSuccessfully);
       }
       notifyListeners();
     } catch (error) {
-      customExceptionHandler.handleException(
-          navigatorKey.currentState!.context, error);
+      customExceptionHandler.handleException(error);
       SnackBarHelper.showErrorSnackBar(
-          navigatorKey.currentState!.context,
-          customExceptionHandler.handleException(
-              navigatorKey.currentState!.context, error));
+          customExceptionHandler.handleException(error));
     }
   }
 
