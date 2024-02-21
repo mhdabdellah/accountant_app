@@ -8,7 +8,9 @@ class SupabaseConfig {
   SupabaseConfig._internal();
   static final SupabaseConfig _instance = SupabaseConfig._internal();
 
-  late final Map<String, dynamic> supabaseDataConfig;
+  late final Map<String, dynamic> _supabaseDataConfig;
+
+  Map<String, dynamic> get supabaseDataConfig => _supabaseDataConfig;
 
   factory SupabaseConfig() => _instance;
 
@@ -31,7 +33,7 @@ class SupabaseConfig {
     try {
       final String response =
           await rootBundle.loadString('assets/supabaseConfig.json');
-      supabaseDataConfig = await jsonDecode(response) as Map<String, dynamic>;
+      _supabaseDataConfig = await jsonDecode(response) as Map<String, dynamic>;
     } catch (error) {
       // SnackBarHelper.showErrorSnackBar(
       //     CustomExceptionHandler().handleException(error));
