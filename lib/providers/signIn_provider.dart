@@ -16,8 +16,9 @@ class SignInProvider extends ChangeNotifier {
   SignInProvider();
 
   Future<void> signIn() async {
-    final response = await customExceptionHandler.exceptionCatcher<void>(() =>
-        _authService.signIn(emailController.text, passwordController.text));
+    final response = await customExceptionHandler.exceptionCatcher<void>(
+        function: () =>
+            _authService.signIn(emailController.text, passwordController.text));
 
     if (response.error != null) {
       SnackBarHelper.showErrorSnackBar(response.error!);

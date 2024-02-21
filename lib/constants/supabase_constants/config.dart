@@ -37,8 +37,8 @@ class SupabaseConfig {
   }
 
   Future<void> initSupabaseDataConfig() async {
-    final response =
-        await CustomExceptionHandler().exceptionCatcher<void>(() => init());
+    final response = await CustomExceptionHandler()
+        .exceptionCatcher<void>(function: () => init());
 
     if (response.error != null) {
       SnackBarHelper.showErrorSnackBar(response.error!);

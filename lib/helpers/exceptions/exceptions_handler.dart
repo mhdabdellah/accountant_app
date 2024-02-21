@@ -26,10 +26,9 @@ class CustomExceptionHandler {
   }
 
   Future<ExceptionHandlerResponse<T>> exceptionCatcher<T>(
-      Future<T> Function() function) async {
+      {required Future<T> Function() function}) async {
     try {
-      final result = await function.call();
-      return ExceptionHandlerResponse(result: result);
+      return ExceptionHandlerResponse(result: await function.call());
     } catch (error) {
       return ExceptionHandlerResponse<T>(error: exceptionHandler(error));
     }

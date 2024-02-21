@@ -24,7 +24,8 @@ class SignUpProvider extends ChangeNotifier {
     String email = emailController.text;
     String password = passwordController.text;
     final response = await customExceptionHandler.exceptionCatcher<void>(
-        () => _authService.signUp(firstname, lastname, email, password));
+        function: () =>
+            _authService.signUp(firstname, lastname, email, password));
 
     if (response.error != null) {
       SnackBarHelper.showErrorSnackBar(response.error!);
