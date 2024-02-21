@@ -35,8 +35,6 @@ class SupabaseConfig {
           await rootBundle.loadString('assets/supabaseConfig.json');
       _supabaseDataConfig = await jsonDecode(response) as Map<String, dynamic>;
     } catch (error) {
-      // SnackBarHelper.showErrorSnackBar(
-      //     CustomExceptionHandler().handleException(error));
       throw Exception(CustomExceptionHandler().exceptionCatcher(error));
     }
   }
