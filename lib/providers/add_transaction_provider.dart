@@ -50,7 +50,7 @@ class AddTransactionProvider extends ChangeNotifier {
 
   Future<void> addTransaction() async {
     final response =
-        await customExceptionHandler.catchErrors<void>(() => add());
+        await customExceptionHandler.exceptionHandler<void>(() => add());
 
     if (response.error != null) {
       SnackBarHelper.showErrorSnackBar(response.error!);
