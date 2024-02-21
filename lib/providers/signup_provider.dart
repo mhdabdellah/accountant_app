@@ -23,7 +23,7 @@ class SignUpProvider extends ChangeNotifier {
     String lastname = lastnameController.text;
     String email = emailController.text;
     String password = passwordController.text;
-    final response = await customExceptionHandler.exceptionHandler<void>(
+    final response = await customExceptionHandler.exceptionCatcher<void>(
         () => _authService.signUp(firstname, lastname, email, password));
 
     if (response.error != null) {

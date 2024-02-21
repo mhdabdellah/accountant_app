@@ -29,7 +29,7 @@ class CurrentUserProvider extends ChangeNotifier {
   }
 
   Future<UserModel?> getCurrentUser() async {
-    final response = await customExceptionHandler.exceptionHandler<UserModel?>(
+    final response = await customExceptionHandler.exceptionCatcher<UserModel?>(
         () => _authService.getCurrentUser(currentUserId!));
 
     if (response.error != null) {
@@ -44,7 +44,7 @@ class CurrentUserProvider extends ChangeNotifier {
 
   Future<void> logOut() async {
     final response = await customExceptionHandler
-        .exceptionHandler<void>(() => _authService.signOut());
+        .exceptionCatcher<void>(() => _authService.signOut());
 
     if (response.error != null) {
       SnackBarHelper.showErrorSnackBar(response.error!);

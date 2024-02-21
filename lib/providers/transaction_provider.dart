@@ -73,7 +73,7 @@ class TransactionProvider extends ChangeNotifier {
 
   Future<void> fetchData({required int pageIndex}) async {
     final response = await customExceptionHandler
-        .exceptionHandler<void>(() => fetch(pageIndex: pageIndex));
+        .exceptionCatcher<void>(() => fetch(pageIndex: pageIndex));
 
     if (response.error != null) {
       errorMessage = response.error!;
@@ -117,7 +117,7 @@ class TransactionProvider extends ChangeNotifier {
 
   Future<void> tranactionsAmounts() async {
     final response =
-        await customExceptionHandler.exceptionHandler<void>(() => amounts());
+        await customExceptionHandler.exceptionCatcher<void>(() => amounts());
 
     if (response.error != null) {
       errorMessage = response.error!;

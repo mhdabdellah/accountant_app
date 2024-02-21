@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:accountant_app/custom_widgets/snack_bar_helper.dart';
 import 'package:accountant_app/helpers/exceptions/exceptions_handler.dart';
 import 'package:flutter/services.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -29,13 +30,18 @@ class SupabaseConfig {
     return client;
   }
 
+  Future<void> init() async {
+    final String response =
+        await rootBundle.loadString('assets/supabaseConfig.json');
+    _supabaseDataConfig = await jsonDecode(response) as Map<String, dynamic>;
+  }
+
   Future<void> initSupabaseDataConfig() async {
-    try {
-      final String response =
-          await rootBundle.loadString('assets/supabaseConfig.json');
-      _supabaseDataConfig = await jsonDecode(response) as Map<String, dynamic>;
-    } catch (error) {
-      throw Exception(CustomExceptionHandler().exceptionCatcher(error));
+    final response =
+        await CustomExceptionHandler().exceptionCatcher<void>(() => init());
+
+    if (response.error != null) {
+      SnackBarHelper.showErrorSnackBar(response.error!);
     }
   }
 }
