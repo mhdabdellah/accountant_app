@@ -1,4 +1,4 @@
-import 'package:accountant_app/constants/app_constants/exceptions_handler.dart';
+import 'package:accountant_app/helpers/exceptions/exceptions_handler.dart';
 import 'package:accountant_app/helpers/navigation.dart';
 import 'package:accountant_app/helpers/utils.dart';
 import 'package:accountant_app/screens/login_screen.dart';
@@ -23,10 +23,10 @@ class SignUpProvider extends ChangeNotifier {
     String lastname = lastnameController.text;
     String email = emailController.text;
     String password = passwordController.text;
-    final response = await ExceptionCatch.catchErrors<void>(
+    final response = await customExceptionHandler.catchErrors<void>(
         () => _authService.signUp(firstname, lastname, email, password));
 
-    if (response.isError) {
+    if (response.error != null) {
       SnackBarHelper.showErrorSnackBar(response.error!);
     } else {
       if (AppNavigator.context.mounted) {

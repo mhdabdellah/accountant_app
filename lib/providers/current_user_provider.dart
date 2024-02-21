@@ -1,4 +1,4 @@
-import 'package:accountant_app/constants/app_constants/exceptions_handler.dart';
+import 'package:accountant_app/helpers/exceptions/exceptions_handler.dart';
 import 'package:accountant_app/constants/supabase_constants/config.dart';
 import 'package:accountant_app/custom_widgets/snack_bar_helper.dart';
 import 'package:accountant_app/helpers/navigation.dart';
@@ -29,10 +29,10 @@ class CurrentUserProvider extends ChangeNotifier {
   }
 
   Future<UserModel?> getCurrentUser() async {
-    final response = await ExceptionCatch.catchErrors<UserModel?>(
+    final response = await customExceptionHandler.catchErrors<UserModel?>(
         () => _authService.getCurrentUser(currentUserId!));
 
-    if (response.isError) {
+    if (response.error != null) {
       SnackBarHelper.showErrorSnackBar(response.error!);
       return null;
     } else {
@@ -43,10 +43,10 @@ class CurrentUserProvider extends ChangeNotifier {
   }
 
   Future<void> logOut() async {
-    final response =
-        await ExceptionCatch.catchErrors<void>(() => _authService.signOut());
+    final response = await customExceptionHandler
+        .catchErrors<void>(() => _authService.signOut());
 
-    if (response.isError) {
+    if (response.error != null) {
       SnackBarHelper.showErrorSnackBar(response.error!);
     } else {
       if (AppNavigator.context.mounted) {

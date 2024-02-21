@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:accountant_app/constants/app_constants/exceptions_handler.dart';
+import 'package:accountant_app/helpers/exceptions/exceptions_handler.dart';
 import 'package:accountant_app/models/transaction_model.dart';
 import 'package:accountant_app/services/transaction_service.dart';
 import 'package:flutter/material.dart';
@@ -72,10 +72,10 @@ class TransactionProvider extends ChangeNotifier {
   }
 
   Future<void> fetchData({required int pageIndex}) async {
-    final response = await ExceptionCatch.catchErrors<void>(
-        () => fetch(pageIndex: pageIndex));
+    final response = await customExceptionHandler
+        .catchErrors<void>(() => fetch(pageIndex: pageIndex));
 
-    if (response.isError) {
+    if (response.error != null) {
       errorMessage = response.error!;
       notifyListeners();
     }
@@ -116,9 +116,10 @@ class TransactionProvider extends ChangeNotifier {
   }
 
   Future<void> tranactionsAmounts() async {
-    final response = await ExceptionCatch.catchErrors<void>(() => amounts());
+    final response =
+        await customExceptionHandler.catchErrors<void>(() => amounts());
 
-    if (response.isError) {
+    if (response.error != null) {
       errorMessage = response.error!;
       notifyListeners();
     }

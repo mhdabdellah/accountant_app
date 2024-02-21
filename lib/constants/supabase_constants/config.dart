@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:accountant_app/constants/app_constants/exceptions_handler.dart';
+import 'package:accountant_app/helpers/exceptions/exceptions_handler.dart';
 import 'package:flutter/services.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -35,7 +35,7 @@ class SupabaseConfig {
     } catch (error) {
       // SnackBarHelper.showErrorSnackBar(
       //     CustomExceptionHandler().handleException(error));
-      throw Exception(CustomExceptionHandler().handleException(error));
+      throw Exception(CustomExceptionHandler().exceptionHandler(error));
     }
   }
 }

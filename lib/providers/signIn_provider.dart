@@ -1,4 +1,4 @@
-import 'package:accountant_app/constants/app_constants/exceptions_handler.dart';
+import 'package:accountant_app/helpers/exceptions/exceptions_handler.dart';
 import 'package:accountant_app/custom_widgets/snack_bar_helper.dart';
 import 'package:accountant_app/helpers/navigation.dart';
 import 'package:accountant_app/helpers/utils.dart';
@@ -16,10 +16,10 @@ class SignInProvider extends ChangeNotifier {
   SignInProvider();
 
   Future<void> signIn() async {
-    final response = await ExceptionCatch.catchErrors(() =>
+    final response = await customExceptionHandler.catchErrors<void>(() =>
         _authService.signIn(emailController.text, passwordController.text));
 
-    if (response.isError) {
+    if (response.error != null) {
       SnackBarHelper.showErrorSnackBar(response.error!);
     } else {
       if (AppNavigator.context.mounted) {

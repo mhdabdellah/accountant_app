@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:accountant_app/constants/app_constants/exceptions_handler.dart';
+import 'package:accountant_app/helpers/exceptions/exceptions_handler.dart';
 import 'package:accountant_app/constants/supabase_constants/config.dart';
 import 'package:accountant_app/custom_widgets/snack_bar_helper.dart';
 import 'package:accountant_app/helpers/navigation.dart';
@@ -49,9 +49,10 @@ class AddTransactionProvider extends ChangeNotifier {
   }
 
   Future<void> addTransaction() async {
-    final response = await ExceptionCatch.catchErrors<void>(() => add());
+    final response =
+        await customExceptionHandler.catchErrors<void>(() => add());
 
-    if (response.isError) {
+    if (response.error != null) {
       SnackBarHelper.showErrorSnackBar(response.error!);
     } else {
       if (AppNavigator.context.mounted) {
