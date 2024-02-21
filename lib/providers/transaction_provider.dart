@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:accountant_app/constants/app_constants/utils.dart';
+import 'package:accountant_app/constants/app_constants/exceptions_handler.dart';
 import 'package:accountant_app/models/transaction_model.dart';
 import 'package:accountant_app/services/transaction_service.dart';
 import 'package:flutter/material.dart';
@@ -34,44 +34,49 @@ class TransactionProvider extends ChangeNotifier {
     required this.userId,
   });
 
+  Future<void> fetch({required int pageIndex}) async {
+    isLoading = true;
+    errorMessage = null;
+    final pages = await _transactionService.getNumberOfTransactions(
+        pageSize: _pageSize, pageIndex: pageIndex, userId: userId);
+    _numberOfPages = pages;
+
+    final start = _currentPage * _pageSize;
+    final end = start + _pageSize - 1;
+
+    if (pageIndex == 1) {
+      transactions = await _transactionService.fetchAllTransactions(
+        start: start,
+        end: end,
+        userId: userId,
+      );
+    } else if (pageIndex == 2) {
+      transactions = await _transactionService.fetchExpenses(
+        start: start,
+        end: end,
+        userId: userId,
+      );
+    } else if (pageIndex == 3) {
+      transactions = await _transactionService.fetchIncoms(
+        start: start,
+        end: end,
+        userId: userId,
+      );
+    } else {
+      transactions = [];
+    }
+
+    _hasMore = _currentPage < pages;
+    isLoading = false;
+    notifyListeners();
+  }
+
   Future<void> fetchData({required int pageIndex}) async {
-    try {
-      isLoading = true;
-      errorMessage = null;
-      final pages = await _transactionService.getNumberOfTransactions(
-          pageSize: _pageSize, pageIndex: pageIndex, userId: userId);
-      _numberOfPages = pages;
+    final response = await ExceptionCatch.catchErrors<void>(
+        () => fetch(pageIndex: pageIndex));
 
-      final start = _currentPage * _pageSize;
-      final end = start + _pageSize - 1;
-
-      if (pageIndex == 1) {
-        transactions = await _transactionService.fetchAllTransactions(
-          start: start,
-          end: end,
-          userId: userId,
-        );
-      } else if (pageIndex == 2) {
-        transactions = await _transactionService.fetchExpenses(
-          start: start,
-          end: end,
-          userId: userId,
-        );
-      } else if (pageIndex == 3) {
-        transactions = await _transactionService.fetchIncoms(
-          start: start,
-          end: end,
-          userId: userId,
-        );
-      } else {
-        transactions = [];
-      }
-
-      _hasMore = _currentPage < pages;
-      isLoading = false;
-      notifyListeners();
-    } catch (error) {
-      errorMessage = customExceptionHandler.handleException(error);
+    if (response.isError) {
+      errorMessage = response.error!;
       notifyListeners();
     }
   }
@@ -102,15 +107,19 @@ class TransactionProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  tranactionsAmounts() async {
-    try {
-      isLoading = true;
-      updateData(await _transactionService.tranactionsAmounts(userId: userId));
-      isLoading = false;
+  Future<void> amounts() async {
+    isLoading = true;
+    updateData(await _transactionService.tranactionsAmounts(userId: userId));
+    isLoading = false;
 
-      notifyListeners();
-    } catch (error) {
-      errorMessage = customExceptionHandler.handleException(error);
+    notifyListeners();
+  }
+
+  Future<void> tranactionsAmounts() async {
+    final response = await ExceptionCatch.catchErrors<void>(() => amounts());
+
+    if (response.isError) {
+      errorMessage = response.error!;
       notifyListeners();
     }
   }

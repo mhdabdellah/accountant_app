@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:accountant_app/constants/app_constants/utils.dart';
 import 'package:accountant_app/constants/supabase_constants/config.dart';
 import 'package:accountant_app/custom_widgets/logo_handler.dart';
 import 'package:accountant_app/helpers/navigation.dart';
@@ -25,7 +24,6 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    navigatorKey = widget.navigatorKey_;
     Timer(const Duration(seconds: 2), () async {
       AppNavigator.pushReplacement(SupabaseConfig().currentSession != null
           ? TransactionPage.transactionsPageRoute

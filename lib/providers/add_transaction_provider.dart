@@ -1,8 +1,9 @@
 import 'dart:async';
 
-import 'package:accountant_app/constants/app_constants/utils.dart';
+import 'package:accountant_app/constants/app_constants/exceptions_handler.dart';
 import 'package:accountant_app/constants/supabase_constants/config.dart';
 import 'package:accountant_app/custom_widgets/snack_bar_helper.dart';
+import 'package:accountant_app/helpers/navigation.dart';
 import 'package:accountant_app/helpers/utils.dart';
 import 'package:accountant_app/models/transaction_model.dart';
 import 'package:accountant_app/services/transaction_service.dart';
@@ -26,34 +27,37 @@ class AddTransactionProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> add() async {
+    DateTime date = DateTime.now();
+    String? userId = SupabaseConfig().currentUserId;
+
+    final double amount = double.parse(amountController.text);
+    final bool isExpense = selectedType == 'Expense';
+    final String title = titleController.text;
+    final transaction = TransactionModel(
+      title: title,
+      amount: amount,
+      isExpense: isExpense,
+      date: date,
+      userId: userId ?? "",
+    );
+
+    await _transactionService.addTransaction(transaction: transaction);
+    titleController.text = "";
+    amountController.text = "";
+    notifyListeners();
+  }
+
   Future<void> addTransaction() async {
-    try {
-      DateTime date = DateTime.now();
-      String? userId = SupabaseConfig().currentUserId;
+    final response = await ExceptionCatch.catchErrors<void>(() => add());
 
-      final double amount = double.parse(amountController.text);
-      final bool isExpense = selectedType == 'Expense';
-      final String title = titleController.text;
-      final transaction = TransactionModel(
-        title: title,
-        amount: amount,
-        isExpense: isExpense,
-        date: date,
-        userId: userId ?? "",
-      );
-
-      await _transactionService.addTransaction(transaction: transaction);
-      titleController.text = "";
-      amountController.text = "";
-      if (navigatorKey.currentState!.context.mounted) {
+    if (response.isError) {
+      SnackBarHelper.showErrorSnackBar(response.error!);
+    } else {
+      if (AppNavigator.context.mounted) {
         SnackBarHelper.showSuccessSnackBar(
             Utils.translator!.theTransactionHasBeenRegisteredSuccessfully);
       }
-      notifyListeners();
-    } catch (error) {
-      customExceptionHandler.handleException(error);
-      SnackBarHelper.showErrorSnackBar(
-          customExceptionHandler.handleException(error));
     }
   }
 

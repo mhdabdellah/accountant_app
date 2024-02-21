@@ -1,4 +1,4 @@
-import 'package:accountant_app/constants/app_constants/utils.dart';
+import 'package:accountant_app/constants/app_constants/exceptions_handler.dart';
 import 'package:accountant_app/constants/supabase_constants/config.dart';
 import 'package:accountant_app/custom_widgets/snack_bar_helper.dart';
 import 'package:accountant_app/helpers/navigation.dart';
@@ -29,24 +29,30 @@ class CurrentUserProvider extends ChangeNotifier {
   }
 
   Future<UserModel?> getCurrentUser() async {
-    try {
-      currentUser = await _authService.getCurrentUser(currentUserId!);
+    final response = await ExceptionCatch.catchErrors<UserModel?>(
+        () => _authService.getCurrentUser(currentUserId!));
+
+    if (response.isError) {
+      SnackBarHelper.showErrorSnackBar(response.error!);
+      return null;
+    } else {
+      currentUser = response.result;
       notifyListeners();
       return currentUser;
-    } catch (error) {
-      SnackBarHelper.showErrorSnackBar(
-          customExceptionHandler.handleException(error));
-      return null;
     }
   }
 
   Future<void> logOut() async {
-    try {
-      await _authService.signOut();
-      AppNavigator.pushReplacement(LoginPage.loginPageRoute);
-    } catch (error) {
-      SnackBarHelper.showErrorSnackBar(
-          customExceptionHandler.handleException(error));
+    final response =
+        await ExceptionCatch.catchErrors<void>(() => _authService.signOut());
+
+    if (response.isError) {
+      SnackBarHelper.showErrorSnackBar(response.error!);
+    } else {
+      if (AppNavigator.context.mounted) {
+        // SnackBarHelper.showSuccessSnackBar(Utils.translator!.logedSuccessfully);
+        AppNavigator.pushReplacement(LoginPage.loginPageRoute);
+      }
     }
   }
 

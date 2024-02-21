@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:accountant_app/constants/app_constants/utils.dart';
+import 'package:accountant_app/constants/app_constants/exceptions_handler.dart';
 import 'package:flutter/services.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 

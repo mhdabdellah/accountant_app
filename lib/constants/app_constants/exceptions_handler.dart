@@ -1,8 +1,5 @@
 import 'package:accountant_app/helpers/utils.dart';
-import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
-late GlobalKey<NavigatorState> navigatorKey;
 
 class CustomExceptionHandler {
   CustomExceptionHandler._internal();
@@ -26,4 +23,27 @@ class CustomExceptionHandler {
 
     return errorMessage;
   }
+}
+
+class ExceptionCatch {
+  static Future<ErrorHandlerResponse<T>> catchErrors<T>(
+      Future<T> Function() function) async {
+    try {
+      final result = await function.call();
+      return ErrorHandlerResponse(result: result);
+    } catch (error) {
+      final String errorMessage =
+          CustomExceptionHandler().handleException(error);
+      return ErrorHandlerResponse<T>(error: errorMessage);
+    }
+  }
+}
+
+class ErrorHandlerResponse<T> {
+  final String? error;
+  final T? result;
+
+  ErrorHandlerResponse({this.error, this.result});
+
+  bool get isError => error != null;
 }

@@ -1,4 +1,4 @@
-import 'package:accountant_app/constants/app_constants/utils.dart';
+import 'package:accountant_app/constants/app_constants/exceptions_handler.dart';
 import 'package:accountant_app/helpers/navigation.dart';
 import 'package:accountant_app/helpers/utils.dart';
 import 'package:accountant_app/screens/login_screen.dart';
@@ -19,22 +19,21 @@ class SignUpProvider extends ChangeNotifier {
   SignUpProvider();
 
   Future<void> signUp() async {
-    try {
-      String firstname = firstnameController.text;
-      String lastname = lastnameController.text;
-      String email = emailController.text;
-      String password = passwordController.text;
+    String firstname = firstnameController.text;
+    String lastname = lastnameController.text;
+    String email = emailController.text;
+    String password = passwordController.text;
+    final response = await ExceptionCatch.catchErrors<void>(
+        () => _authService.signUp(firstname, lastname, email, password));
 
-      await _authService.signUp(firstname, lastname, email, password);
-      if (navigatorKey.currentState!.context.mounted) {
+    if (response.isError) {
+      SnackBarHelper.showErrorSnackBar(response.error!);
+    } else {
+      if (AppNavigator.context.mounted) {
         SnackBarHelper.showSuccessSnackBar(
             Utils.translator!.registredSuccessfully);
-
         AppNavigator.pushReplacement(LoginPage.loginPageRoute);
       }
-    } catch (error) {
-      SnackBarHelper.showErrorSnackBar(
-          customExceptionHandler.handleException(error));
     }
   }
 }
