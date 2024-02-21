@@ -7,7 +7,7 @@ class CustomExceptionHandler {
   static final CustomExceptionHandler _instance =
       CustomExceptionHandler._internal();
   factory CustomExceptionHandler() => _instance;
-  String exceptionCatch(dynamic error) {
+  String exceptionCatcher(dynamic error) {
     String errorMessage;
     if (error is FormatException) {
       errorMessage =
@@ -31,7 +31,7 @@ class CustomExceptionHandler {
       final result = await function.call();
       return ExceptionHandlerResponse(result: result);
     } catch (error) {
-      return ExceptionHandlerResponse<T>(error: exceptionCatch(error));
+      return ExceptionHandlerResponse<T>(error: exceptionCatcher(error));
     }
   }
 }

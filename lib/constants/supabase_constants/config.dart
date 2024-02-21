@@ -37,7 +37,7 @@ class SupabaseConfig {
     } catch (error) {
       // SnackBarHelper.showErrorSnackBar(
       //     CustomExceptionHandler().handleException(error));
-      throw Exception(CustomExceptionHandler().exceptionCatch(error));
+      throw Exception(CustomExceptionHandler().exceptionCatcher(error));
     }
   }
 }
