@@ -19,8 +19,8 @@ class SupabaseConfig {
     return currentSession;
   }
 
-  String? get currentUserId {
-    String? userId = currentSession!.user.id;
+  String get currentUserId {
+    String userId = currentSession!.user.id;
     return userId;
   }
 

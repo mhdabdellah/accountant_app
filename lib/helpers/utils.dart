@@ -1,12 +1,15 @@
-import 'package:accountant_app/helpers/navigation.dart';
-
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/intl.dart';
 
 class Utils {
-  static final translator = AppLocalizations.of(AppNavigator.context);
+  static String convertDate(DateTime dateTime) {
+    DateFormat formatter = DateFormat('yyyy-MM-dd HH:mm:ss');
+    String formattedDate = formatter.format(dateTime);
 
-  static String? isEmpty(String value) {
-    if (value.isEmpty) {
+    return formattedDate;
+  }
+
+  static String? isEmpty(String? value) {
+    if (value != null && value.isEmpty) {
       return "cannot be empty";
     }
     return null;
@@ -16,7 +19,7 @@ class Utils {
     final emailRegex = RegExp(
         r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.[a-zA-Z]{2,}$");
 
-    if (emailRegex.hasMatch(email!)) {
+    if (email != null && emailRegex.hasMatch(email)) {
       return null;
     } else {
       return 'Invalid email format';
@@ -24,7 +27,7 @@ class Utils {
   }
 
   static String? isPasswordValid(String? password) {
-    if (password!.length >= 8) {
+    if (password != null && password.length >= 8) {
       return null;
     } else {
       return 'Password must meet strength requirements';

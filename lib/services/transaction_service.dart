@@ -2,11 +2,17 @@ import 'package:accountant_app/constants/supabase_constants/config.dart';
 import 'package:accountant_app/models/transaction_model.dart';
 
 class TransactionService {
+  List<TransactionModel> transactionsFromListMap(List<dynamic> mapData) {
+    List<TransactionModel> transactionModels =
+        mapData.map((map) => TransactionModel.fromMap(map)).toList();
+    return transactionModels;
+  }
+
   Future<List<TransactionModel>> tranactionsAmounts({
     required String userId,
   }) async {
     return transactionsFromListMap(await SupabaseConfig()
-        .client!
+        .client
         .from('transactions')
         .select("*")
         .eq('user_id', userId)
@@ -21,7 +27,7 @@ class TransactionService {
 
     if (pageIndex == 1) {
       final countResponse = await SupabaseConfig()
-          .client!
+          .client
           .from('transactions')
           .select('count')
           .eq('user_id', userId)
@@ -37,7 +43,7 @@ class TransactionService {
       }
     } else if (pageIndex == 2) {
       final countResponse = await SupabaseConfig()
-          .client!
+          .client
           .from('transactions')
           .select('count')
           .eq('user_id', userId)
@@ -55,7 +61,7 @@ class TransactionService {
       }
     } else {
       final countResponse = await SupabaseConfig()
-          .client!
+          .client
           .from('transactions')
           .select('count')
           .eq('user_id', userId)
@@ -81,11 +87,10 @@ class TransactionService {
     required String userId,
   }) async {
     return transactionsFromListMap(await SupabaseConfig()
-        .client!
+        .client
         .from('transactions')
         .select("*")
         .eq('user_id', userId)
-        // .limit(pageSize)
         .order('created_at')
         .range(start, end));
   }
@@ -96,12 +101,11 @@ class TransactionService {
     required String userId,
   }) async {
     return transactionsFromListMap(await SupabaseConfig()
-        .client!
+        .client
         .from('transactions')
         .select("*")
         .eq('user_id', userId)
         .eq('isExpense', true)
-        // .limit(pageSize)
         .order('created_at')
         .range(start, end));
   }
@@ -112,19 +116,18 @@ class TransactionService {
     required String userId,
   }) async {
     return transactionsFromListMap(await SupabaseConfig()
-        .client!
+        .client
         .from('transactions')
         .select("*")
         .eq('user_id', userId)
         .eq('isExpense', false)
-        // .limit(pageSize)
         .order('created_at')
         .range(start, end));
   }
 
   Future<void> addTransaction({required TransactionModel transaction}) async {
     await SupabaseConfig()
-        .client!
+        .client
         .from('transactions')
         .insert([transaction.toMap()]);
   }

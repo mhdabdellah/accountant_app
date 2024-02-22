@@ -1,4 +1,5 @@
 import 'package:accountant_app/custom_widgets/logo_handler.dart';
+import 'package:accountant_app/helpers/localization.dart';
 import 'package:accountant_app/helpers/navigation.dart';
 import 'package:accountant_app/helpers/utils.dart';
 import 'package:accountant_app/providers/signIn_provider.dart';
@@ -27,48 +28,45 @@ class _LoginPageBody extends StatelessWidget {
     final controller = context.watch<SignInProvider>();
     return Scaffold(
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.only(top: 50.0, right: 16.0, left: 16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const LogoHandler(
-                margin: EdgeInsets.only(bottom: 40.0),
-              ),
-              const SizedBox(
-                height: 7,
-              ),
-              TextFormField(
-                  controller: controller.emailController,
-                  decoration: InputDecoration(
-                    icon: const Icon(Icons.email),
-                    labelText: Utils.translator!.email,
-                  ),
-                  validator: (value) => Utils.isEmailValid(value)),
-              TextFormField(
-                controller: controller.passwordController,
-                obscureText: true,
-                validator: (value) => Utils.isPasswordValid(value),
+        padding: const EdgeInsets.only(top: 50.0, right: 16.0, left: 16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const LogoHandler(
+              margin: EdgeInsets.only(bottom: 40.0),
+            ),
+            const SizedBox(
+              height: 8,
+            ),
+            TextFormField(
+                controller: controller.emailController,
                 decoration: InputDecoration(
-                  icon: const Icon(Icons.lock),
-                  labelText: Utils.translator!.password,
+                  icon: const Icon(Icons.email),
+                  labelText: ApplicationLocalization.translator!.email,
                 ),
+                validator: (value) => Utils.isEmailValid(value)),
+            TextFormField(
+              controller: controller.passwordController,
+              obscureText: true,
+              validator: (value) => Utils.isPasswordValid(value),
+              decoration: InputDecoration(
+                icon: const Icon(Icons.lock),
+                labelText: ApplicationLocalization.translator!.password,
               ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: controller.signIn,
-                child: Text(Utils.translator!.login),
-              ),
-              const SizedBox(height: 20),
-              TextButton(
-                  onPressed: () {
-                    AppNavigator.pushReplacement(
-                        RegisterPage.registerPageRoute);
-                  },
-                  child:
-                      Text(Utils.translator!.clickHereIfYouDoNotHaveAnAccount))
-            ],
-          ),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: controller.signIn,
+              child: Text(ApplicationLocalization.translator!.login),
+            ),
+            const SizedBox(height: 20),
+            TextButton(
+                onPressed: () {
+                  AppNavigator.pushReplacement(RegisterPage.registerPageRoute);
+                },
+                child: Text(ApplicationLocalization
+                    .translator!.clickHereIfYouDoNotHaveAnAccount))
+          ],
         ),
       ),
     );

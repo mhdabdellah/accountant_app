@@ -1,9 +1,9 @@
 import 'package:accountant_app/helpers/exceptions/exceptions_handler.dart';
 import 'package:accountant_app/constants/supabase_constants/config.dart';
-import 'package:accountant_app/custom_widgets/snack_bar_helper.dart';
 import 'package:accountant_app/helpers/navigation.dart';
 import 'package:accountant_app/models/user_model.dart';
 import 'package:accountant_app/screens/login_screen.dart';
+import 'package:accountant_app/screens/transaction_page.dart';
 import 'package:accountant_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
@@ -19,8 +19,8 @@ class CurrentUserProvider extends ChangeNotifier {
 
   UserModel? currentUser;
 
-  String? get currentUserId {
-    String? userId = SupabaseConfig().currentUserId;
+  String get currentUserId {
+    String userId = SupabaseConfig().currentUserId;
     return userId;
   }
 
@@ -30,35 +30,30 @@ class CurrentUserProvider extends ChangeNotifier {
 
   Future<UserModel?> getCurrentUser() async {
     final response = await customExceptionHandler.exceptionCatcher<UserModel?>(
-        function: () => _authService.getCurrentUser(currentUserId!));
+        function: () => _authService.getCurrentUser(currentUserId));
 
-    if (response.error != null) {
-      SnackBarHelper.showErrorSnackBar(response.error!);
-      return null;
-    } else {
+    if (response.error == null) {
       currentUser = response.result;
       notifyListeners();
       return currentUser;
     }
+    return null;
+  }
+
+  void userVerification() {
+    AppNavigator.pushReplacement(SupabaseConfig().currentSession != null
+        ? TransactionPage.transactionsPageRoute
+        : LoginPage.loginPageRoute);
   }
 
   Future<void> logOut() async {
     final response = await customExceptionHandler.exceptionCatcher<void>(
         function: () => _authService.signOut());
 
-    if (response.error != null) {
-      SnackBarHelper.showErrorSnackBar(response.error!);
-    } else {
+    if (response.error == null) {
       if (AppNavigator.context.mounted) {
-        // SnackBarHelper.showSuccessSnackBar(Utils.translator!.logedSuccessfully);
         AppNavigator.pushReplacement(LoginPage.loginPageRoute);
       }
     }
-  }
-
-  @override
-  void dispose() {
-    currentUser = UserModel();
-    super.dispose();
   }
 }

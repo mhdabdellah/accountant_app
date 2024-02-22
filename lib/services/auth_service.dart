@@ -5,11 +5,11 @@ class AuthService {
   Future<void> signUp(String firstnameController, String lastnameController,
       String email, String password) async {
     final response = await SupabaseConfig()
-        .client!
+        .client
         .auth
         .signUp(email: email, password: password);
     if (response.user != null) {
-      await SupabaseConfig().client!.from('users').insert([
+      await SupabaseConfig().client.from('users').insert([
         {
           "id": response.user!.id,
           "first_name": firstnameController,
@@ -20,14 +20,14 @@ class AuthService {
   }
 
   Future<void> signIn(String email, String password) async {
-    await SupabaseConfig().client!.auth.signInWithPassword(
+    await SupabaseConfig().client.auth.signInWithPassword(
           email: email,
           password: password,
         );
   }
 
   Future<void> signOut() async {
-    await SupabaseConfig().client!.auth.signOut();
+    await SupabaseConfig().client.auth.signOut();
   }
 
   Future<UserModel?> getCurrentUser(String userId) async {
@@ -35,7 +35,7 @@ class AuthService {
       return null;
     }
     final responseData = await SupabaseConfig()
-        .client!
+        .client
         .from('users')
         .select("*")
         .eq('id', userId);

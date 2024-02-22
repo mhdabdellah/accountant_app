@@ -1,10 +1,7 @@
 import 'dart:async';
 
-import 'package:accountant_app/constants/supabase_constants/config.dart';
 import 'package:accountant_app/custom_widgets/logo_handler.dart';
-import 'package:accountant_app/helpers/navigation.dart';
-import 'package:accountant_app/screens/login_screen.dart';
-import 'package:accountant_app/screens/transaction_page.dart';
+import 'package:accountant_app/providers/current_user_provider.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -23,9 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Timer(const Duration(seconds: 2), () async {
-      AppNavigator.pushReplacement(SupabaseConfig().currentSession != null
-          ? TransactionPage.transactionsPageRoute
-          : LoginPage.loginPageRoute);
+      CurrentUserProvider().userVerification();
     });
   }
 

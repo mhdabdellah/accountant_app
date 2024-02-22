@@ -1,6 +1,6 @@
-import 'package:accountant_app/constants/app_constants/app.dart';
 import 'package:accountant_app/constants/app_constants/theme_constant.dart';
 import 'package:accountant_app/constants/supabase_constants/config.dart';
+import 'package:accountant_app/helpers/localization.dart';
 import 'package:accountant_app/helpers/navigation.dart';
 import 'package:accountant_app/providers/current_user_provider.dart';
 import 'package:flutter/material.dart';
@@ -33,8 +33,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: title,
-      locale: Locale(getDeviceLanguage(context)),
+      title: "AccountantApp",
+      locale: Locale(ApplicationLocalization.getDeviceLanguage(context)),
       localizationsDelegates: const [
         AppLocalizations.delegate, // Add this line
         GlobalMaterialLocalizations.delegate,
@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
         Locale('fr'),
         Locale('ar'),
       ],
-      theme: principalTheme,
+      theme: ApplicationThemes().principalTheme,
       navigatorKey: AppNavigator.key,
       initialRoute: SplashScreen.splashScreenPageRoute,
       onGenerateRoute: AppNavigator.onGeneratedRoute,

@@ -1,6 +1,7 @@
-import 'package:accountant_app/helpers/exceptions/exception_handler_response.dart';
-import 'package:accountant_app/helpers/utils.dart';
+import 'package:accountant_app/custom_widgets/snack_bar_helper.dart';
+import 'package:accountant_app/helpers/localization.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:accountant_app/models/exception_handler_response_model.dart';
 
 class CustomExceptionHandler {
   CustomExceptionHandler._internal();
@@ -11,26 +12,32 @@ class CustomExceptionHandler {
     String errorMessage;
     if (error is FormatException) {
       errorMessage =
-          '${Utils.translator!.unexpectedErrorOccurred} ${error.message}';
+          '${ApplicationLocalization.translator!.unexpectedErrorOccurred} ${error.message}';
     } else if (error is PostgrestException) {
       errorMessage =
-          '${Utils.translator!.unexpectedErrorOccurred} ${error.message}';
+          '${ApplicationLocalization.translator!.unexpectedErrorOccurred} ${error.message}';
     } else if (error is AuthException) {
       errorMessage =
-          '${Utils.translator!.unexpectedErrorOccurred} ${error.message}';
+          '${ApplicationLocalization.translator!.unexpectedErrorOccurred} ${error.message}';
     } else {
-      errorMessage = '${Utils.translator!.unexpectedErrorOccurred} $error';
+      errorMessage =
+          '${ApplicationLocalization.translator!.unexpectedErrorOccurred} $error';
     }
 
     return errorMessage;
   }
 
-  Future<ExceptionHandlerResponse<T>> exceptionCatcher<T>(
-      {required Future<T> Function() function}) async {
+  Future<ExceptionHandlerResponseModel<T>> exceptionCatcher<T>(
+      {required Future<T> Function() function,
+      bool showSnackbar = true}) async {
     try {
-      return ExceptionHandlerResponse(result: await function.call());
+      return ExceptionHandlerResponseModel(result: await function.call());
     } catch (error) {
-      return ExceptionHandlerResponse<T>(error: exceptionHandler(error));
+      String errorMesssage = exceptionHandler(error);
+      if (showSnackbar) {
+        SnackBarHelper.showErrorSnackBar(errorMesssage);
+      }
+      return ExceptionHandlerResponseModel<T>(error: exceptionHandler(error));
     }
   }
 }

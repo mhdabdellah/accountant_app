@@ -1,5 +1,5 @@
 import 'package:accountant_app/constants/supabase_constants/config.dart';
-import 'package:accountant_app/helpers/utils.dart';
+import 'package:accountant_app/helpers/localization.dart';
 import 'package:accountant_app/providers/current_user_provider.dart';
 import 'package:accountant_app/providers/transaction_provider.dart';
 import 'package:accountant_app/screens/aboutDevelopper.dart';
@@ -16,7 +16,7 @@ class TransactionPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
         create: (_) =>
-            TransactionProvider(userId: SupabaseConfig().currentUserId ?? ''),
+            TransactionProvider(userId: SupabaseConfig().currentUserId),
         child: const _TransactionPage());
   }
 }
@@ -27,17 +27,16 @@ class _TransactionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final transactionProvider = context.watch<TransactionProvider>();
-    final currentUserProvider = context.watch<CurrentUserProvider>();
 
     return Scaffold(
       appBar: AppBar(
         title: transactionProvider.currentIndex == 4
-            ? Text(Utils.translator!.aboutDeveloper)
-            : Text(Utils.translator!.transactions),
+            ? Text(ApplicationLocalization.translator!.aboutDeveloper)
+            : Text(ApplicationLocalization.translator!.transactions),
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
-            onPressed: currentUserProvider.logOut,
+            onPressed: CurrentUserProvider().logOut,
           )
         ],
       ),
@@ -50,23 +49,23 @@ class _TransactionPage extends StatelessWidget {
         items: [
           BottomNavigationBarItem(
             icon: const Icon(Icons.add, color: Colors.black),
-            label: Utils.translator!.add,
+            label: ApplicationLocalization.translator!.add,
           ),
           BottomNavigationBarItem(
             icon: const Icon(Icons.list, color: Colors.black),
-            label: Utils.translator!.transactions,
+            label: ApplicationLocalization.translator!.transactions,
           ),
           BottomNavigationBarItem(
             icon: const Icon(Icons.money_off, color: Colors.black),
-            label: Utils.translator!.expenses,
+            label: ApplicationLocalization.translator!.expenses,
           ),
           BottomNavigationBarItem(
             icon: const Icon(Icons.attach_money, color: Colors.black),
-            label: Utils.translator!.incomes,
+            label: ApplicationLocalization.translator!.incomes,
           ),
           BottomNavigationBarItem(
               icon: const Icon(Icons.open_in_new),
-              label: Utils.translator!.aboutDeveloper)
+              label: ApplicationLocalization.translator!.aboutDeveloper)
         ],
       ),
     );

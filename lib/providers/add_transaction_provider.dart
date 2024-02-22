@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:accountant_app/helpers/exceptions/exceptions_handler.dart';
 import 'package:accountant_app/constants/supabase_constants/config.dart';
 import 'package:accountant_app/custom_widgets/snack_bar_helper.dart';
+import 'package:accountant_app/helpers/localization.dart';
 import 'package:accountant_app/helpers/navigation.dart';
-import 'package:accountant_app/helpers/utils.dart';
 import 'package:accountant_app/models/transaction_model.dart';
 import 'package:accountant_app/services/transaction_service.dart';
 import 'package:flutter/material.dart';
@@ -39,12 +39,12 @@ class AddTransactionProvider extends ChangeNotifier {
       amount: amount,
       isExpense: isExpense,
       date: date,
-      userId: userId ?? "",
+      userId: userId,
     );
 
     await _transactionService.addTransaction(transaction: transaction);
-    titleController.text = "";
-    amountController.text = "";
+    titleController.clear();
+    amountController.clear();
     notifyListeners();
   }
 
@@ -52,21 +52,11 @@ class AddTransactionProvider extends ChangeNotifier {
     final response = await customExceptionHandler.exceptionCatcher<void>(
         function: () => add());
 
-    if (response.error != null) {
-      SnackBarHelper.showErrorSnackBar(response.error!);
-    } else {
+    if (response.error == null) {
       if (AppNavigator.context.mounted) {
-        SnackBarHelper.showSuccessSnackBar(
-            Utils.translator!.theTransactionHasBeenRegisteredSuccessfully);
+        SnackBarHelper.showSuccessSnackBar(ApplicationLocalization
+            .translator!.theTransactionHasBeenRegisteredSuccessfully);
       }
     }
-  }
-
-  @override
-  void dispose() {
-    titleController.text = "";
-    amountController.text = "";
-    selectedType = "";
-    super.dispose();
   }
 }

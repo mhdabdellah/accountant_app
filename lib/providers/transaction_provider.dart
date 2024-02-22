@@ -73,7 +73,7 @@ class TransactionProvider extends ChangeNotifier {
 
   Future<void> fetchData({required int pageIndex}) async {
     final response = await customExceptionHandler.exceptionCatcher<void>(
-        function: () => fetch(pageIndex: pageIndex));
+        function: () => fetch(pageIndex: pageIndex), showSnackbar: false);
 
     if (response.error != null) {
       errorMessage = response.error!;
@@ -117,7 +117,7 @@ class TransactionProvider extends ChangeNotifier {
 
   Future<void> tranactionsAmounts() async {
     final response = await customExceptionHandler.exceptionCatcher<void>(
-        function: () => amounts());
+        function: () => amounts(), showSnackbar: false);
 
     if (response.error != null) {
       errorMessage = response.error!;
@@ -137,14 +137,5 @@ class TransactionProvider extends ChangeNotifier {
     }
     totalProfit = totalIncomes - totalExpenses;
     notifyListeners();
-  }
-
-  @override
-  void dispose() {
-    transactions = [];
-    totalProfit = 0.0;
-    totalExpenses = 0.0;
-    totalIncomes = 0.0;
-    super.dispose();
   }
 }

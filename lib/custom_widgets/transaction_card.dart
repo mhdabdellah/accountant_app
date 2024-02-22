@@ -1,3 +1,4 @@
+import 'package:accountant_app/helpers/utils.dart';
 import 'package:accountant_app/models/transaction_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -70,7 +71,7 @@ class TransactionCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(AppLocalizations.of(context)!.date),
-                  Text(convertDate(transaction.date)),
+                  Text(Utils.convertDate(transaction.date)),
                 ],
               ),
             ),

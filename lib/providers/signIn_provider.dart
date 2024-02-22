@@ -1,7 +1,7 @@
 import 'package:accountant_app/helpers/exceptions/exceptions_handler.dart';
 import 'package:accountant_app/custom_widgets/snack_bar_helper.dart';
+import 'package:accountant_app/helpers/localization.dart';
 import 'package:accountant_app/helpers/navigation.dart';
-import 'package:accountant_app/helpers/utils.dart';
 import 'package:accountant_app/screens/transaction_page.dart';
 import 'package:accountant_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
@@ -20,11 +20,10 @@ class SignInProvider extends ChangeNotifier {
         function: () =>
             _authService.signIn(emailController.text, passwordController.text));
 
-    if (response.error != null) {
-      SnackBarHelper.showErrorSnackBar(response.error!);
-    } else {
+    if (response.error == null) {
       if (AppNavigator.context.mounted) {
-        SnackBarHelper.showSuccessSnackBar(Utils.translator!.logedSuccessfully);
+        SnackBarHelper.showSuccessSnackBar(
+            ApplicationLocalization.translator!.logedSuccessfully);
 
         AppNavigator.pushReplacement(TransactionPage.transactionsPageRoute);
       }
