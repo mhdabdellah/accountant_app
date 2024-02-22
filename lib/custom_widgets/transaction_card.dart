@@ -1,3 +1,4 @@
+import 'package:accountant_app/helpers/localization.dart';
 import 'package:accountant_app/helpers/utils.dart';
 import 'package:accountant_app/models/transaction_model.dart';
 import 'package:flutter/material.dart';
@@ -26,10 +27,10 @@ class TransactionCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                  "${transaction.amount.toString()} ${AppLocalizations.of(context)!.mru}"),
+                  "${transaction.amount.toString()} ${ApplicationLocalization.translator!.mru}"),
               Text(transaction.isExpense
-                  ? AppLocalizations.of(context)!.expense
-                  : AppLocalizations.of(context)!.income),
+                  ? ApplicationLocalization.translator!.expense
+                  : ApplicationLocalization.translator!.income),
             ],
           ),
           children: [
@@ -38,7 +39,7 @@ class TransactionCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      AppLocalizations.of(context)!.title,
+                      ApplicationLocalization.translator!.title,
                     ),
                     Text(
                       transaction.title,
@@ -51,7 +52,7 @@ class TransactionCard extends StatelessWidget {
                 children: [
                   Text(AppLocalizations.of(context)!.amount),
                   Text(
-                      "${transaction.amount.toString()} ${AppLocalizations.of(context)!.mru}"),
+                      "${transaction.amount.toString()} ${ApplicationLocalization.translator!.mru}"),
                 ],
               ),
             ),
@@ -59,10 +60,10 @@ class TransactionCard extends StatelessWidget {
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(AppLocalizations.of(context)!.type),
+                  Text(ApplicationLocalization.translator!.type),
                   Text(transaction.isExpense
-                      ? AppLocalizations.of(context)!.expense
-                      : AppLocalizations.of(context)!.income),
+                      ? ApplicationLocalization.translator!.expense
+                      : ApplicationLocalization.translator!.income),
                 ],
               ),
             ),
@@ -70,7 +71,7 @@ class TransactionCard extends StatelessWidget {
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(AppLocalizations.of(context)!.date),
+                  Text(ApplicationLocalization.translator!.date),
                   Text(Utils.convertDate(transaction.date)),
                 ],
               ),
