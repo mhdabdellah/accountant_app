@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:accountant_app/custom_widgets/snack_bar_helper.dart';
 import 'package:accountant_app/helpers/exceptions/exceptions_handler.dart';
 import 'package:flutter/services.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -41,7 +40,7 @@ class SupabaseConfig {
         .exceptionCatcher<void>(function: () => init());
 
     if (response.error != null) {
-      SnackBarHelper.showErrorSnackBar(response.error!);
+      throw FormatException(response.error!);
     }
   }
 }
