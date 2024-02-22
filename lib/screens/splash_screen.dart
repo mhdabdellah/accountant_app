@@ -9,11 +9,9 @@ import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
   static const String splashScreenPageRoute = '/';
-  final GlobalKey<NavigatorState> navigatorKey_;
 
   const SplashScreen({
     Key? key,
-    required this.navigatorKey_,
   }) : super(key: key);
 
   @override

@@ -14,11 +14,16 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SupabaseConfig().initSupabaseDataConfig();
   await supabase.Supabase.initialize(
-      url: SupabaseConfig().supabaseDataConfig['supabaseProjectURL'],
-      anonKey: SupabaseConfig().supabaseDataConfig['supabaseApiKey']);
+    url: SupabaseConfig().supabaseDataConfig['supabaseProjectURL'],
+    anonKey: SupabaseConfig().supabaseDataConfig['supabaseApiKey'],
+  );
 
-  runApp(ChangeNotifierProvider(
-      create: (_) => CurrentUserProvider(), child: const MyApp()));
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => CurrentUserProvider(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

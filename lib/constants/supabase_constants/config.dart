@@ -15,17 +15,17 @@ class SupabaseConfig {
   factory SupabaseConfig() => _instance;
 
   Session? get currentSession {
-    Session? currentSession = client!.auth.currentSession;
+    Session? currentSession = client.auth.currentSession;
     return currentSession;
   }
 
   String? get currentUserId {
-    String? userId = client!.auth.currentSession?.user.id;
+    String? userId = currentSession!.user.id;
     return userId;
   }
 
-  SupabaseClient? get client {
-    SupabaseClient? client = Supabase.instance.client;
+  SupabaseClient get client {
+    SupabaseClient client = Supabase.instance.client;
     return client;
   }
 
