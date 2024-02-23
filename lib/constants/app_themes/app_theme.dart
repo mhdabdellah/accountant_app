@@ -1,12 +1,6 @@
+// import 'package:accountant_app/constants/app_constants/app_colors.dart';
+import 'package:accountant_app/constants/app_themes/app_colors.dart';
 import 'package:flutter/material.dart';
-
-class ApplicationColors {
-  MaterialColor primaryColor = Colors.blue;
-  Color? seconderyColor = Colors.white;
-  Color greenColor = Colors.green;
-  Color greytemColor = Colors.grey;
-  Color black = Colors.black;
-}
 
 class ApplicationThemes {
   ThemeData principalTheme = ThemeData(

@@ -44,6 +44,7 @@ dependencies:
   lottie: ^2.3.2
   intl: any
   pdfx: ^2.3.0
+  motion_tab_bar_v2: ^0.3.0
   
 
 

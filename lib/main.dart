@@ -1,4 +1,4 @@
-import 'package:accountant_app/constants/app_constants/theme_constant.dart';
+import 'package:accountant_app/constants/app_themes/app_theme.dart';
 import 'package:accountant_app/constants/supabase_constants/config.dart';
 import 'package:accountant_app/helpers/localization.dart';
 import 'package:accountant_app/helpers/navigation.dart';

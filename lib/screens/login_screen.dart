@@ -1,3 +1,5 @@
+import 'package:accountant_app/custom_widgets/button.dart';
+import 'package:accountant_app/custom_widgets/input.dart';
 import 'package:accountant_app/custom_widgets/logo_handler.dart';
 import 'package:accountant_app/helpers/localization.dart';
 import 'package:accountant_app/helpers/navigation.dart';
@@ -38,26 +40,25 @@ class _LoginPageBody extends StatelessWidget {
             const SizedBox(
               height: 8,
             ),
-            TextFormField(
-                controller: controller.emailController,
-                decoration: InputDecoration(
-                  icon: const Icon(Icons.email),
-                  labelText: ApplicationLocalization.translator!.email,
-                ),
-                validator: (value) => Utils.isEmailValid(value)),
-            TextFormField(
+            Input(
+              controller: controller.emailController,
+              keyboardType: TextInputType.text,
+              label: ApplicationLocalization.translator!.email,
+              iconData: Icons.email,
+              validator: (value) => Utils.isEmailValid(value),
+            ),
+            Input(
               controller: controller.passwordController,
+              keyboardType: TextInputType.text,
               obscureText: true,
+              label: ApplicationLocalization.translator!.password,
+              iconData: Icons.lock,
               validator: (value) => Utils.isPasswordValid(value),
-              decoration: InputDecoration(
-                icon: const Icon(Icons.lock),
-                labelText: ApplicationLocalization.translator!.password,
-              ),
             ),
             const SizedBox(height: 20),
-            ElevatedButton(
+            Button(
+              text: ApplicationLocalization.translator!.login,
               onPressed: controller.signIn,
-              child: Text(ApplicationLocalization.translator!.login),
             ),
             const SizedBox(height: 20),
             TextButton(
