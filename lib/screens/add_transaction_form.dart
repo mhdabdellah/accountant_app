@@ -1,3 +1,6 @@
+import 'package:accountant_app/custom_widgets/button.dart';
+import 'package:accountant_app/custom_widgets/input.dart';
+import 'package:accountant_app/custom_widgets/radio_button.dart';
 import 'package:accountant_app/helpers/localization.dart';
 import 'package:accountant_app/providers/add_transaction_provider.dart';
 import 'package:flutter/material.dart';
@@ -28,60 +31,54 @@ class _AddTransactionForm extends StatelessWidget {
         children: [
           SizedBox(
               height: 300, width: 300, child: Lottie.asset("assets/logo.json")),
-          TextFormField(
+          Input(
             controller: addTransactionProvider.titleController,
-            decoration: InputDecoration(
-              icon: const Icon(Icons.description, color: Colors.black),
-              labelText: ApplicationLocalization.translator!.title,
-            ),
+            keyboardType: TextInputType.text,
+            label: ApplicationLocalization.translator!.title,
+            iconData: Icons.description,
           ),
-          TextFormField(
+          Input(
             controller: addTransactionProvider.amountController,
             keyboardType: TextInputType.number,
-            decoration: InputDecoration(
-              icon: const Icon(Icons.attach_money, color: Colors.black),
-              labelText: ApplicationLocalization.translator!.amount,
-            ),
+            label: ApplicationLocalization.translator!.amount,
+            iconData: Icons.attach_money,
           ),
           const SizedBox(height: 20),
           Row(
-            children: [
+            children: <Widget>[
               Text(ApplicationLocalization.translator!.type),
-              Radio<String>(
-                value: 'Expense',
-                groupValue: addTransactionProvider.selectedType,
-                onChanged: (String? value) {
-                  if (value != null) {
-                    addTransactionProvider.setTypeValue(value);
-                  }
-                },
+              Expanded(
+                child: RadioButton(
+                  title: ApplicationLocalization.translator!.expense,
+                  value: 'Expense',
+                  groupValue: addTransactionProvider.selectedType,
+                  onChanged: (value) {
+                    if (value != null) {
+                      addTransactionProvider.setTypeValue(value);
+                    }
+                  },
+                ),
               ),
-              Text(ApplicationLocalization.translator!.expense),
-              Radio<String>(
-                value: 'Income',
-                groupValue: addTransactionProvider.selectedType,
-                onChanged: (String? value) {
-                  if (value != null) {
-                    addTransactionProvider.setTypeValue(value);
-                  }
-                },
+              Expanded(
+                child: RadioButton(
+                  title: ApplicationLocalization.translator!.income,
+                  value: 'Income',
+                  groupValue: addTransactionProvider.selectedType,
+                  onChanged: (value) {
+                    if (value != null) {
+                      addTransactionProvider.setTypeValue(value);
+                    }
+                  },
+                ),
               ),
-              Text(ApplicationLocalization.translator!.income),
             ],
           ),
           const SizedBox(height: 20),
-          ElevatedButton(
+          Button(
+            text: ApplicationLocalization.translator!.addTransaction,
             onPressed: () async {
               await addTransactionProvider.addTransaction();
             },
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(Icons.add, color: Colors.black),
-                const SizedBox(width: 8),
-                Text(ApplicationLocalization.translator!.addTransaction),
-              ],
-            ),
           ),
         ],
       ),

@@ -1,4 +1,4 @@
-import 'package:accountant_app/constants/app_constants/theme_constant.dart';
+import 'package:accountant_app/constants/app_themes/app_colors.dart';
 import 'package:accountant_app/custom_widgets/transaction_card.dart';
 import 'package:accountant_app/helpers/localization.dart';
 import 'package:accountant_app/providers/transaction_provider.dart';
