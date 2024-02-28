@@ -4,7 +4,6 @@ class Input extends StatelessWidget {
   const Input(
       {Key? key,
       required this.controller,
-      this.margin,
       this.obscureText,
       required this.keyboardType,
       required this.label,
@@ -16,7 +15,6 @@ class Input extends StatelessWidget {
 
   final TextEditingController controller;
   final bool? obscureText;
-  final EdgeInsetsGeometry? margin;
   final TextInputType keyboardType;
   final String label;
   final IconData iconData;
