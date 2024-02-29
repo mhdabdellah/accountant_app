@@ -1,26 +1,40 @@
 import 'package:accountant_app/constants/app_themes/buttom_navigation_theme.dart';
-import 'package:accountant_app/constants/supabase_constants/config.dart';
 import 'package:accountant_app/helpers/localization.dart';
 import 'package:accountant_app/providers/current_user_provider.dart';
-import 'package:accountant_app/providers/transaction_provider.dart';
+import 'package:accountant_app/providers/expenses.dart';
+import 'package:accountant_app/providers/incomes.dart';
+import 'package:accountant_app/providers/transactions.dart';
 import 'package:accountant_app/screens/aboutDevelopper.dart';
 import 'package:accountant_app/screens/add_transaction_form.dart';
-import 'package:accountant_app/screens/transaction_list.dart';
+import 'package:accountant_app/screens/expenses_list.dart';
+import 'package:accountant_app/screens/incomes_list.dart';
+import 'package:accountant_app/screens/transactions_list.dart';
 import 'package:flutter/material.dart';
 import 'package:motion_tab_bar_v2/motion-tab-bar.dart';
 import 'package:motion_tab_bar_v2/motion-tab-controller.dart';
 import 'package:provider/provider.dart';
 
 class TransactionPage extends StatelessWidget {
-  static const String transactionsPageRoute = '/transactions';
+  static const String pageRoute = '/transactions';
   const TransactionPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-        create: (_) =>
-            TransactionProvider(userId: SupabaseConfig().currentUserId),
-        child: const _TransactionPage());
+    return const _TransactionPage();
+    // return MultiProvider(
+    //   providers: [
+    //     ChangeNotifierProvider<Transactions>(
+    //       create: (context) => Transactions(),
+    //     ),
+    //     ChangeNotifierProvider<Expenses>(
+    //       create: (context) => Expenses(),
+    //     ),
+    //     ChangeNotifierProvider<Incomes>(
+    //       create: (context) => Incomes(),
+    //     )
+    //   ],
+    //   child: const _TransactionPage(),
+    // );
   }
 }
 
@@ -38,6 +52,7 @@ class _TransactionPageState extends State<_TransactionPage>
   @override
   void initState() {
     super.initState();
+
     _motionTabBarController = MotionTabBarController(
       initialIndex: 0,
       length: 5,
@@ -53,11 +68,12 @@ class _TransactionPageState extends State<_TransactionPage>
 
   @override
   Widget build(BuildContext context) {
-    final transactionProvider = context.watch<TransactionProvider>();
-
+    // final transactionProvider = context.watch<Transactions>();
+    // final expensesProvider = context.watch<Expenses>();
+    // final incomesProvider = context.watch<Incomes>();
     return Scaffold(
       appBar: AppBar(
-        title: transactionProvider.currentIndex == 4
+        title: _motionTabBarController!.index == 4
             ? Text(ApplicationLocalization.translator!.aboutDeveloper)
             : Text(ApplicationLocalization.translator!.transactions),
         actions: [
@@ -70,42 +86,47 @@ class _TransactionPageState extends State<_TransactionPage>
       body: TabBarView(
         physics: const NeverScrollableScrollPhysics(),
         controller: _motionTabBarController,
-        children: <Widget>[
+        children: [
           const AddTransactionForm(),
-          const TransactionList(
-            pageIndex: 1,
-          ),
-          const TransactionList(
-            pageIndex: 2,
-          ),
-          const TransactionList(
-            pageIndex: 3,
-          ),
+
+          // const TransactionsList(),
+          // const ExpensesList(),
+          // const IncomesList(),
+          ChangeNotifierProvider(
+              create: (_) => Transactions(), child: const TransactionsList()),
+          ChangeNotifierProvider(
+              create: (_) => Expenses(), child: const ExpensesList()),
+          ChangeNotifierProvider(
+              create: (_) => Incomes(), child: const IncomesList()),
           AboutDeveloper(),
         ],
       ),
       bottomNavigationBar: MotionTabBar(
         controller: _motionTabBarController,
-        initialSelectedTab: BottomNavigationTabBarTheme().initialSelectedTab,
-        labels: BottomNavigationTabBarTheme().labels,
-        icons: BottomNavigationTabBarTheme().icons,
-        badges: BottomNavigationTabBarTheme().primaryBadges,
-        tabSize: BottomNavigationTabBarTheme().tabSize,
-        tabBarHeight: BottomNavigationTabBarTheme().tabBarHeight,
-        textStyle: BottomNavigationTabBarTheme().textStyle,
-        tabIconColor: BottomNavigationTabBarTheme().tabIconColor,
-        tabIconSize: BottomNavigationTabBarTheme().tabIconSize,
-        tabIconSelectedSize: BottomNavigationTabBarTheme().tabIconSelectedSize,
-        tabSelectedColor: BottomNavigationTabBarTheme().tabSelectedColor,
-        tabIconSelectedColor:
-            BottomNavigationTabBarTheme().tabIconSelectedColor,
-        tabBarColor: BottomNavigationTabBarTheme().tabBarColor,
+        initialSelectedTab: BottomNavigationTabBarTheme.initialSelectedTab,
+        labels: BottomNavigationTabBarTheme.labels,
+        icons: BottomNavigationTabBarTheme.icons,
+        badges: BottomNavigationTabBarTheme.primaryBadges,
+        tabSize: BottomNavigationTabBarTheme.tabSize,
+        tabBarHeight: BottomNavigationTabBarTheme.tabBarHeight,
+        textStyle: BottomNavigationTabBarTheme.textStyle,
+        tabIconColor: BottomNavigationTabBarTheme.tabIconColor,
+        tabIconSize: BottomNavigationTabBarTheme.tabIconSize,
+        tabIconSelectedSize: BottomNavigationTabBarTheme.tabIconSelectedSize,
+        tabSelectedColor: BottomNavigationTabBarTheme.tabSelectedColor,
+        tabIconSelectedColor: BottomNavigationTabBarTheme.tabIconSelectedColor,
+        tabBarColor: BottomNavigationTabBarTheme.tabBarColor,
         onTabItemSelected: (int value) async {
           setState(() {
             _motionTabBarController!.index = value;
           });
-          await transactionProvider
-              .updateCurrentIndex(_motionTabBarController!.index);
+          // if (value == 1) {
+          //   await transactionProvider.init();
+          // } else if (value == 2) {
+          //   await expensesProvider.init();
+          // } else {
+          //   await incomesProvider.init();
+          // }
         },
       ),
     );

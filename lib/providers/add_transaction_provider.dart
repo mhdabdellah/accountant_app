@@ -2,21 +2,21 @@ import 'dart:async';
 
 import 'package:accountant_app/helpers/exceptions/exceptions_handler.dart';
 import 'package:accountant_app/constants/supabase_constants/config.dart';
-import 'package:accountant_app/custom_widgets/snack_bar_helper.dart';
+import 'package:accountant_app/helpers/snack_bar_helper.dart';
 import 'package:accountant_app/helpers/localization.dart';
-import 'package:accountant_app/helpers/navigation.dart';
 import 'package:accountant_app/models/transaction_model.dart';
+import 'package:accountant_app/models/transactions_type.dart';
 import 'package:accountant_app/services/transaction_service.dart';
 import 'package:flutter/material.dart';
 
 class AddTransactionProvider extends ChangeNotifier {
   final TransactionService _transactionService = TransactionService();
 
-  final customExceptionHandler = CustomExceptionHandler();
+  final customExceptionHandler = ExceptionHandler();
 
   final TextEditingController titleController = TextEditingController();
   final TextEditingController amountController = TextEditingController();
-  String selectedType = 'Expense';
+  String selectedType = TransactionsType.expense.name;
 
   bool isloaded = true;
 
@@ -27,12 +27,12 @@ class AddTransactionProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> add() async {
+  Future<void> _add() async {
     DateTime date = DateTime.now();
     String? userId = SupabaseConfig().currentUserId;
 
     final double amount = double.parse(amountController.text);
-    final bool isExpense = selectedType == 'Expense';
+    final bool isExpense = selectedType == TransactionsType.expense.name;
     final String title = titleController.text;
     final transaction = TransactionModel(
       title: title,
@@ -50,13 +50,11 @@ class AddTransactionProvider extends ChangeNotifier {
 
   Future<void> addTransaction() async {
     final response = await customExceptionHandler.exceptionCatcher<void>(
-        function: () => add());
+        function: () => _add());
 
-    if (response.error == null) {
-      if (AppNavigator.context.mounted) {
-        SnackBarHelper.showSuccessSnackBar(ApplicationLocalization
-            .translator!.theTransactionHasBeenRegisteredSuccessfully);
-      }
+    if (!response.isError) {
+      SnackBarHelper.showSuccessSnackBar(ApplicationLocalization
+          .translator!.theTransactionHasBeenRegisteredSuccessfully);
     }
   }
 }

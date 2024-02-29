@@ -1,5 +1,5 @@
 import 'package:accountant_app/helpers/exceptions/exceptions_handler.dart';
-import 'package:accountant_app/custom_widgets/snack_bar_helper.dart';
+import 'package:accountant_app/helpers/snack_bar_helper.dart';
 import 'package:accountant_app/helpers/localization.dart';
 import 'package:accountant_app/helpers/navigation.dart';
 import 'package:accountant_app/screens/transaction_page.dart';
@@ -11,7 +11,7 @@ class SignInProvider extends ChangeNotifier {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  final customExceptionHandler = CustomExceptionHandler();
+  final customExceptionHandler = ExceptionHandler();
 
   SignInProvider();
 
@@ -19,14 +19,11 @@ class SignInProvider extends ChangeNotifier {
     final response = await customExceptionHandler.exceptionCatcher<void>(
         function: () =>
             _authService.signIn(emailController.text, passwordController.text));
+    if (!response.isError) {
+      SnackBarHelper.showSuccessSnackBar(
+          ApplicationLocalization.translator!.logedSuccessfully);
 
-    if (response.error == null) {
-      if (AppNavigator.context.mounted) {
-        SnackBarHelper.showSuccessSnackBar(
-            ApplicationLocalization.translator!.logedSuccessfully);
-
-        AppNavigator.pushReplacement(TransactionPage.transactionsPageRoute);
-      }
+      AppNavigator.pushReplacement(TransactionPage.pageRoute);
     }
   }
 }

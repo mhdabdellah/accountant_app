@@ -8,6 +8,16 @@ class TransactionService {
     return transactionModels;
   }
 
+  Stream<List<TransactionModel>> transactionStream({required String userId}) {
+    return SupabaseConfig()
+        .client
+        .from('transactions')
+        .stream(primaryKey: ['id'])
+        .eq('user_id', userId)
+        .order('created_at')
+        .map((maps) => transactionsFromListMap(maps));
+  }
+
   Future<List<TransactionModel>> tranactionsAmounts({
     required String userId,
   }) async {
@@ -19,66 +29,70 @@ class TransactionService {
         .order('created_at'));
   }
 
-  Future<int> getNumberOfTransactions(
-      {required String userId,
-      required int pageSize,
-      required int pageIndex}) async {
-    int pages = 0;
+  Future<int> getNumberOfAllTransactions(
+      {required int pageSize, required String userId}) async {
+    final countResponse = await SupabaseConfig()
+        .client
+        .from('transactions')
+        .select('count')
+        .eq('user_id', userId)
+        .single();
 
-    if (pageIndex == 1) {
-      final countResponse = await SupabaseConfig()
-          .client
-          .from('transactions')
-          .select('count')
-          .eq('user_id', userId)
-          .single();
-      if (countResponse['count'] == 0) {
-        pages = countResponse['count'];
-      } else {
-        if (countResponse['count'] % pageSize == 0) {
-          pages = (countResponse['count'] / pageSize).toInt() - 1;
-        } else {
-          pages = (countResponse['count'] / pageSize).toInt();
-        }
-      }
-    } else if (pageIndex == 2) {
-      final countResponse = await SupabaseConfig()
-          .client
-          .from('transactions')
-          .select('count')
-          .eq('user_id', userId)
-          .eq('isExpense', true)
-          .single();
-
-      if (countResponse['count'] == 0) {
-        pages = countResponse['count'];
-      } else {
-        if (countResponse['count'] % pageSize == 0) {
-          pages = (countResponse['count'] / pageSize).toInt() - 1;
-        } else {
-          pages = (countResponse['count'] / pageSize).toInt();
-        }
-      }
+    if (countResponse['count'] == 0) {
+      return countResponse['count'];
     } else {
-      final countResponse = await SupabaseConfig()
-          .client
-          .from('transactions')
-          .select('count')
-          .eq('user_id', userId)
-          .eq('isExpense', false)
-          .single();
-      if (countResponse['count'] == 0) {
-        pages = countResponse['count'];
+      if (countResponse['count'] % pageSize == 0) {
+        print(
+            "(countResponse['count'] / pageSize).toInt() - 1 ${(countResponse['count'] / pageSize).toInt() - 1}");
+        return (countResponse['count'] / pageSize).toInt() - 1;
       } else {
-        if (countResponse['count'] % pageSize == 0) {
-          pages = (countResponse['count'] / pageSize).toInt() - 1;
-        } else {
-          pages = (countResponse['count'] / pageSize).toInt();
-        }
+        print(
+            "(countResponse['count'] / pageSize).toInt() ${(countResponse['count'] / pageSize).toInt()}");
+        return (countResponse['count'] / pageSize).toInt();
       }
     }
+  }
 
-    return pages;
+  Future<int> getNumberOfExpenses(
+      {required int pageSize, required String userId}) async {
+    final countResponse = await SupabaseConfig()
+        .client
+        .from('transactions')
+        .select('count')
+        .eq('user_id', userId)
+        .eq('isExpense', true)
+        .single();
+
+    if (countResponse['count'] == 0) {
+      return countResponse['count'];
+    } else {
+      if (countResponse['count'] % pageSize == 0) {
+        return (countResponse['count'] / pageSize).toInt() - 1;
+      } else {
+        return (countResponse['count'] / pageSize).toInt();
+      }
+    }
+  }
+
+  Future<int> getNumberOfIncomes(
+      {required int pageSize, required String userId}) async {
+    final countResponse = await SupabaseConfig()
+        .client
+        .from('transactions')
+        .select('count')
+        .eq('user_id', userId)
+        .eq('isExpense', false)
+        .single();
+
+    if (countResponse['count'] == 0) {
+      return countResponse['count'];
+    } else {
+      if (countResponse['count'] % pageSize == 0) {
+        return (countResponse['count'] / pageSize).toInt() - 1;
+      } else {
+        return (countResponse['count'] / pageSize).toInt();
+      }
+    }
   }
 
   Future<List<TransactionModel>> fetchAllTransactions({

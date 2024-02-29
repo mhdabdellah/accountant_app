@@ -1,25 +1,24 @@
 import 'package:accountant_app/constants/app_themes/app_colors.dart';
 import 'package:accountant_app/custom_widgets/transaction_card.dart';
 import 'package:accountant_app/helpers/localization.dart';
-import 'package:accountant_app/providers/transaction_provider.dart';
+import 'package:accountant_app/providers/incomes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class TransactionList extends StatelessWidget {
-  final int pageIndex;
-  const TransactionList({Key? key, required this.pageIndex}) : super(key: key);
+class IncomesList extends StatelessWidget {
+  const IncomesList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final transactionProvider = context.watch<TransactionProvider>();
-    return transactionProvider.errorMessage != null
+    final provider = context.watch<Incomes>();
+    return provider.errorMessage != null
         ? Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 IconButton(
                     onPressed: () {
-                      transactionProvider.closeAndGetStreams();
+                      provider.cancelAndgetTransactionsStream();
                     },
                     icon: const Icon(
                       Icons.refresh,
@@ -28,11 +27,11 @@ class TransactionList extends StatelessWidget {
                 const SizedBox(
                   height: 8.0,
                 ),
-                Text(transactionProvider.errorMessage ?? ""),
+                Text(provider.errorMessage ?? ""),
               ],
             ),
           )
-        : transactionProvider.isLoading
+        : provider.isLoading
             ? const Center(child: CircularProgressIndicator())
             : Column(children: [
                 Padding(
@@ -45,7 +44,7 @@ class TransactionList extends StatelessWidget {
                           Text(
                               ApplicationLocalization.translator!.totalExpense),
                           Text(
-                              "${transactionProvider.totalExpenses.toString()} ${ApplicationLocalization.translator!.mru}"),
+                              "${provider.totalExpenses.toString()} ${ApplicationLocalization.translator!.mru}"),
                         ],
                       ),
                       const SizedBox(
@@ -56,7 +55,7 @@ class TransactionList extends StatelessWidget {
                         children: [
                           Text(ApplicationLocalization.translator!.totalIncome),
                           Text(
-                              "${transactionProvider.totalIncomes.toString()} ${ApplicationLocalization.translator!.mru}"),
+                              "${provider.totalIncomes.toString()} ${ApplicationLocalization.translator!.mru}"),
                         ],
                       ),
                       const SizedBox(
@@ -67,7 +66,7 @@ class TransactionList extends StatelessWidget {
                         children: [
                           Text(ApplicationLocalization.translator!.totalProfit),
                           Text(
-                              "${transactionProvider.totalProfit.toString()} ${ApplicationLocalization.translator!.mru}"),
+                              "${provider.totalProfit.toString()} ${ApplicationLocalization.translator!.mru}"),
                         ],
                       ),
                       const SizedBox(
@@ -77,9 +76,8 @@ class TransactionList extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           ElevatedButton(
-                            onPressed: transactionProvider.currentPage > 0
-                                ? () => transactionProvider.loadPreviousPage(
-                                    pageIndex: transactionProvider.currentIndex)
+                            onPressed: provider.currentPage > 0
+                                ? () => provider.loadPreviousPage()
                                 : null,
                             child: const Icon(Icons.arrow_back),
                           ),
@@ -95,7 +93,7 @@ class TransactionList extends StatelessWidget {
                                 minimumSize: const Size(44.0, 44.0),
                               ),
                               child: Text(
-                                transactionProvider.currentPage.toString(),
+                                provider.currentPage.toString(),
                                 style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
@@ -103,16 +101,16 @@ class TransactionList extends StatelessWidget {
                               ),
                             ),
                           ),
-                          CircleAvatar(
-                            backgroundColor: ApplicationColors().primaryColor,
+                          const CircleAvatar(
+                            backgroundColor: ApplicationColors.primaryColor,
                             radius: 5,
                           ),
-                          CircleAvatar(
-                            backgroundColor: ApplicationColors().primaryColor,
+                          const CircleAvatar(
+                            backgroundColor: ApplicationColors.primaryColor,
                             radius: 5,
                           ),
-                          CircleAvatar(
-                            backgroundColor: ApplicationColors().primaryColor,
+                          const CircleAvatar(
+                            backgroundColor: ApplicationColors.primaryColor,
                             radius: 5,
                           ),
                           Padding(
@@ -127,7 +125,7 @@ class TransactionList extends StatelessWidget {
                                 minimumSize: const Size(44.0, 44.0),
                               ),
                               child: Text(
-                                transactionProvider.numberOfPages.toString(),
+                                provider.numberOfPages.toString(),
                                 style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
@@ -136,9 +134,8 @@ class TransactionList extends StatelessWidget {
                             ),
                           ),
                           ElevatedButton(
-                            onPressed: transactionProvider.hasMore
-                                ? () => transactionProvider.loadNextPage(
-                                    pageIndex: transactionProvider.currentIndex)
+                            onPressed: provider.hasMore
+                                ? () => provider.loadNextPage()
                                 : null,
                             child: const Icon(Icons.arrow_forward),
                           ),
@@ -149,10 +146,10 @@ class TransactionList extends StatelessWidget {
                 ),
                 Expanded(
                   child: ListView.builder(
-                    itemCount: transactionProvider.transactions.length,
+                    itemCount: provider.paginatedIncomes.length,
                     itemBuilder: (context, index) {
                       return TransactionCard(
-                          transaction: transactionProvider.transactions[index]);
+                          transaction: provider.paginatedIncomes[index]);
                     },
                   ),
                 ),

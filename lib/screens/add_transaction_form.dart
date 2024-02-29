@@ -2,6 +2,7 @@ import 'package:accountant_app/custom_widgets/button.dart';
 import 'package:accountant_app/custom_widgets/input.dart';
 import 'package:accountant_app/custom_widgets/radio_button.dart';
 import 'package:accountant_app/helpers/localization.dart';
+import 'package:accountant_app/models/transactions_type.dart';
 import 'package:accountant_app/providers/add_transaction_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
@@ -50,7 +51,7 @@ class _AddTransactionForm extends StatelessWidget {
               Expanded(
                 child: RadioButton(
                   title: ApplicationLocalization.translator!.expense,
-                  value: 'Expense',
+                  value: TransactionsType.expense.name,
                   groupValue: addTransactionProvider.selectedType,
                   onChanged: (value) {
                     if (value != null) {
@@ -62,7 +63,7 @@ class _AddTransactionForm extends StatelessWidget {
               Expanded(
                 child: RadioButton(
                   title: ApplicationLocalization.translator!.income,
-                  value: 'Income',
+                  value: TransactionsType.income.name,
                   groupValue: addTransactionProvider.selectedType,
                   onChanged: (value) {
                     if (value != null) {
