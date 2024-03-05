@@ -3,13 +3,13 @@ import 'package:accountant_app/constants/app_themes/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class ApplicationThemes {
-  ThemeData principalTheme = ThemeData(
+  static ThemeData mainTheme = ThemeData(
     // brightness: Brightness.light,
-    primarySwatch: ApplicationColors().primaryColor,
-    primaryColor: ApplicationColors().primaryColor, // Couleur d'accentuation
+    primarySwatch: ApplicationColors.primaryColor,
+    primaryColor: ApplicationColors.primaryColor, // Couleur d'accentuation
     scaffoldBackgroundColor: Colors.white, // Couleur de fond de vos écrans
-    unselectedWidgetColor: ApplicationColors()
-        .primaryColor, // Couleur des éléments non sélectionnés
+    unselectedWidgetColor:
+        ApplicationColors.primaryColor, // Couleur des éléments non sélectionnés
 
     // Styles de texte
     textTheme: const TextTheme(
@@ -30,29 +30,29 @@ class ApplicationThemes {
           color: Colors.white), // Couleur des icônes de la barre d'applications
     ),
     colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue).copyWith(
-        secondary: ApplicationColors()
+        secondary: ApplicationColors
             .primaryColor), // Schéma de couleur basé sur la couleur principale
 
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all<Color>(ApplicationColors()
+        backgroundColor: MaterialStateProperty.all<Color>(ApplicationColors
             .primaryColor), // Set the background color for all ElevatedButtons
       ),
     ),
 
-    bottomNavigationBarTheme: BottomNavigationBarThemeData(
-      selectedItemColor: const Color.fromARGB(255, 13, 56, 198),
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      selectedItemColor: Color.fromARGB(255, 13, 56, 198),
       unselectedItemColor: Colors.grey,
-      backgroundColor: ApplicationColors().seconderyColor,
-      selectedLabelStyle: TextStyle(color: ApplicationColors().primaryColor),
-      unselectedLabelStyle: TextStyle(color: ApplicationColors().black),
+      backgroundColor: ApplicationColors.seconderyColor,
+      selectedLabelStyle: TextStyle(color: ApplicationColors.primaryColor),
+      unselectedLabelStyle: TextStyle(color: ApplicationColors.black),
       selectedIconTheme: IconThemeData(
-        color: ApplicationColors()
-            .primaryColor, // Couleur des icônes sélectionnées
+        color:
+            ApplicationColors.primaryColor, // Couleur des icônes sélectionnées
       ),
     ),
-    iconTheme: IconThemeData(
-      color: ApplicationColors().black, // Couleur par défaut des icônes
+    iconTheme: const IconThemeData(
+      color: ApplicationColors.black, // Couleur par défaut des icônes
     ),
   );
 }
