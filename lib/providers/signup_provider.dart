@@ -27,10 +27,9 @@ class SignUpProvider extends ChangeNotifier {
         function: () =>
             _authService.signUp(firstname, lastname, email, password));
 
-    if (!response.isError) {
-      SnackBarHelper.showSuccessSnackBar(
-          ApplicationLocalization.translator!.registredSuccessfully);
-      AppNavigator.pushReplacement(SignInPage.pageRoute);
-    }
+    if (response.isError) return;
+    SnackBarHelper.showSuccessSnackBar(
+        ApplicationLocalization.translator.registredSuccessfully);
+    AppNavigator.pushReplacement(SignInPage.pageRoute);
   }
 }

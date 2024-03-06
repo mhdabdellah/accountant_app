@@ -27,10 +27,10 @@ class TransactionCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                  "${transaction.amount.toString()} ${ApplicationLocalization.translator!.mru}"),
+                  "${transaction.amount.toString()} ${ApplicationLocalization.translator.mru}"),
               Text(transaction.isExpense
-                  ? ApplicationLocalization.translator!.expense
-                  : ApplicationLocalization.translator!.income),
+                  ? ApplicationLocalization.translator.expense
+                  : ApplicationLocalization.translator.income),
             ],
           ),
           children: [
@@ -39,7 +39,7 @@ class TransactionCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      ApplicationLocalization.translator!.title,
+                      ApplicationLocalization.translator.title,
                     ),
                     Text(
                       transaction.title,
@@ -52,7 +52,7 @@ class TransactionCard extends StatelessWidget {
                 children: [
                   Text(AppLocalizations.of(context)!.amount),
                   Text(
-                      "${transaction.amount.toString()} ${ApplicationLocalization.translator!.mru}"),
+                      "${transaction.amount.toString()} ${ApplicationLocalization.translator.mru}"),
                 ],
               ),
             ),
@@ -60,10 +60,10 @@ class TransactionCard extends StatelessWidget {
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(ApplicationLocalization.translator!.type),
+                  Text(ApplicationLocalization.translator.type),
                   Text(transaction.isExpense
-                      ? ApplicationLocalization.translator!.expense
-                      : ApplicationLocalization.translator!.income),
+                      ? ApplicationLocalization.translator.expense
+                      : ApplicationLocalization.translator.income),
                 ],
               ),
             ),
@@ -71,7 +71,7 @@ class TransactionCard extends StatelessWidget {
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(ApplicationLocalization.translator!.date),
+                  Text(ApplicationLocalization.translator.date),
                   Text(Utils.convertDate(transaction.date)),
                 ],
               ),

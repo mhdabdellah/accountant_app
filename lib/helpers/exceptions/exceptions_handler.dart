@@ -12,16 +12,16 @@ class ExceptionHandler {
     String errorMessage;
     if (error is FormatException) {
       errorMessage =
-          '${ApplicationLocalization.translator!.unexpectedErrorOccurred} ${error.message}';
+          '${ApplicationLocalization.translator.unexpectedErrorOccurred} ${error.message}';
     } else if (error is PostgrestException) {
       errorMessage =
-          '${ApplicationLocalization.translator!.unexpectedErrorOccurred} ${error.message}';
+          '${ApplicationLocalization.translator.unexpectedErrorOccurred} ${error.message}';
     } else if (error is AuthException) {
       errorMessage =
-          '${ApplicationLocalization.translator!.unexpectedErrorOccurred} ${error.message}';
+          '${ApplicationLocalization.translator.unexpectedErrorOccurred} ${error.message}';
     } else {
       errorMessage =
-          '${ApplicationLocalization.translator!.unexpectedErrorOccurred} $error';
+          '${ApplicationLocalization.translator.unexpectedErrorOccurred} $error';
     }
 
     return errorMessage;

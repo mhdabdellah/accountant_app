@@ -35,22 +35,22 @@ class _AddTransactionForm extends StatelessWidget {
           Input(
             controller: addTransactionProvider.titleController,
             keyboardType: TextInputType.text,
-            label: ApplicationLocalization.translator!.title,
+            label: ApplicationLocalization.translator.title,
             iconData: Icons.description,
           ),
           Input(
             controller: addTransactionProvider.amountController,
             keyboardType: TextInputType.number,
-            label: ApplicationLocalization.translator!.amount,
+            label: ApplicationLocalization.translator.amount,
             iconData: Icons.attach_money,
           ),
           const SizedBox(height: 20),
           Row(
             children: <Widget>[
-              Text(ApplicationLocalization.translator!.type),
+              Text(ApplicationLocalization.translator.type),
               Expanded(
                 child: RadioButton(
-                  title: ApplicationLocalization.translator!.expense,
+                  title: ApplicationLocalization.translator.expense,
                   value: TransactionsType.expense.name,
                   groupValue: addTransactionProvider.selectedType,
                   onChanged: (value) {
@@ -62,7 +62,7 @@ class _AddTransactionForm extends StatelessWidget {
               ),
               Expanded(
                 child: RadioButton(
-                  title: ApplicationLocalization.translator!.income,
+                  title: ApplicationLocalization.translator.income,
                   value: TransactionsType.income.name,
                   groupValue: addTransactionProvider.selectedType,
                   onChanged: (value) {
@@ -76,7 +76,7 @@ class _AddTransactionForm extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           Button(
-            text: ApplicationLocalization.translator!.addTransaction,
+            text: ApplicationLocalization.translator.addTransaction,
             onPressed: () async {
               await addTransactionProvider.addTransaction();
             },

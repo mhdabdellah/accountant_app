@@ -45,6 +45,7 @@ dependencies:
   intl: any
   pdfx: ^2.3.0
   motion_tab_bar_v2: ^0.3.0
+  shared_preferences: ^2.2.2
   
 
 

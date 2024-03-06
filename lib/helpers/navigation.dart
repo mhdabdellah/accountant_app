@@ -1,8 +1,10 @@
+import 'package:accountant_app/providers/home_provider.dart';
 import 'package:accountant_app/screens/signin_page.dart';
 import 'package:accountant_app/screens/signup_page.dart';
 import 'package:accountant_app/screens/splash_screen.dart';
-import 'package:accountant_app/screens/transaction_page.dart';
+import 'package:accountant_app/screens/home_page.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
 
 class AppNavigator {
   static final key = GlobalKey<NavigatorState>();
@@ -28,8 +30,12 @@ class AppNavigator {
           case SignUpPage.pageRoute:
             return const SignUpPage();
 
-          case TransactionPage.pageRoute:
-            return const TransactionPage();
+          case HomePage.pageRoute:
+            // return const HomePage();
+            return ChangeNotifierProvider(
+              create: (_) => HomeProvider(),
+              child: const HomePage(),
+            );
 
           default:
             return const SplashScreen();

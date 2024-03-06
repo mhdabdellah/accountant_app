@@ -14,12 +14,13 @@ import 'package:motion_tab_bar_v2/motion-tab-bar.dart';
 import 'package:motion_tab_bar_v2/motion-tab-controller.dart';
 import 'package:provider/provider.dart';
 
-class TransactionPage extends StatelessWidget {
-  static const String pageRoute = '/transactions';
-  const TransactionPage({super.key});
+class HomePage extends StatelessWidget {
+  static const String pageRoute = '/homePage';
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // final homePageProvider = context.watch<HomePageProvider>();
     return const _TransactionPage();
     // return MultiProvider(
     //   providers: [
@@ -63,19 +64,16 @@ class _TransactionPageState extends State<_TransactionPage>
   @override
   void dispose() {
     super.dispose();
-    _motionTabBarController!.dispose();
+    _motionTabBarController?.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // final transactionProvider = context.watch<Transactions>();
-    // final expensesProvider = context.watch<Expenses>();
-    // final incomesProvider = context.watch<Incomes>();
     return Scaffold(
       appBar: AppBar(
         title: _motionTabBarController!.index == 4
-            ? Text(ApplicationLocalization.translator!.aboutDeveloper)
-            : Text(ApplicationLocalization.translator!.transactions),
+            ? Text(ApplicationLocalization.translator.aboutDeveloper)
+            : Text(ApplicationLocalization.translator.transactions),
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
@@ -88,12 +86,10 @@ class _TransactionPageState extends State<_TransactionPage>
         controller: _motionTabBarController,
         children: [
           const AddTransactionForm(),
-
-          // const TransactionsList(),
-          // const ExpensesList(),
-          // const IncomesList(),
           ChangeNotifierProvider(
-              create: (_) => Transactions(), child: const TransactionsList()),
+            create: (_) => Transactions(),
+            child: const TransactionsList(),
+          ),
           ChangeNotifierProvider(
               create: (_) => Expenses(), child: const ExpensesList()),
           ChangeNotifierProvider(
@@ -103,8 +99,15 @@ class _TransactionPageState extends State<_TransactionPage>
       ),
       bottomNavigationBar: MotionTabBar(
         controller: _motionTabBarController,
-        initialSelectedTab: BottomNavigationTabBarTheme.initialSelectedTab,
-        labels: BottomNavigationTabBarTheme.labels,
+        initialSelectedTab: ApplicationLocalization.translator.add,
+        labels: [
+          ApplicationLocalization.translator.add,
+          ApplicationLocalization.translator.transactions,
+          ApplicationLocalization.translator.expenses,
+          ApplicationLocalization.translator.incomes,
+          ApplicationLocalization.translator.aboutDeveloper
+        ],
+        // labels: BottomNavigationTabBarTheme.labels,
         icons: BottomNavigationTabBarTheme.icons,
         badges: BottomNavigationTabBarTheme.primaryBadges,
         tabSize: BottomNavigationTabBarTheme.tabSize,
@@ -120,13 +123,6 @@ class _TransactionPageState extends State<_TransactionPage>
           setState(() {
             _motionTabBarController!.index = value;
           });
-          // if (value == 1) {
-          //   await transactionProvider.init();
-          // } else if (value == 2) {
-          //   await expensesProvider.init();
-          // } else {
-          //   await incomesProvider.init();
-          // }
         },
       ),
     );

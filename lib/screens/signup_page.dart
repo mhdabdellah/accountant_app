@@ -42,21 +42,21 @@ class _SignUpPage extends StatelessWidget {
             Input(
               controller: signUpProvider.firstnameController,
               keyboardType: TextInputType.text,
-              label: ApplicationLocalization.translator!.firstName,
+              label: ApplicationLocalization.translator.firstName,
               iconData: Icons.person,
               validator: (value) => Validator.isEmpty(value),
             ),
             Input(
               controller: signUpProvider.lastnameController,
               keyboardType: TextInputType.text,
-              label: ApplicationLocalization.translator!.lastName,
+              label: ApplicationLocalization.translator.lastName,
               iconData: Icons.person,
               validator: (value) => Validator.isEmpty(value),
             ),
             Input(
               controller: signUpProvider.emailController,
               keyboardType: TextInputType.text,
-              label: ApplicationLocalization.translator!.email,
+              label: ApplicationLocalization.translator.email,
               iconData: Icons.email,
               validator: (value) => Validator.isEmailValid(value),
             ),
@@ -64,13 +64,13 @@ class _SignUpPage extends StatelessWidget {
               controller: signUpProvider.passwordController,
               keyboardType: TextInputType.text,
               obscureText: true,
-              label: ApplicationLocalization.translator!.password,
+              label: ApplicationLocalization.translator.password,
               iconData: Icons.lock,
               validator: (value) => Validator.isPasswordValid(value),
             ),
             const SizedBox(height: 20),
             Button(
-              text: ApplicationLocalization.translator!.register,
+              text: ApplicationLocalization.translator.register,
               onPressed: () async {
                 await signUpProvider.signUp();
               },
@@ -81,7 +81,7 @@ class _SignUpPage extends StatelessWidget {
                   AppNavigator.pushReplacement(SignInPage.pageRoute);
                 },
                 child: Text(ApplicationLocalization
-                    .translator!.clickHereIfYouHaveAnAccount))
+                    .translator.clickHereIfYouHaveAnAccount))
           ],
         ),
       ),

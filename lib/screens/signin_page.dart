@@ -43,7 +43,7 @@ class _SignInPageBody extends StatelessWidget {
             Input(
               controller: controller.emailController,
               keyboardType: TextInputType.text,
-              label: ApplicationLocalization.translator!.email,
+              label: ApplicationLocalization.translator.email,
               iconData: Icons.email,
               validator: (value) => Validator.isEmailValid(value),
             ),
@@ -51,13 +51,13 @@ class _SignInPageBody extends StatelessWidget {
               controller: controller.passwordController,
               keyboardType: TextInputType.text,
               obscureText: true,
-              label: ApplicationLocalization.translator!.password,
+              label: ApplicationLocalization.translator.password,
               iconData: Icons.lock,
               validator: (value) => Validator.isPasswordValid(value),
             ),
             const SizedBox(height: 20),
             Button(
-              text: ApplicationLocalization.translator!.login,
+              text: ApplicationLocalization.translator.login,
               onPressed: controller.signIn,
             ),
             const SizedBox(height: 20),
@@ -66,7 +66,7 @@ class _SignInPageBody extends StatelessWidget {
                   AppNavigator.pushReplacement(SignUpPage.pageRoute);
                 },
                 child: Text(ApplicationLocalization
-                    .translator!.clickHereIfYouDoNotHaveAnAccount))
+                    .translator.clickHereIfYouDoNotHaveAnAccount))
           ],
         ),
       ),

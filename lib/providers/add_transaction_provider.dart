@@ -6,11 +6,11 @@ import 'package:accountant_app/helpers/snack_bar_helper.dart';
 import 'package:accountant_app/helpers/localization.dart';
 import 'package:accountant_app/models/transaction_model.dart';
 import 'package:accountant_app/models/transactions_type.dart';
-import 'package:accountant_app/services/transaction_service.dart';
+import 'package:accountant_app/services/all_transactions_service.dart';
 import 'package:flutter/material.dart';
 
 class AddTransactionProvider extends ChangeNotifier {
-  final TransactionService _transactionService = TransactionService();
+  final AllTransactionsServices _transactionService = AllTransactionsServices();
 
   final customExceptionHandler = ExceptionHandler();
 
@@ -52,9 +52,9 @@ class AddTransactionProvider extends ChangeNotifier {
     final response = await customExceptionHandler.exceptionCatcher<void>(
         function: () => _add());
 
-    if (!response.isError) {
-      SnackBarHelper.showSuccessSnackBar(ApplicationLocalization
-          .translator!.theTransactionHasBeenRegisteredSuccessfully);
-    }
+    if (response.isError) return;
+
+    SnackBarHelper.showSuccessSnackBar(ApplicationLocalization
+        .translator.theTransactionHasBeenRegisteredSuccessfully);
   }
 }
