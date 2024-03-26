@@ -43,7 +43,7 @@ dependencies:
   fl_chart: ^0.62.0
   lottie: ^2.3.2
   intl: any
-  pdfx: ^2.3.0
+  # pdfx: 
   motion_tab_bar_v2: ^0.3.0
   
 
