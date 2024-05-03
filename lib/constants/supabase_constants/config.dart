@@ -10,7 +10,7 @@ class SupabaseConfig {
 
   late final Map<String, dynamic> _supabaseDataConfig;
 
-  Map<String, dynamic> get supabaseDataConfig => _supabaseDataConfig;
+  // Map<String, dynamic> get supabaseDataConfig => _supabaseDataConfig;
 
   factory SupabaseConfig() => _instance;
 
@@ -33,13 +33,18 @@ class SupabaseConfig {
     final String response =
         await rootBundle.loadString('assets/supabaseConfig.json');
     _supabaseDataConfig = await jsonDecode(response) as Map<String, dynamic>;
+
+    await Supabase.initialize(
+      url: _supabaseDataConfig['supabaseProjectURL'],
+      anonKey: _supabaseDataConfig['supabaseApiKey'],
+    );
   }
 
   Future<void> initSupabaseDataConfig() async {
-    final response = await CustomExceptionHandler()
-        .exceptionCatcher<void>(function: () => init());
+    final response =
+        await ExceptionHandler().exceptionCatcher<void>(function: () => init());
 
-    if (response.error != null) {
+    if (response.isError) {
       throw FormatException(response.error!);
     }
   }
