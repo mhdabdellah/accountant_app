@@ -1,0 +1,117 @@
+BEGIN
+    IF  NEW.raw_user_meta_data->>'role' == 'driver' THEN
+        INSERT INTO public.drivers (id, email, first_name, last_name, date_of_birth, gender, vehicle_type, role, avatar_url)
+        VALUES ( NEW.id, NEW.email,NEW.raw_user_meta_data->>'first_name',NEW.raw_user_meta_data->>'last_name',NEW.raw_user_meta_data->>'date_of_birth',NEW.raw_user_meta_data->>'gender',NEW.raw_user_meta_data->>'vehicle_type','driver',NEW.raw_user_meta_data->>'avatar_url');
+        RETURN NEW;
+    ELSIF  NEW.raw_user_meta_data->>'role' == 'consumer' THEN
+        INSERT INTO public.consumers (id, email, first_name, last_name, date_of_birth, gender, role, avatar_url)
+        VALUES (
+          NEW.id, NEW.email,NEW.raw_user_meta_data->>'first_name',NEW.raw_user_meta_data->>'last_name',NEW.raw_user_meta_data->>'date_of_birth',NEW.raw_user_meta_data->>'gender','consumer',NEW.raw_user_meta_data->>'avatar_url'
+        );
+        RETURN NEW;
+    ELSIF  NEW.raw_user_meta_data->>'role' == 'admin' THEN
+        INSERT INTO public.admin(id, email, username,role,avatar_url)
+        VALUES (
+          NEW.id,
+          NEW.email,
+          COALESCE(NEW.raw_user_meta_data->>'username', NEW.raw_user_meta_data->>'name'), 'admin',NEW.raw_user_meta_data->>'avatar_url'
+        );
+        RETURN NEW;
+    ELSE
+        RAISE EXCEPTION 'Invalid role specified';
+    END IF;
+END;
+
+
+ INSERT INTO public.users (id, email, username)
+  VALUES (
+    NEW.id,
+    NEW.email,
+    COALESCE(NEW.raw_user_meta_data->>'username', NEW.raw_user_meta_data->>'name')
+  );
+  RETURN NEW;
+
+  
+  with error{IF  NEW.raw_user_meta_data->>'role' == 'driver' THEN
+      INSERT INTO public.drivers (id,vehicle_type)
+      VALUES ( NEW.id,NEW.raw_user_meta_data->>'vehicle_type');
+  ELSIF  NEW.raw_user_meta_data->>'role' == 'customer' THEN
+      INSERT INTO public.customers (id)
+      VALUES (
+        NEW.id
+      );
+  ELSIF  NEW.raw_user_meta_data->>'role' == 'admin' THEN
+      INSERT INTO public.admins(id)
+      VALUES (
+        NEW.id,
+      );
+  ELSE
+      RAISE EXCEPTION 'Invalid role specified';
+  END IF;}
+
+  without error{IF NEW.raw_user_meta_data->>'role' = 'driver' THEN
+        INSERT INTO public.drivers (id, vehicle_type)
+        VALUES (NEW.id, NEW.raw_user_meta_data->>'vehicle_type');
+    ELSIF NEW.raw_user_meta_data->>'role' = 'customer' THEN
+        INSERT INTO public.customers (id)
+        VALUES (NEW.id);
+    ELSIF NEW.raw_user_meta_data->>'role' = 'admin' THEN
+        INSERT INTO public.admins (id)
+        VALUES (NEW.id);
+    ELSE
+        RAISE EXCEPTION 'Invalid role specified';
+    END IF;}
+
+
+
+    elseif NEW.raw_user_meta_data->>'role' = 'customer' then
+        INSERT INTO public.customers (id)
+        VALUES (NEW.id);
+    elseif NEW.raw_user_meta_data->>'role' = 'admin' then
+        INSERT INTO public.admins (id)
+        VALUES (NEW.id);
+    else
+        RAISE EXCEPTION 'Invalid role specified';
+
+
+
+        BEGIN
+    INSERT INTO public.users (id, email, first_name, last_name, date_of_birth, gender,phone, role, avatar_url)
+    VALUES ( NEW.id, NEW.email,NEW.raw_user_meta_data->>'first_name',NEW.raw_user_meta_data->>'last_name',NEW.raw_user_meta_data->>'date_of_birth',NEW.raw_user_meta_data->>'gender',NEW.raw_user_meta_data->>'phone',NEW.raw_user_meta_data->>'role',NEW.raw_user_meta_data->>'avatar_url');
+    RETURN NEW;
+END;
+
+
+
+BEGIN
+  INSERT INTO public.users (id, email, first_name, last_name)
+  VALUES (
+    NEW.id,
+    NEW.email,
+    COALESCE(NEW.raw_user_meta_data->>'username', NEW.raw_user_meta_data->>'name')
+  );
+  RETURN NEW;
+END;
+
+
+
+
+BEGIN
+    -- Insert into public.users
+    INSERT INTO public.users (email, first_name, last_name, date_of_birth, gender, phone, role)
+    VALUES (NEW.email, NEW.first_name, NEW.last_name, NEW.date_of_birth, NEW.gender, NEW.phone, NEW.role);
+
+    -- Insert into public.drivers
+    INSERT INTO public.drivers (user_id, vehicle_type)
+    VALUES (NEW.id, NEW.vehicle_type);
+
+    RETURN NEW;
+END;
+
+
+
+
+
+
+
+
