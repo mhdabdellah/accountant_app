@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class ApplicationColors {
-  MaterialColor primaryColor = Colors.blue;
-  Color? seconderyColor = Colors.white;
-  Color greenColor = Colors.green;
-  Color greytemColor = Colors.grey;
-  Color black = Colors.black;
+  static const MaterialColor primaryColor = Colors.blue;
+  static const Color seconderyColor = Colors.white;
+  static const Color greenColor = Colors.green;
+  static const Color greytemColor = Colors.grey;
+  static const Color black = Colors.black;
 }

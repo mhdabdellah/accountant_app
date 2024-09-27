@@ -5,7 +5,6 @@ import 'package:accountant_app/helpers/navigation.dart';
 import 'package:accountant_app/providers/current_user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'screens/splash_screen.dart';
@@ -13,10 +12,6 @@ import 'screens/splash_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SupabaseConfig().initSupabaseDataConfig();
-  await supabase.Supabase.initialize(
-    url: SupabaseConfig().supabaseDataConfig['supabaseProjectURL'],
-    anonKey: SupabaseConfig().supabaseDataConfig['supabaseApiKey'],
-  );
 
   runApp(
     ChangeNotifierProvider(
@@ -34,7 +29,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "AccountantApp",
-      locale: Locale(ApplicationLocalization.getDeviceLanguage(context)),
+      locale: Locale(ApplicationLocalization.getDeviceLanguage()),
       localizationsDelegates: const [
         AppLocalizations.delegate, // Add this line
         GlobalMaterialLocalizations.delegate,
@@ -46,9 +41,9 @@ class MyApp extends StatelessWidget {
         Locale('fr'),
         Locale('ar'),
       ],
-      theme: ApplicationThemes().principalTheme,
+      theme: ApplicationThemes.mainTheme,
       navigatorKey: AppNavigator.key,
-      initialRoute: SplashScreen.splashScreenPageRoute,
+      initialRoute: SplashScreen.pageRoute,
       onGenerateRoute: AppNavigator.onGeneratedRoute,
     );
   }
