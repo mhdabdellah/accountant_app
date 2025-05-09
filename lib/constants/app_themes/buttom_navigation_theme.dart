@@ -2,26 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:motion_tab_bar_v2/motion-badge.widget.dart';
 
 class BottomNavigationTabBarTheme {
-  Color tabIconSelectedColor = Colors.white;
-  Color tabIconColor = Colors.blue;
-  Color tabSelectedColor = Colors.blue;
-  double? tabIconSize = 28.0;
-  double? tabIconSelectedSize = 26.0;
-  double tabSize = 50;
-  double tabBarHeight = 55;
-  Color tabBarColor = const Color(0xFFAFAFAF);
+  static const Color tabIconSelectedColor = Colors.white;
+  static const Color tabIconColor = Colors.blue;
+  static const Color tabSelectedColor = Colors.blue;
+  static const double tabIconSize = 28.0;
+  static const double tabIconSelectedSize = 26.0;
+  static const double tabSize = 50;
+  static const double tabBarHeight = 55;
+  static const Color tabBarColor = Color(0xFFAFAFAF);
 
-  String initialSelectedTab = "Add";
+  static const String initialSelectedTab = "Add";
 
-  TextStyle textStyle = const TextStyle(
+  static const TextStyle textStyle = TextStyle(
     fontSize: 12,
     color: Colors.black,
     fontWeight: FontWeight.w500,
   );
 
-  var labels = const ["Add", "Transactions", "Expenses", "Incomes", "About"];
+  static const labels = ["Add", "Transactions", "Expenses", "Incomes", "About"];
 
-  var icons = const [
+  static const icons = [
     Icons.add,
     Icons.list,
     Icons.money_off,
@@ -29,41 +29,36 @@ class BottomNavigationTabBarTheme {
     Icons.open_in_new
   ];
 
-  var primaryBadges = [null, null, null, null, null];
+  static const primaryBadges = [null, null, null, null, null];
 
-  var seconderyBadges = [
-    // custom badge Widget
-    Container(
-      color: Colors.black,
-      padding: const EdgeInsets.all(2),
-      child: const Text(
-        '48',
-        style: TextStyle(
-          fontSize: 14,
-          color: Colors.white,
-        ),
-      ),
-    ),
-    const MotionBadgeWidget(
+  static const seconderyBadges = [
+    MotionBadgeWidget(
       text: '990',
       textColor: Colors.white, // optional, default to Colors.white
       color: Colors.black, // optional, default to Colors.red
       size: 18, // optional, default to 18
     ),
-    const MotionBadgeWidget(
+
+    MotionBadgeWidget(
+      text: '990',
+      textColor: Colors.white, // optional, default to Colors.white
+      color: Colors.black, // optional, default to Colors.red
+      size: 18, // optional, default to 18
+    ),
+    MotionBadgeWidget(
       text: '99+',
       textColor: Colors.white, // optional, default to Colors.white
       color: Colors.red, // optional, default to Colors.red
       size: 18, // optional, default to 18
     ),
-    const MotionBadgeWidget(
+    MotionBadgeWidget(
       text: '99+',
       textColor: Colors.white, // optional, default to Colors.white
       color: Colors.green, // optional, default to Colors.red
       size: 18, // optional, default to 18
     ),
     // Default Motion Badge Widget with indicator only
-    const MotionBadgeWidget(
+    MotionBadgeWidget(
       isIndicator: true,
       color: Colors.red, // optional, default to Colors.red
       size: 5, // optional, default to 5,

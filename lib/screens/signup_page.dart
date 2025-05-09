@@ -1,28 +1,28 @@
 import 'package:accountant_app/custom_widgets/button.dart';
 import 'package:accountant_app/custom_widgets/input.dart';
-import 'package:accountant_app/custom_widgets/logo_handler.dart';
+import 'package:accountant_app/custom_widgets/logo.dart';
 import 'package:accountant_app/helpers/localization.dart';
 import 'package:accountant_app/helpers/navigation.dart';
-import 'package:accountant_app/helpers/utils.dart';
+import 'package:accountant_app/helpers/utils/validators.dart';
 import 'package:accountant_app/providers/signup_provider.dart';
-import 'package:accountant_app/screens/login_screen.dart';
+import 'package:accountant_app/screens/signin_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 // import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class RegisterPage extends StatelessWidget {
-  static const String registerPageRoute = '/register';
-  const RegisterPage({super.key});
+class SignUpPage extends StatelessWidget {
+  static const String pageRoute = '/register';
+  const SignUpPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => SignUpProvider(), child: const _RegisterPage());
+        create: (_) => SignUpProvider(), child: const _SignUpPage());
   }
 }
 
-class _RegisterPage extends StatelessWidget {
-  const _RegisterPage();
+class _SignUpPage extends StatelessWidget {
+  const _SignUpPage();
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class _RegisterPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const LogoHandler(
+            const Logo(
               margin: EdgeInsets.only(bottom: 40.0),
             ),
             const SizedBox(
@@ -42,35 +42,35 @@ class _RegisterPage extends StatelessWidget {
             Input(
               controller: signUpProvider.firstnameController,
               keyboardType: TextInputType.text,
-              label: ApplicationLocalization.translator!.firstName,
+              label: ApplicationLocalization.translator.firstName,
               iconData: Icons.person,
-              validator: (value) => Utils.isEmpty(value),
+              validator: (value) => Validator.isEmpty(value),
             ),
             Input(
               controller: signUpProvider.lastnameController,
               keyboardType: TextInputType.text,
-              label: ApplicationLocalization.translator!.lastName,
+              label: ApplicationLocalization.translator.lastName,
               iconData: Icons.person,
-              validator: (value) => Utils.isEmpty(value),
+              validator: (value) => Validator.isEmpty(value),
             ),
             Input(
               controller: signUpProvider.emailController,
               keyboardType: TextInputType.text,
-              label: ApplicationLocalization.translator!.email,
+              label: ApplicationLocalization.translator.email,
               iconData: Icons.email,
-              validator: (value) => Utils.isEmailValid(value),
+              validator: (value) => Validator.isEmailValid(value),
             ),
             Input(
               controller: signUpProvider.passwordController,
               keyboardType: TextInputType.text,
               obscureText: true,
-              label: ApplicationLocalization.translator!.password,
+              label: ApplicationLocalization.translator.password,
               iconData: Icons.lock,
-              validator: (value) => Utils.isPasswordValid(value),
+              validator: (value) => Validator.isPasswordValid(value),
             ),
             const SizedBox(height: 20),
             Button(
-              text: ApplicationLocalization.translator!.register,
+              text: ApplicationLocalization.translator.register,
               onPressed: () async {
                 await signUpProvider.signUp();
               },
@@ -78,10 +78,10 @@ class _RegisterPage extends StatelessWidget {
             const SizedBox(height: 20),
             TextButton(
                 onPressed: () {
-                  AppNavigator.pushReplacement(LoginPage.loginPageRoute);
+                  AppNavigator.pushReplacement(SignInPage.pageRoute);
                 },
                 child: Text(ApplicationLocalization
-                    .translator!.clickHereIfYouHaveAnAccount))
+                    .translator.clickHereIfYouHaveAnAccount))
           ],
         ),
       ),

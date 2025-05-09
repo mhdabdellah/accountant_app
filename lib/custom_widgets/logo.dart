@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class LogoHandler extends StatelessWidget {
-  const LogoHandler({super.key, required this.margin, this.height, this.width});
+class Logo extends StatelessWidget {
+  const Logo({super.key, required this.margin, this.height, this.width});
 
   final double? height;
   final double? width;
